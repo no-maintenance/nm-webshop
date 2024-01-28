@@ -1,8 +1,8 @@
 {
-  "name": "demo-store",
+  "name": "nomaintenance-webshop",
   "private": true,
   "sideEffects": false,
-  "version": "2.1.6",
+  "version": "2.2.0",
   "scripts": {
     "dev": "shopify hydrogen dev --codegen",
     "build": "shopify hydrogen build",
@@ -12,14 +12,16 @@
     "lint": "eslint --no-error-on-unmatched-pattern --ext .js,.ts,.jsx,.tsx .",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check --ignore-unknown .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "commitlint": "commitlint",
+    "version": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "browserslist": [
     "defaults"
   ],
   "prettier": "@shopify/prettier-config",
   "dependencies": {
-    "@headlessui/react": "^1.7.2",
+    "@headlessui/react": "^1.7.18",
     "@remix-run/react": "^2.5.1",
     "@remix-run/server-runtime": "^2.5.1",
     "@shopify/cli": "3.52.0",
@@ -40,6 +42,9 @@
     "typographic-base": "^1.0.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.6.0",
+    "@commitlint/config-conventional": "^18.6.0",
+    "@commitlint/format": "^18.6.0",
     "@playwright/test": "^1.40.1",
     "@remix-run/dev": "^2.5.1",
     "@remix-run/eslint-config": "^2.5.1",
@@ -52,12 +57,14 @@
     "@types/eslint": "^8.4.10",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
+    "conventional-changelog-conventionalcommits": "^7.0.2",
     "cross-env": "^7.0.3",
     "eslint": "^8.20.0",
     "eslint-plugin-hydrogen": "0.12.2",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
     "postcss-preset-env": "^8.2.0",
+    "pre-commit": "^1.2.2",
     "prettier": "^2.8.4",
     "rimraf": "^3.0.2",
     "tailwindcss": "^3.3.0",

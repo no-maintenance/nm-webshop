@@ -6,3 +6,7 @@ node_modules
 /.mf
 .env
 .shopify
+qodana.yaml
+.idea
+test-results
+startup.cpuprofile
