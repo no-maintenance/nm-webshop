@@ -9,9 +9,7 @@ import {
 import {Suspense} from 'react';
 import {
   defer,
-  redirect,
   type LoaderFunctionArgs,
-  type AppLoadContext,
 } from '@shopify/remix-oxygen';
 import {flattenConnection} from '@shopify/hydrogen';
 
@@ -42,7 +40,7 @@ import {
 
 export const headers = routeHeaders;
 
-export async function loader({request, context, params}: LoaderFunctionArgs) {
+export async function loader({context}: LoaderFunctionArgs) {
   const {data, errors} = await context.customerAccount.query(
     CUSTOMER_DETAILS_QUERY,
   );

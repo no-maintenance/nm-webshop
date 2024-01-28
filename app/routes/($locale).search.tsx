@@ -1,3 +1,5 @@
+// noinspection ES6MissingAwait
+
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Await, Form, useLoaderData} from '@remix-run/react';
 import {Suspense} from 'react';
