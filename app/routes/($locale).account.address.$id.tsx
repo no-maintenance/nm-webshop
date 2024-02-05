@@ -16,12 +16,12 @@ import type {CustomerAddressInput} from '@shopify/hydrogen/customer-account-api-
 import invariant from 'tiny-invariant';
 
 import {Button, Text} from '~/components';
-import {getInputStyleClasses} from '~/lib/utils';
 import {
   UPDATE_ADDRESS_MUTATION,
   DELETE_ADDRESS_MUTATION,
   CREATE_ADDRESS_MUTATION,
 } from '~/graphql/customer-account/CustomerAddressMutations';
+import {getInputStyleClasses, InputWrapper} from '~/components/Form';
 
 import {doLogout} from './($locale).account_.logout';
 import type {AccountOutletContext} from './($locale).account.edit';
@@ -225,133 +225,153 @@ export default function EditAddress() {
               <p className="m-4 text-sm text-red-900">{actionData.formError}</p>
             </div>
           )}
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="firstName"
-              name="firstName"
-              required
-              type="text"
-              autoComplete="given-name"
-              placeholder="First name"
-              aria-label="First name"
-              defaultValue={address?.firstName ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper label={'First Name'} id={'firstName'}>
+              <input
+                className={getInputStyleClasses()}
+                name="firstName"
+                required
+                type="text"
+                autoComplete="given-name"
+                placeholder="First name"
+                aria-label="First name"
+                defaultValue={address?.firstName ?? ''}
+              />
+            </InputWrapper>
           </div>
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="lastName"
-              name="lastName"
-              required
-              type="text"
-              autoComplete="family-name"
-              placeholder="Last name"
-              aria-label="Last name"
-              defaultValue={address?.lastName ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper id={'lastName'} label={'Last Name'}>
+              <input
+                className={getInputStyleClasses()}
+                id="lastName"
+                name="lastName"
+                required
+                type="text"
+                autoComplete="family-name"
+                placeholder="Last name"
+                aria-label="Last name"
+                defaultValue={address?.lastName ?? ''}
+              />
+            </InputWrapper>
           </div>
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="company"
-              name="company"
-              type="text"
-              autoComplete="organization"
-              placeholder="Company"
-              aria-label="Company"
-              defaultValue={address?.company ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper id={'company'} label={'Company'}>
+              <input
+                className={getInputStyleClasses()}
+                id="company"
+                name="company"
+                type="text"
+                autoComplete="organization"
+                placeholder="Company"
+                aria-label="Company"
+                defaultValue={address?.company ?? ''}
+              />
+            </InputWrapper>
           </div>
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="address1"
-              name="address1"
-              type="text"
-              autoComplete="address-line1"
-              placeholder="Address line 1*"
-              required
-              aria-label="Address line 1"
-              defaultValue={address?.address1 ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper id={'address1'} label={'Address'}>
+              <input
+                className={getInputStyleClasses()}
+                id="address1"
+                name="address1"
+                type="text"
+                autoComplete="address-line1"
+                placeholder="Address line 1*"
+                required
+                aria-label="Address line 1"
+                defaultValue={address?.address1 ?? ''}
+              />
+            </InputWrapper>
           </div>
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="address2"
-              name="address2"
-              type="text"
-              autoComplete="address-line2"
-              placeholder="Address line 2"
-              aria-label="Address line 2"
-              defaultValue={address?.address2 ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper id={'address2'} label={'Address Line 2'}>
+              <input
+                className={getInputStyleClasses()}
+                id="address2"
+                name="address2"
+                type="text"
+                autoComplete="address-line2"
+                placeholder="Address line 2"
+                aria-label="Address line 2"
+                defaultValue={address?.address2 ?? ''}
+              />
+            </InputWrapper>
           </div>
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="city"
-              name="city"
-              type="text"
-              required
-              autoComplete="address-level2"
-              placeholder="City"
-              aria-label="City"
-              defaultValue={address?.city ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper id={'city'} label={'City'}>
+              <input
+                className={getInputStyleClasses()}
+                id="city"
+                name="city"
+                type="text"
+                required
+                autoComplete="address-level2"
+                placeholder="City"
+                aria-label="City"
+                defaultValue={address?.city ?? ''}
+              />
+            </InputWrapper>
           </div>
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="zoneCode"
-              name="zoneCode"
-              type="text"
-              autoComplete="address-level1"
-              placeholder="State / Province (zoneCode)"
-              required
-              aria-label="State / Province (zoneCode)"
-              defaultValue={address?.zoneCode ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper id={'zoneCode'} label={'State / Province'}>
+              <input
+                className={getInputStyleClasses()}
+                id="zoneCode"
+                name="zoneCode"
+                type="text"
+                autoComplete="address-level1"
+                placeholder="State / Province (zoneCode)"
+                required
+                aria-label="State / Province (zoneCode)"
+                defaultValue={address?.zoneCode ?? ''}
+              />
+            </InputWrapper>
           </div>
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="zip"
-              name="zip"
-              type="text"
-              autoComplete="postal-code"
-              placeholder="Zip / Postal Code"
-              required
-              aria-label="Zip"
-              defaultValue={address?.zip ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper id={'zip'} label={'Zip / Postal Code'}>
+              <input
+                className={getInputStyleClasses()}
+                id="zip"
+                name="zip"
+                type="text"
+                autoComplete="postal-code"
+                placeholder="Zip / Postal Code"
+                required
+                aria-label="Zip"
+                defaultValue={address?.zip ?? ''}
+              />
+            </InputWrapper>
           </div>
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="territoryCode"
-              name="territoryCode"
-              type="text"
-              autoComplete="country"
-              placeholder="Country (Territory) Code"
-              required
-              aria-label="Country (Territory) Code"
-              defaultValue={address?.territoryCode ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper id={'territoryCode'} label={'Country'}>
+              <input
+                className={getInputStyleClasses()}
+                id="territoryCode"
+                name="territoryCode"
+                type="text"
+                autoComplete="country"
+                placeholder="Country (Territory) Code"
+                required
+                aria-label="Country (Territory) Code"
+                defaultValue={address?.territoryCode ?? ''}
+              />
+            </InputWrapper>
           </div>
-          <div className="mt-3">
-            <input
-              className={getInputStyleClasses()}
-              id="phone"
-              name="phoneNumber"
-              type="tel"
-              autoComplete="tel"
-              placeholder="Phone"
-              aria-label="Phone"
-              defaultValue={address?.phoneNumber ?? ''}
-            />
+          <div className="mt-4">
+            <InputWrapper id={'phone'} label={'Phone'}>
+              <input
+                className={getInputStyleClasses()}
+                id="phone"
+                name="phoneNumber"
+                type="tel"
+                autoComplete="tel"
+                placeholder="Phone"
+                aria-label="Phone"
+                defaultValue={address?.phoneNumber ?? ''}
+              />
+            </InputWrapper>
           </div>
+
           <div className="mt-4">
             <input
               type="checkbox"
@@ -367,22 +387,16 @@ export default function EditAddress() {
               Set as default address
             </label>
           </div>
-          <div className="mt-8">
+          <div className="mt-8 flex gap-2">
             <Button
-              className="w-full rounded focus:shadow-outline"
+              className={'flex-1'}
               type="submit"
               variant="primary"
               disabled={state !== 'idle'}
             >
               {state !== 'idle' ? 'Saving' : 'Save'}
             </Button>
-          </div>
-          <div>
-            <Button
-              to=".."
-              className="w-full mt-2 rounded focus:shadow-outline"
-              variant="secondary"
-            >
+            <Button to=".." className="flex-1" variant="secondary">
               Cancel
             </Button>
           </div>

@@ -1,10 +1,17 @@
 import clsx from 'clsx';
-import type {ShopifyAnalyticsProduct} from '@shopify/hydrogen';
-import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
-import type {MoneyV2, Product} from '@shopify/hydrogen/storefront-api-types';
+import {MediaFile, flattenConnection, Money, useMoney} from '@shopify/hydrogen';
+import type {ShopifyAnalyticsProduct, Video, Image} from '@shopify/hydrogen';
+import type {
+  MediaImage,
+  MoneyV2,
+  Product,
+} from '@shopify/hydrogen/storefront-api-types';
+import type {ComponentProps} from 'react';
+import {useEffect, useState} from 'react';
+import type {HydrogenImageProps} from '@shopify/hydrogen-react/Image';
 
-import type {ProductCardFragment} from 'storefrontapi.generated';
-import {Text, Link, AddToCartButton, Button} from '~/components';
+import type {MediaFragment, ProductCardFragment} from 'storefrontapi.generated';
+import {Text, Link, AddToCartButton, Button, Skeleton} from '~/components';
 import {isDiscounted, isNewArrival} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
 
@@ -33,8 +40,7 @@ export function ProductCard({
   const firstVariant = flattenConnection(cardProduct.variants)[0];
 
   if (!firstVariant) return null;
-  const {image, price, compareAtPrice} = firstVariant;
-
+  const {price, compareAtPrice} = firstVariant;
   if (label) {
     cardLabel = label;
   } else if (isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2)) {
@@ -52,26 +58,23 @@ export function ProductCard({
     price: firstVariant.price.amount,
     quantity: 1,
   };
+  const {media, handle, title, variants} = product;
 
   return (
     <div className="flex flex-col gap-2">
       <Link
         onClick={onClick}
-        to={`/products/${product.handle}`}
+        to={`/products/${handle}`}
         prefetch="intent"
+        className={'group'}
       >
-        <div className={clsx('grid gap-4', className)}>
-          <div className="card-image aspect-[4/5] bg-primary/5">
-            {image && (
-              <Image
-                className="object-cover w-full fadeIn"
-                sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
-                aspectRatio="4/5"
-                data={image}
-                alt={image.altText || `Picture of ${product.title}`}
-                loading={loading}
-              />
-            )}
+        <div className={clsx('grid gap-3', className)}>
+          <div className="card-image aspect-[4/5] bg-primary/5 relative group">
+            <ProductCardImage
+              loading={loading}
+              media={media.nodes}
+              title={title}
+            />
             <Text
               as="label"
               size="fine"
@@ -82,21 +85,31 @@ export function ProductCard({
           </div>
           <div className="grid gap-1">
             <Text
-              className="w-full overflow-hidden whitespace-nowrap text-ellipsis "
+              className="w-full overflow-hidden whitespace-nowrap text-ellipsis uppercase"
               as="h3"
             >
-              {product.title}
+              {title}
             </Text>
-            <div className="flex gap-4">
-              <Text className="flex gap-4">
-                <Money withoutTrailingZeros data={price!} />
-                {isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2) && (
-                  <CompareAtPrice
-                    className={'opacity-50'}
-                    data={compareAtPrice as MoneyV2}
-                  />
-                )}
-              </Text>
+            <div className={'h-[23px] group'}>
+              <div className="flex gap-4 group-hover:hidden block">
+                <Text className="flex gap-4">
+                  <Money withoutTrailingZeros data={price!} />
+                  {isDiscounted(
+                    price as MoneyV2,
+                    compareAtPrice as MoneyV2,
+                  ) && (
+                    <CompareAtPrice
+                      className={'opacity-50'}
+                      data={compareAtPrice as MoneyV2}
+                    />
+                  )}
+                </Text>
+              </div>
+              <div className={'hidden group-hover:block'}>
+                <div className={'flex flex-wrap -ml-2 '}>
+                  <ProductCardVariants variants={variants} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -130,6 +143,104 @@ export function ProductCard({
       )}
     </div>
   );
+}
+
+function ProductCardVariants({
+  variants,
+}: {
+  variants: ProductCardFragment['variants'];
+}) {
+  return (
+    <>
+      {variants.nodes.map((variant, idx) => (
+        <h4 key={`variant-${idx}`} className={'inline px-2 text-copy'}>
+          {variant.availableForSale ? (
+            variant.title
+          ) : (
+            <span
+              className={`${clsx(
+                'strike',
+                variant.title.length < 4 && 'short',
+              )}`}
+            >
+              {variant.title}
+            </span>
+          )}
+        </h4>
+      ))}
+    </>
+  );
+}
+
+function ProductCardImage({
+  media,
+  title,
+  loading,
+}: {
+  media: MediaFragment[];
+  title: string;
+  loading?: HTMLImageElement['loading'];
+}) {
+  const [primary, secondary] = media;
+  const baseClasses = 'object-cover w-full absolute inset-0';
+  if (!primary) return <Skeleton className={baseClasses} />;
+  return (
+    <>
+      <MediaFile
+        data={primary}
+        className={clsx(
+          baseClasses,
+          'transition-opacity duration-200 ease-in-out group-hover:opacity-0',
+        )}
+        mediaOptions={getMediaOptions(
+          primary.alt || `Picture of ${title}`,
+          primary.previewImage?.url ?? '',
+          loading,
+        )}
+      />
+      {secondary && (
+        <MediaFile
+          className={clsx(
+            baseClasses,
+            'transition-opacity duration-200 ease-in-out opacity-0 group-hover:opacity-100',
+          )}
+          mediaOptions={getMediaOptions(
+            secondary.alt || `Picture of ${title}`,
+            secondary.previewImage?.url ?? '',
+            'lazy',
+          )}
+          data={secondary}
+        />
+      )}
+    </>
+  );
+}
+
+function getMediaOptions(
+  alt: string,
+  previewImgUrl?: string,
+  loading?: 'eager' | 'lazy',
+  sizes = '(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw',
+): {
+  video: Omit<ComponentProps<typeof Video>, 'data'>;
+  image: Omit<HydrogenImageProps, 'data'>;
+} {
+  return {
+    video: {
+      controls: false,
+      muted: true,
+      loop: true,
+      playsInline: true,
+      autoPlay: true,
+      previewImageOptions: {src: previewImgUrl ?? ''},
+    },
+    image: {
+      loading,
+      crop: 'center',
+      sizes,
+      alt,
+    },
+  };
 }
 
 function CompareAtPrice({

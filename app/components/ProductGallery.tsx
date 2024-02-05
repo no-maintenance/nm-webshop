@@ -1,59 +1,64 @@
 import {Image} from '@shopify/hydrogen';
+import React from 'react';
 
 import type {MediaFragment} from 'storefrontapi.generated';
+import {Carousel} from '~/components/';
+import {notEmpty} from '~/lib/type';
 
 /**
  * A client component that defines a media gallery for hosting images, 3D models, and videos of products
  */
-export function ProductGallery({
-  media,
-  className,
-}: {
-  media: MediaFragment[];
-  className?: string;
-}) {
+export function ProductGallery({media}: {media: MediaFragment[]}) {
   if (!media.length) {
     return null;
   }
-
+  const images = media
+    .map((med, i) => {
+      const image =
+        med.__typename === 'MediaImage' && med?.image?.url
+          ? {...med.image, altText: med.alt || 'Product image'}
+          : null;
+      return image ? {id: med.id || image?.id, image} : null;
+    })
+    .filter(notEmpty);
   return (
-    <div
-      className={`swimlane md:grid-flow-row hiddenScroll md:p-0 md:overflow-x-auto md:grid-cols-2 ${className}`}
-    >
-      {media.map((med, i) => {
-        const isFirst = i === 0;
-        const isFourth = i === 3;
-        const isFullWidth = i % 3 === 0;
-
-        const image =
-          med.__typename === 'MediaImage'
-            ? {...med.image, altText: med.alt || 'Product image'}
-            : null;
-
-        const style = [
-          isFullWidth ? 'md:col-span-2' : 'md:col-span-1',
-          isFirst || isFourth ? '' : 'md:aspect-[4/5]',
-          'aspect-square snap-center card-image bg-white dark:bg-contrast/10 w-mobileGallery md:w-full',
-        ].join(' ');
-
-        return (
-          <div className={style} key={med.id || image?.id}>
-            {image && (
+    <div>
+      <div className={'md:hidden'}>
+        <Carousel size={images.length}>
+          {images.map((data, i) => {
+            return (
+              <Image
+                key={data.id}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                data={data.image}
+                aspectRatio="4/5"
+                sizes={'(min-width: 48em) 60vw, 100vw'}
+                className="object-cover flex-1"
+              />
+            );
+          })}
+        </Carousel>
+      </div>
+      <div className="hidden w-full md:grid gap-y-12 xl:col-start-2 col-span-6  xl:col-span-5">
+        {images.map((data, i) => {
+          return (
+            <div
+              className={
+                'md:col-span-2 aspect-[4/5] snap-center card-image bg-white dark:bg-contrast/10 w-mobileGallery md:w-full'
+              }
+              key={data.id}
+            >
               <Image
                 loading={i === 0 ? 'eager' : 'lazy'}
-                data={image}
-                aspectRatio={!isFirst && !isFourth ? '4/5' : undefined}
-                sizes={
-                  isFirst || isFourth
-                    ? '(min-width: 48em) 60vw, 90vw'
-                    : '(min-width: 48em) 30vw, 90vw'
-                }
-                className="object-cover w-full h-full aspect-square fadeIn"
+                data={data.image}
+                aspectRatio="4/5"
+                sizes={'(min-width: 48em) 60vw, 90vw'}
+                className="object-cover w-full h-full  fadeIn"
               />
-            )}
-          </div>
-        );
-      })}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

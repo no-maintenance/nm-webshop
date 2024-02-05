@@ -1,6 +1,5 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import type {ProductSortKeys} from '@shopify/hydrogen/storefront-api-types';
-import {flattenConnection} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
@@ -56,11 +55,9 @@ export async function loader({
     },
     cache: storefront.CacheLong(),
   });
-
   invariant(products, 'No data returned from top products query');
-
   return json({
-    products: flattenConnection(products),
+    products: products.nodes,
   });
 }
 

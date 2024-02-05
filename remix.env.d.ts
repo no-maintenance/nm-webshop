@@ -16,6 +16,9 @@ declare global {
    * Declare expected Env parameter in fetch handler.
    */
   interface Env {
+    KLAVIYO_PRIVATE_KEY: any;
+    KLAVIYO_COMPANY_ID: string;
+    KLAVIYO_NEWSLETTER_ID: string;
     SESSION_SECRET: string;
     PUBLIC_STOREFRONT_API_TOKEN: string;
     PRIVATE_STOREFRONT_API_TOKEN: string;

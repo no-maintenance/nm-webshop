@@ -12,8 +12,8 @@ import type {
 import invariant from 'tiny-invariant';
 
 import {Button, Text} from '~/components';
-import {getInputStyleClasses} from '~/lib/utils';
 import {CUSTOMER_UPDATE_MUTATION} from '~/graphql/customer-account/CustomerUpdateMutation';
+import {getInputStyleClasses} from '~/components/Form';
 
 import {doLogout} from './($locale).account_.logout';
 

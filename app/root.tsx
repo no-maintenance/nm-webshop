@@ -20,12 +20,19 @@ import {
 } from '@remix-run/react';
 import {ShopifySalesChannel, Seo, useNonce} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
+import {LazyMotion} from 'framer-motion';
 
 import {Layout} from '~/components';
 import {seoPayload} from '~/lib/seo.server';
+import {
+  FOOTER_MENU_HANDLE,
+  DESKTOP_HEADER_HANDLE,
+  MOBILE_HEADER_HANDLE,
+} from '~/lib/const';
 
 import favicon from '../public/favicon.svg';
 
+import fonts from './styles/custom-font.css';
 import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
 import styles from './styles/app.css';
@@ -53,6 +60,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 
 export const links: LinksFunction = () => {
   return [
+    {rel: 'stylesheet', href: fonts},
     {rel: 'stylesheet', href: styles},
     {
       rel: 'preconnect',
@@ -88,6 +96,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         shopifySalesChannel: ShopifySalesChannel.hydrogen,
         shopId: layout.shop.id,
       },
+      isDarkMode: false,
       seo,
     },
     {
@@ -117,12 +126,17 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Layout
-          key={`${locale.language}-${locale.country}`}
-          layout={data.layout}
+        <LazyMotion
+          features={async () => (await import('./lib/motion-features')).default}
+          strict
         >
-          <Outlet />
-        </Layout>
+          <Layout
+            key={`${locale.language}-${locale.country}`}
+            layout={data.layout}
+          >
+            <Outlet />
+          </Layout>
+        </LazyMotion>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />
@@ -185,17 +199,21 @@ export function ErrorBoundary({error}: {error: Error}) {
 const LAYOUT_QUERY = `#graphql
   query layout(
     $language: LanguageCode
-    $headerMenuHandle: String!
+    $desktopHeaderHandle: String!
+    $mobileHeaderHandle: String!
     $footerMenuHandle: String!
   ) @inContext(language: $language) {
     shop {
       ...Shop
     }
-    headerMenu: menu(handle: $headerMenuHandle) {
+    desktopHeaderMenu: menu(handle: $desktopHeaderHandle) {
       ...Menu
     }
+    mobileHeaderMenu:  menu(handle: $mobileHeaderHandle) {
+        ...Menu
+    }
     footerMenu: menu(handle: $footerMenuHandle) {
-      ...Menu
+        ...Menu
     }
   }
   fragment Shop on Shop {
@@ -221,8 +239,14 @@ const LAYOUT_QUERY = `#graphql
     type
     url
   }
+  fragment YoungestChildMenuItem on MenuItem {
+    ...MenuItem
+  }
   fragment ChildMenuItem on MenuItem {
     ...MenuItem
+    items {
+      ...YoungestChildMenuItem
+    }
   }
   fragment ParentMenuItem on MenuItem {
     ...MenuItem
@@ -241,8 +265,9 @@ const LAYOUT_QUERY = `#graphql
 async function getLayoutData({storefront, env}: AppLoadContext) {
   const data = await storefront.query(LAYOUT_QUERY, {
     variables: {
-      headerMenuHandle: 'main-menu',
-      footerMenuHandle: 'footer',
+      desktopHeaderHandle: DESKTOP_HEADER_HANDLE,
+      mobileHeaderHandle: MOBILE_HEADER_HANDLE,
+      footerMenuHandle: FOOTER_MENU_HANDLE,
       language: storefront.i18n.language,
     },
   });
@@ -258,10 +283,18 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
       - /collections/all -> /products
   */
   const customPrefixes = {BLOG: '', CATALOG: 'products'};
-
-  const headerMenu = data?.headerMenu
+  const desktopHeaderMenu = data?.desktopHeaderMenu
     ? parseMenu(
-        data.headerMenu,
+        data.desktopHeaderMenu,
+        data.shop.primaryDomain.url,
+        env,
+        customPrefixes,
+      )
+    : undefined;
+
+  const mobileHeaderMenu = data?.mobileHeaderMenu
+    ? parseMenu(
+        data.mobileHeaderMenu,
         data.shop.primaryDomain.url,
         env,
         customPrefixes,
@@ -276,6 +309,5 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
         customPrefixes,
       )
     : undefined;
-
-  return {shop: data.shop, headerMenu, footerMenu};
+  return {shop: data.shop, desktopHeaderMenu, mobileHeaderMenu, footerMenu};
 }

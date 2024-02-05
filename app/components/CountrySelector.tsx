@@ -9,8 +9,9 @@ import {Heading, Button, IconCheck} from '~/components';
 import type {Localizations, Locale} from '~/lib/type';
 import {DEFAULT_LOCALE} from '~/lib/utils';
 import {useRootLoaderData} from '~/root';
+import {useClickOutside} from '~/hooks/useClickOutside';
 
-export function CountrySelector() {
+export function CountrySelector({heading}: {heading?: string}) {
   const fetcher = useFetcher();
   const closeRef = useRef<HTMLDetailsElement>(null);
   const rootData = useRootLoaderData();
@@ -31,7 +32,7 @@ export function CountrySelector() {
     threshold: 0,
     triggerOnce: true,
   });
-
+  const menuRef = useRef(null);
   const observerRef = useRef(null);
   useEffect(() => {
     ref(observerRef.current);
@@ -46,48 +47,59 @@ export function CountrySelector() {
   const closeDropdown = useCallback(() => {
     closeRef.current?.removeAttribute('open');
   }, []);
+  useClickOutside(menuRef, closeDropdown);
 
+  const popupStyles = clsx([
+    heading && 'bottom-[46px] w-[180px] h-[200px]',
+    'absolute bg-contrast z-10 right-0 ',
+  ]);
   return (
-    <section
-      ref={observerRef}
-      className="grid w-full gap-4"
-      onMouseLeave={closeDropdown}
-    >
-      <Heading size="lead" className="cursor-default" as="h3">
-        Country
-      </Heading>
+    <section ref={observerRef} className="w-full md:max-w-xs md:ml-auto ">
+      {heading ? (
+        <Heading size="copy" className="cursor-default font-normal" as="h3">
+          {heading}
+        </Heading>
+      ) : (
+        ''
+      )}
       <div className="relative">
         <details
-          className="absolute w-full border rounded border-contrast/30 dark:border-white open:round-b-none overflow-clip"
+          className=" w-full dark:border-white open:round-b-none "
           ref={closeRef}
         >
-          <summary className="flex items-center justify-between w-full px-4 py-3 cursor-pointer">
+          <summary
+            className={`flex items-center  w-full cursor-pointer text-clip ${
+              !heading && 'justify-end'
+            }`}
+          >
             {selectedLocale.label}
           </summary>
-          <div className="w-full overflow-auto border-t border-contrast/30 dark:border-white bg-contrast/30 max-h-36">
-            {countries &&
-              Object.keys(countries).map((countryPath) => {
-                const countryLocale = countries[countryPath];
-                const isSelected =
-                  countryLocale.language === selectedLocale.language &&
-                  countryLocale.country === selectedLocale.country;
+          <div ref={menuRef} className={popupStyles}>
+            <div className="w-full hiddenScroll border border-black max-h-[200px] border-solid overflow-auto  dark:border-white text-copy">
+              {countries &&
+                Object.keys(countries).map((countryPath) => {
+                  const countryLocale = countries[countryPath];
+                  const isSelected =
+                    countryLocale.language === selectedLocale.language &&
+                    countryLocale.country === selectedLocale.country;
 
-                const countryUrlPath = getCountryUrlPath({
-                  countryLocale,
-                  defaultLocalePrefix,
-                  pathWithoutLocale,
-                });
+                  const countryUrlPath = getCountryUrlPath({
+                    countryLocale,
+                    defaultLocalePrefix,
+                    pathWithoutLocale,
+                  });
 
-                return (
-                  <Country
-                    key={countryPath}
-                    closeDropdown={closeDropdown}
-                    countryUrlPath={countryUrlPath}
-                    isSelected={isSelected}
-                    countryLocale={countryLocale}
-                  />
-                );
-              })}
+                  return (
+                    <Country
+                      key={countryPath}
+                      closeDropdown={closeDropdown}
+                      countryUrlPath={countryUrlPath}
+                      isSelected={isSelected}
+                      countryLocale={countryLocale}
+                    />
+                  );
+                })}
+            </div>
           </div>
         </details>
       </div>
@@ -116,8 +128,7 @@ function Country({
     >
       <Button
         className={clsx([
-          'text-contrast dark:text-primary',
-          'bg-primary dark:bg-contrast w-full p-2 transition rounded flex justify-start',
+          'text-primary bg-contrast w-full p-2 transition flex justify-start',
           'items-center text-left cursor-pointer py-2 px-4',
         ])}
         type="submit"
@@ -135,7 +146,7 @@ function Country({
   );
 }
 
-function ChangeLocaleForm({
+export function ChangeLocaleForm({
   children,
   buyerIdentity,
   redirectTo,
@@ -160,7 +171,7 @@ function ChangeLocaleForm({
   );
 }
 
-function getCountryUrlPath({
+export function getCountryUrlPath({
   countryLocale,
   defaultLocalePrefix,
   pathWithoutLocale,

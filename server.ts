@@ -15,6 +15,7 @@ import {
 
 import {AppSession} from '~/lib/session.server';
 import {getLocaleFromRequest} from '~/lib/utils';
+import {getOxygenEnv} from '~/lib/get-oxygen-env';
 
 /**
  * Export a fetch handler in module format.

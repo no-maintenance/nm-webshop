@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import {useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useScroll} from 'react-use';
 import {
   flattenConnection,
@@ -24,8 +24,10 @@ import {
   Text,
   Link,
   FeaturedProducts,
+  CountrySelector,
 } from '~/components';
-import {getInputStyleClasses} from '~/lib/utils';
+
+import { getInputStyleClasses } from "~/components/Form";
 
 type Layouts = 'page' | 'drawer';
 
@@ -64,13 +66,19 @@ export function CartDetails({
 
   return (
     <div className={container[layout]}>
-      <CartLines lines={cart?.lines} layout={layout} />
       {cartHasItems && (
-        <CartSummary cost={cart.cost} layout={layout}>
-          <CartDiscounts discountCodes={cart.discountCodes} />
-          <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
+        <CartSummary
+          quantity={cart.totalQuantity}
+          cost={cart.cost}
+          layout={layout}
+        >
+          <div>
+            <CartDiscounts discountCodes={cart.discountCodes} />
+            <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
+          </div>
         </CartSummary>
       )}
+      <CartLines lines={cart?.lines} layout={layout} />
     </div>
   );
 }
@@ -80,6 +88,7 @@ export function CartDetails({
  * @param discountCodes the current discount codes applied to the cart
  * @todo rework when a design is ready
  */
+
 function CartDiscounts({
   discountCodes,
 }: {
@@ -89,44 +98,54 @@ function CartDiscounts({
     discountCodes
       ?.filter((discount) => discount.applicable)
       ?.map(({code}) => code) || [];
-
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <>
       {/* Have existing discount, display it with a remove option */}
-      <dl className={codes && codes.length !== 0 ? 'grid' : 'hidden'}>
+      <dl className={codes.length ? 'grid' : 'hidden'}>
         <div className="flex items-center justify-between font-medium">
           <Text as="dt">Discount(s)</Text>
           <div className="flex items-center justify-between">
+            <Text as="dd">{codes}</Text>
             <UpdateDiscountForm>
-              <button>
-                <IconRemove
-                  aria-hidden="true"
-                  style={{height: 18, marginRight: 4}}
-                />
-              </button>
+              <div className={'pl-2 flex items-center'}>
+                <button>
+                  <IconRemove
+                    aria-hidden="true"
+                    style={{height: 18, marginRight: 4}}
+                  />
+                </button>
+              </div>
             </UpdateDiscountForm>
-            <Text as="dd">{codes?.join(', ')}</Text>
           </div>
         </div>
       </dl>
 
-      {/* Show an input to apply a discount */}
+      {/* No discounts, show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
         <div
           className={clsx(
-            'flex',
+            codes.length ? 'hidden' : 'flex',
             'items-center gap-4 justify-between text-copy',
           )}
         >
           <input
-            className={getInputStyleClasses()}
+            className={
+              'h-[55px] w-full text-left text-primary border-solid border border-primary/10 inline-block font-medium py-5 px-10 bg-transparent '
+            }
             type="text"
             name="discountCode"
-            placeholder="Discount code"
+            placeholder="Apply discount code"
           />
-          <button className="flex justify-end font-medium whitespace-nowrap">
+
+          <Button
+            variant={'primary'}
+            className={
+              'whitespace-nowrap focus-visible:border-blue-500 focus-visible:border-radius-none capitalize'
+            }
+          >
             Apply Discount
-          </button>
+          </Button>
         </div>
       </UpdateDiscountForm>
     </>
@@ -192,7 +211,7 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   return (
     <div className="flex flex-col mt-2">
       <a href={checkoutUrl} target="_self">
-        <Button as="span" width="full">
+        <Button as="span" width="full" className={'capitalize'}>
           Continue to Checkout
         </Button>
       </a>
@@ -204,25 +223,28 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
 function CartSummary({
   cost,
   layout,
+  quantity,
   children = null,
 }: {
+  quantity: number;
   children?: React.ReactNode;
   cost: CartCost;
   layout: Layouts;
 }) {
   const summary = {
-    drawer: 'grid gap-4 p-6 border-t md:px-12',
-    page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded w-full',
+    drawer: ' grid gap-6 pt-6 pb-6 px-4 md:px-6',
+    page: ' sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-contrast rounded w-full',
   };
-
   return (
     <section aria-labelledby="summary-heading" className={summary[layout]}>
       <h2 id="summary-heading" className="sr-only">
         Order summary
       </h2>
-      <dl className="grid">
-        <div className="flex items-center justify-between font-medium">
-          <Text as="dt">Subtotal</Text>
+      <dl className={`grid ${layout === 'drawer' ? 'gap-0' : 'gap-4'}`}>
+        <div className="flex items-center  justify-between font-medium">
+          <Text as="dt" className={'text-color/30'}>
+            {quantity} {quantity > 1 ? 'Items' : 'item'}
+          </Text>
           <Text as="dd" data-test="subtotal">
             {cost?.subtotalAmount?.amount ? (
               <Money data={cost?.subtotalAmount} />
@@ -231,8 +253,62 @@ function CartSummary({
             )}
           </Text>
         </div>
+        <div className="flex items-center justify-between font-medium">
+          <Text as="dt" className={''}>
+            Shipping
+          </Text>
+          <Text
+            as="dd"
+            className={'text-primary/30 whitespace-nowrap'}
+            data-test="subtotal"
+          >
+            Calculated at checkout
+          </Text>
+        </div>
+        <div className="flex items-center justify-between font-medium">
+          <Text as="dt" className={' whitespace-nowrap flex-1'}>
+            Shipping country
+          </Text>
+          <Text as="dd" className={'underline w-full ml-6 flex-initial'}>
+            <CountrySelector />
+          </Text>
+        </div>
+        <div className="flex items-center justify-between font-medium">
+          <div className={'flex flex-wrap'}>
+            <Text
+              as="dt"
+              className={'w-full tracking-wider uppercase whitespace-nowrap'}
+              size={'copy'}
+            >
+              Total
+            </Text>
+            <Text as="dt" className={'w-full text-primary/60'}>
+              VAT Included
+            </Text>
+          </div>
+
+          <Text
+            as="dd"
+            data-test="subtotal"
+            className={'text-heading tracking-widest whitespace-nowrap flex'}
+          >
+            {cost.subtotalAmount?.amount &&
+              cost.totalAmount?.amount &&
+              cost.subtotalAmount.amount > cost.totalAmount?.amount && (
+                <span className={'text-error line-through mr-4'}>
+                  <Money data={cost?.subtotalAmount} />
+                </span>
+              )}
+            {cost?.totalAmount?.amount ? (
+              <Money data={cost?.totalAmount} />
+            ) : (
+              '-'
+            )}
+          </Text>
+        </div>
       </dl>
       {children}
+      <div></div>
     </section>
   );
 }
@@ -261,11 +337,11 @@ function CartLineItem({line}: {line: CartLine}) {
         display: optimisticData?.action === 'remove' ? 'none' : 'flex',
       }}
     >
-      <div className="flex-shrink">
+      <div className="shrink">
         {merchandise.image && (
           <Image
-            width={110}
-            height={110}
+            width={300}
+            height={300}
             data={merchandise.image}
             className="object-cover object-center w-24 h-24 border rounded md:w-28 md:h-28"
             alt={merchandise.title}
@@ -273,7 +349,7 @@ function CartLineItem({line}: {line: CartLine}) {
         )}
       </div>
 
-      <div className="flex justify-between flex-grow">
+      <div className="flex justify-between grow">
         <div className="grid gap-2">
           <Heading as="h3" size="copy">
             {merchandise?.product?.handle ? (
@@ -443,7 +519,7 @@ export function CartEmpty({
 
   const container = {
     drawer: clsx([
-      'content-start gap-4 px-6 pb-8 transition overflow-y-scroll md:gap-12 md:px-12 h-screen-no-nav md:pb-12',
+      'content-start gap-4 pb-8 transition overflow-y-scroll md:gap-12 px-4 md:px-6 h-screen-no-nav md:pb-12',
       y > 0 ? 'border-t' : '',
     ]),
     page: clsx([

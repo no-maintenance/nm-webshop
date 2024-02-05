@@ -44,16 +44,16 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
     publishedAt
     handle
     vendor
-    variants(first: 1) {
+    media(first: 2) {
       nodes {
+        ...Media
+      }
+    }
+    variants(first: 10) {
+      nodes {
+        title
         id
         availableForSale
-        image {
-          url
-          altText
-          width
-          height
-        }
         price {
           amount
           currencyCode
@@ -73,6 +73,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
       }
     }
   }
+${MEDIA_FRAGMENT}
 `;
 
 export const FEATURED_COLLECTION_FRAGMENT = `#graphql

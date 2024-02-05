@@ -5,6 +5,7 @@ import {
   PRODUCT_CARD_FRAGMENT,
   FEATURED_COLLECTION_FRAGMENT,
 } from '~/data/fragments';
+import {PAGINATION_SIZE} from '~/lib/const';
 
 export async function loader({context: {storefront}}: LoaderFunctionArgs) {
   return json(await getFeaturedData(storefront));
@@ -16,7 +17,7 @@ export async function getFeaturedData(
 ) {
   const data = await storefront.query(FEATURED_ITEMS_QUERY, {
     variables: {
-      pageBy: 12,
+      pageBy: PAGINATION_SIZE,
       country: storefront.i18n.country,
       language: storefront.i18n.language,
       ...variables,

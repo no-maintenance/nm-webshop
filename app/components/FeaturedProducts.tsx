@@ -8,6 +8,7 @@ import type {
 
 import {Heading, ProductCard, Skeleton, Text} from '~/components';
 import {usePrefixPathWithLocale} from '~/lib/utils';
+import type { ApiAllProductsQuery, ProductCardFragment } from "storefrontapi.generated";
 
 interface FeaturedProductsProps {
   count: number;
@@ -23,6 +24,9 @@ interface FeaturedProductsProps {
  * Display a grid of products and a heading based on some options.
  * This components uses the storefront API products query
  * @param count number of products to display
+ * @param heading
+ * @param layout
+ * @param onClose
  * @param query a filtering query
  * @param reverse wether to reverse the product results
  * @param sortKey Sort the underlying list by the given key.
@@ -38,7 +42,9 @@ export function FeaturedProducts({
   reverse,
   sortKey = 'BEST_SELLING',
 }: FeaturedProductsProps) {
-  const {load, data} = useFetcher<{products: Product[]}>();
+  const {load, data} = useFetcher<{
+    products: ProductCardFragment[];
+  }>();
   const queryString = useMemo(
     () =>
       Object.entries({count, sortKey, query, reverse})
@@ -85,11 +91,10 @@ function FeatureProductsContent({
   products,
 }: {
   count: FeaturedProductsProps['count'];
-  products: Product[] | undefined;
+  products: ProductCardFragment[] | undefined;
   onClick?: () => void;
 }) {
   const id = useId();
-
   if (!products) {
     return (
       <>

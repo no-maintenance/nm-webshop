@@ -3158,6 +3158,11 @@
     lz-string "^1.5.0"
     pretty-format "^27.0.2"
 
+"@thebeyondgroup/shopify-rich-text-renderer@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@thebeyondgroup/shopify-rich-text-renderer/-/shopify-rich-text-renderer-1.0.0.tgz#64d370d1f2ca2d71e36c842d9d4a278dd0324825"
+  integrity sha512-7NChTgzGB4LPf8Gk0RgtGdEr0yuSZ/wfCLHQ9UfIIcL7tcq+Q9joX4GL24RZGEOPNoYVcVtBq6NA77jckYg56g==
+
 "@tootallnate/once@2":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
@@ -10766,7 +10771,7 @@ promzard@^1.0.0:
   dependencies:
     read "^2.0.0"
 
-prop-types@^15.8.1:
+prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -10907,13 +10912,20 @@ rc@1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@^18.3.0-canary-8bb6ee1d3-20240125:
-  version "18.3.0-next-fecc288b7-20221025"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.3.0-next-fecc288b7-20221025.tgz#f06afce21f68a6797eb4c740637aa844c7918bcd"
-  integrity sha512-EczZNIcOXzLFyPhSXpplVFekfUvbtHRC68TVAPfCopn8YxjMg2ROVgYs1VdSnEu2JlXKvpeIbjexAuhDprsp/A==
+react-dom@^18.3.0-canary-763612647-20240126:
+  version "18.3.0-canary-763612647-20240126"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.3.0-canary-763612647-20240126.tgz#d12d737eb3c9e877ac1b6a483095da069f7fefb6"
+  integrity sha512-EANEcwfNB28TZJdJMoEAVbYALbvRwxlukJNWmd0FV6+mngBZ4jY98EpE7Mm0rRZ3X3bC4igaUuN8ydikK1qzrQ==
   dependencies:
     loose-envify "^1.1.0"
-    scheduler "0.24.0-next-fecc288b7-20221025"
+    scheduler "0.24.0-canary-763612647-20240126"
+
+react-feather@^2.0.10:
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-2.0.10.tgz#0e9abf05a66754f7b7bb71757ac4da7fb6be3b68"
+  integrity sha512-BLhukwJ+Z92Nmdcs+EMw6dy1Z/VLiJTzEQACDUEnWMClhYnFykJCGWQx+NmwP/qQHGX/5CzQ+TGi8ofg2+HzVQ==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-intersection-observer@^9.4.1:
   version "9.5.3"
@@ -10990,10 +11002,10 @@ react@18.2.0:
   dependencies:
     loose-envify "^1.1.0"
 
-react@^18.3.0-canary-8bb6ee1d3-20240125:
-  version "18.3.0-next-fecc288b7-20221025"
-  resolved "https://registry.yarnpkg.com/react/-/react-18.3.0-next-fecc288b7-20221025.tgz#8da77f8c8221bb2761ed817b7638feb108ba791c"
-  integrity sha512-lKvCNWRO9XPy8q7hLd0ODK/4Oqr54r3Vr49Y7EyNBz/kfsmNT6Vx0F69KRz/eGcbt1XDvtbA7KZd+mh8w3wONQ==
+react@^18.3.0-canary-763612647-20240126:
+  version "18.3.0-canary-763612647-20240126"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.3.0-canary-763612647-20240126.tgz#316830e30ca81bcdb22bde7d718009d5560ddfaa"
+  integrity sha512-U+tNAsJ2TUDwiewGlyojBLX9/JTVMXLQrASguDzVDhX0vGqgxoK1T//gaMhDBbdcCXkEnuUNMGzV20GzxB4EdA==
   dependencies:
     loose-envify "^1.1.0"
 
@@ -11446,10 +11458,10 @@ safe-regex-test@^1.0.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-scheduler@0.24.0-next-fecc288b7-20221025:
-  version "0.24.0-next-fecc288b7-20221025"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.24.0-next-fecc288b7-20221025.tgz#0f4b174cf0ee5866b78855f4bf41142cc3cecc0e"
-  integrity sha512-D2r7z/2EbRXXz4k8XRQab2l71zARIwmZzLLGPAM936/dW1iF835+FMwnOe4Iep96vNJAdQavqJBP4Fm+/MadsQ==
+scheduler@0.24.0-canary-763612647-20240126:
+  version "0.24.0-canary-763612647-20240126"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.24.0-canary-763612647-20240126.tgz#5273819c5075c68bfa8dd3a3e17408fb410ebef9"
+  integrity sha512-YF/wQ+lgzytZBpva12X2jI2hyH+BwNpKoiVfFWIARzGPgfykqw8U5coMCjddFZoy1Q2LPz+EXwZd37FTb7ZR/w==
   dependencies:
     loose-envify "^1.1.0"
 

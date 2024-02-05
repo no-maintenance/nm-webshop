@@ -23,3 +23,11 @@ export type I18nLocale = Locale & {
 };
 
 export type Storefront = HydrogenStorefront<I18nLocale>;
+
+export function notEmpty<TValue>(
+  value: TValue | null | undefined,
+): value is TValue {
+  return value !== null && value !== undefined;
+}
+
+

@@ -11,11 +11,13 @@ export const Button = forwardRef(
       className = '',
       variant = 'primary',
       width = 'auto',
+      isThin = false,
       ...props
     }: {
+      isThin?: boolean;
       as?: React.ElementType;
       className?: string;
-      variant?: 'primary' | 'secondary' | 'inline';
+      variant?: 'primary' | 'secondary' | 'inline' | 'unstyled';
       width?: 'auto' | 'full';
       [key: string]: any;
     },
@@ -23,13 +25,18 @@ export const Button = forwardRef(
   ) => {
     const Component = props?.to ? Link : as;
 
-    const baseButtonClasses =
-      'inline-block rounded font-medium text-center py-3 px-6';
+    const baseButtonClasses = clsx([
+      'uppercase font-normal text-copy',
+      isThin
+        ? 'py-2 px-4 h-[37px]'
+        : 'inline-block font-normal text-center uppercase py-5 px-10',
+    ]);
 
     const variants = {
       primary: `${baseButtonClasses} bg-primary text-contrast`,
       secondary: `${baseButtonClasses} border border-primary/10 bg-contrast text-primary`,
       inline: 'border-b border-primary/10 leading-none pb-1',
+      unstyled: '',
     };
 
     const widths = {

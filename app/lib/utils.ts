@@ -1,4 +1,4 @@
-import {useLocation, useMatches} from '@remix-run/react';
+import {useLocation} from '@remix-run/react';
 import type {MoneyV2} from '@shopify/hydrogen/storefront-api-types';
 import type {FulfillmentStatus} from '@shopify/hydrogen/customer-account-api-types';
 import typographicBase from 'typographic-base';
@@ -80,12 +80,15 @@ function resolveToFromType(
     customPrefixes,
     pathname,
     type,
+    tags,
   }: {
     customPrefixes: Record<string, string>;
     pathname?: string;
     type?: string;
+    tags: string[];
   } = {
     customPrefixes: {},
+    tags: [],
   },
 ) {
   if (!pathname || !type) return '';
@@ -107,8 +110,21 @@ function resolveToFromType(
     SHOP_POLICY: 'policies',
   };
 
+  function getParsedHandle(tags: string[], pathParts: string[], type?: string) {
+    if (type === 'COLLECTION' && tags.length) {
+      const searchParams = new URLSearchParams();
+      for (const t of tags) {
+        searchParams.set('tag', t);
+      }
+      const intersection = pathParts.filter((x) => !tags.includes(x));
+      return `${intersection.pop()}?${searchParams}`;
+    }
+    return pathParts.pop() || '';
+  }
+
   const pathParts = pathname.split('/');
-  const handle = pathParts.pop() || '';
+  const handle = getParsedHandle(tags, pathParts, type);
+
   const routePrefix: Record<string, string> = {
     ...defaultPrefixes,
     ...customPrefixes,
@@ -150,10 +166,12 @@ function parseItem(primaryDomain: string, env: Env, customPrefixes = {}) {
   return function (
     item:
       | MenuFragment['items'][number]
-      | MenuFragment['items'][number]['items'][number],
+      | MenuFragment['items'][number]['items'][number]
+      | MenuFragment['items'][number]['items'][number]['items'][number],
   ):
     | EnhancedMenu['items'][0]
     | EnhancedMenu['items'][number]['items'][0]
+    | EnhancedMenu['items'][number]['items'][number]['items'][0]
     | null {
     if (!item?.url || !item?.type) {
       // eslint-disable-next-line no-console
@@ -163,7 +181,6 @@ function parseItem(primaryDomain: string, env: Env, customPrefixes = {}) {
 
     // extract path from url because we don't need the origin on internal to attributes
     const {host, pathname} = new URL(item.url);
-
     const isInternalLink =
       host === new URL(primaryDomain).host || host === env.PUBLIC_STORE_DOMAIN;
 
@@ -173,7 +190,12 @@ function parseItem(primaryDomain: string, env: Env, customPrefixes = {}) {
           ...item,
           isExternal: false,
           target: '_self',
-          to: resolveToFromType({type: item.type, customPrefixes, pathname}),
+          to: resolveToFromType({
+            type: item.type,
+            customPrefixes,
+            pathname,
+            tags: item.tags,
+          }),
         }
       : // external links
         {
@@ -215,26 +237,17 @@ export function parseMenu(
 
   const parser = parseItem(primaryDomain, env, customPrefixes);
 
-  const parsedMenu = {
+  return {
     ...menu,
     items: menu.items.map(parser).filter(Boolean),
   } as EnhancedMenu;
-
-  return parsedMenu;
 }
 
-export const INPUT_STYLE_CLASSES =
-  'appearance-none rounded dark:bg-transparent border focus:border-primary/50 focus:ring-0 w-full py-2 px-3 text-primary/90 placeholder:text-primary/50 leading-tight focus:shadow-outline';
-
-export const getInputStyleClasses = (isError?: string | null) => {
-  return `${INPUT_STYLE_CLASSES} ${
-    isError ? 'border-red-500' : 'border-primary/20'
-  }`;
-};
+// 'appearance-none rounded dark:bg-transparent border focus:border-primary/50 focus:ring-0 w-full py-2 px-3 text-primary/90 placeholder:text-primary/50 leading-tight focus:shadow-outline';
 
 export function statusMessage(status: FulfillmentStatus) {
   const translations: Record<FulfillmentStatus, string> = {
-    SUCCESS: 'Success',
+    SUCCESS: 'Delivered',
     PENDING: 'Pending',
     OPEN: 'Open',
     FAILURE: 'Failure',
@@ -312,3 +325,8 @@ export function isLocalPath(url: string) {
 
   return false;
 }
+
+export const getLegacyId = (gid: string) => {
+  const id = gid.split('/').pop();
+  return id ?? '';
+};
