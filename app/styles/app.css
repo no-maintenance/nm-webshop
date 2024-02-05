@@ -154,38 +154,35 @@ shop-pay-button {
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
 
-  .strike:before {
+  .strike {
+    position: relative;
+    &::before {
       content: "";
       display: block;
       width: 100%;
       color: gray;
       height: 15px;
       background-size: contain;
-      background-image: url("./icons/strikethrough-long.png");
-      background-repeat: no-repeat;
+      background: url("./icons/strikethrough-long.png") no-repeat;
       position: absolute;
       left: 50%;
       top: -2px;
       transform: translate(-50%, 25%);
       z-index: 1;
     }
-  .strike.small:before {
+    &.small::before {
       content: "";
       display: block;
       width: clamp(100%, 15px, 25px);
       height: 15px;
       background-size: contain;
-      background-image: url("./icons/strikethrough-short.png");
+      background: url("./icons/strikethrough-short.png") no-repeat;
       position: absolute;
       left: 50%;
       top: -2px;
       transform: translate(-50%, 18%);
       z-index: 1;
     }
-  .strike {
-    position:relative;
-    display: inline-block;
-    opacity: 0.5;
   }
 
   .card-image {

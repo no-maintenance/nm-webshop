@@ -158,7 +158,10 @@ function ProductCardVariants({
             variant.title
           ) : (
             <span
-              className={`strike ${variant.title.length < 4 ? 'small' : ''}`}
+              className={`${clsx(
+                'strike',
+                variant.title.length < 4 && 'short',
+              )}`}
             >
               {variant.title}
             </span>
