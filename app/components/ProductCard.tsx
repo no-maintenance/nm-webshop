@@ -152,7 +152,7 @@ function ProductCardVariants({
 }) {
   return (
     <>
-      {variants.nodes.map((variant, idx) => (X
+      {variants.nodes.map((variant, idx) => (
         <h4 key={`variant-${idx}`} className={'inline px-2 text-copy'}>
           {variant.availableForSale ? (
             variant.title
