@@ -34,6 +34,7 @@ import {
   getFeaturedData,
   type FeaturedData,
 } from './($locale).featured-products';
+import { useTranslation } from 'react-i18next';
 
 export const headers = routeHeaders;
 
@@ -110,13 +111,14 @@ interface AccountType {
 function Account({customer, heading, featuredDataPromise}: AccountType) {
   const orders = flattenConnection(customer.orders);
   const addresses = flattenConnection(customer.addresses);
+  const {t} = useTranslation();
 
   return (
     <>
       <PageHeader heading={heading}>
         <Form method="post" action={usePrefixPathWithLocale('/account/logout')}>
           <button type="submit" className="text-primary/50">
-            Sign out
+            {t('account.sign_out')}
           </button>
         </Form>
       </PageHeader>
@@ -150,10 +152,11 @@ type OrderCardsProps = {
 };
 
 function AccountOrderHistory({orders}: OrderCardsProps) {
+  const {t} = useTranslation();
   return (
     <div className="mt-6">
       <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12">
-        <h2 className="font-bold text-lead">Order History</h2>
+        <h2 className="font-bold text-lead">{t('account.order_history')}</h2>
         {orders?.length ? <Orders orders={orders} /> : <EmptyOrders />}
       </div>
     </div>
@@ -161,10 +164,11 @@ function AccountOrderHistory({orders}: OrderCardsProps) {
 }
 
 function EmptyOrders() {
+  const {t} = useTranslation();
   return (
     <div>
       <Text className="mb-1" size="fine" width="narrow" as="p">
-        You haven&apos;t placed any orders yet.
+        {t('account.no_orders_yet')}
       </Text>
       <div className="w-48">
         <Button
@@ -172,7 +176,7 @@ function EmptyOrders() {
           variant="secondary"
           to={usePrefixPathWithLocale('/')}
         >
-          Start Shopping
+          {t('account.start_shopping')}
         </Button>
       </div>
     </div>

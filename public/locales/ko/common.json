@@ -1,0 +1,61 @@
+{
+  "shop_exp" : {
+    "calculated_at" : "결제 시 계산됨",
+    "sold_out" : "매진",
+    "empty_cart_msg": "장바구니에 아무것도 추가하지 않았군요! 시작해볼까요?",
+    "order_summary" : "주문 요약",
+    "featured_products": "주요 제품",
+    "book_appt" : "약속 예약",
+    "back_in_stock" : "보충",
+    "shipping" : "배송비",
+    "shipping_country": "배송 국가",
+    "total": "총액"
+  },
+  "cart_actions" : {
+    "add_to_cart" : "카트에 넣어",
+    "checkout" : "구입",
+    "discount_code" : "할인 코드",
+    "discount_button" : "할인 적용",
+    "remove_item" : "항목 제거",
+    "shop_best_sellers" : "인기상품 쇼핑",
+    "new" : "새로운"
+  },
+  "account" : {
+    "account_form_statement" : "계정을 만들려면 아래 버튼을 클릭하고 양식을 작성하세요.",
+    "addresses" : "주소",
+    "appointments" : "설비",
+    "information" : "정보",
+    "login" : "로그인",
+    "orders" : "주문",
+    "password" : "비밀번호",
+    "support" : "고객 지원",
+    "sign_out": "로그 아웃",
+    "email_address" : "이메일 주소",
+    "order_history": "주문 내역",
+    "no_orders_yet": "아직 주문을 하지 않으셨습니다.",
+    "start_shopping": "쇼핑을 시작하세요"
+  },
+  "nav" : {
+    "account" : "계정",
+    "cart" : "카트",
+    "categories": "카테고리",
+    "collections": "컬렉션",
+    "search" : "찾기",
+    "order_summary": "주문 요약",
+    "wishlist" : "위시리스트"
+  },
+  "product" : {
+    "description": "설명",
+    "details": "세부",
+    "measurements" : "측정"
+  },
+  "wishlist": {
+    "create_an_account": "계정 만들기",
+    "popup_statement": "위시리스트를 사용하려면 로그인하거나 계정을 만드세요.",
+    "forgot_password": "비밀번호를 잊으셨나요?"
+  },
+  "site" : {
+    "404_home": "홈 페이지로 이동합니다.",
+    "continue_shopping" : "쇼핑을 계속."
+  }
+}

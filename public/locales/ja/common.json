@@ -1,0 +1,61 @@
+{
+  "shop_exp": {
+    "calculated_at": "チェックアウト時に計算されます",
+    "sold_out": "完売",
+    "empty_cart_msg": "カートにまだ何も追加されていませんね！始めましょう",
+    "order_summary": "注文の概要",
+    "featured_products": "注目商品",
+    "book_appt": "予約",
+    "back_in_stock": "再入荷",
+    "shipping": "配送料",
+    "shipping_country": "配送国",
+    "total": "合計"
+  },
+  "cart_actions": {
+    "add_to_cart": "カートに追加",
+    "checkout": "購入",
+    "discount_code": "割引コード",
+    "discount_button": "割引を適用",
+    "remove_item": "アイテムを削除",
+    "shop_best_sellers": "ベストセラーをショッピング",
+    "new": "新着"
+  },
+  "account": {
+    "account_form_statement": "アカウントを作成するには、以下のボタンをクリックし、フォームに記入してください。",
+    "addresses": "住所",
+    "appointments": "予約",
+    "information": "情報",
+    "login": "ログイン",
+    "orders": "注文",
+    "password": "パスワード",
+    "support": "サポート",
+    "sign_out": "ログアウト",
+    "email_address": "メールアドレス",
+    "order_history": "注文履歴",
+    "no_orders_yet": "まだ注文がありません。",
+    "start_shopping": "お買い物を始める"
+  },
+  "nav": {
+    "account": "アカウント",
+    "cart": "カート",
+    "categories": "カテゴリー",
+    "collections": "コレクション",
+    "search": "検索",
+    "order_summary": "注文の概要",
+    "wishlist": "ウィッシュリスト"
+  },
+  "product": {
+    "description": "説明",
+    "details": "詳細",
+    "measurements": "測定値"
+  },
+  "wishlist": {
+    "create_an_account": "アカウントを作成",
+    "popup_statement": "ウィッシュリストを使用するには、ログインまたはアカウントを作成してください。",
+    "forgot_password": "パスワードをお忘れですか？"
+  },
+  "site": {
+    "404_home": "ホームページへ移動します。",
+    "continue_shopping": "買い物を続ける"
+  }
+}
