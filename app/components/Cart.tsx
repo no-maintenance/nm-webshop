@@ -17,6 +17,8 @@ import type {
   CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
 
+import { useTranslation } from 'react-i18next';
+
 import {
   Button,
   Heading,
@@ -28,6 +30,7 @@ import {
 } from '~/components';
 
 import { getInputStyleClasses } from "~/components/Form";
+
 
 type Layouts = 'page' | 'drawer';
 
@@ -235,10 +238,12 @@ function CartSummary({
     drawer: ' grid gap-6 pt-6 pb-6 px-4 md:px-6',
     page: ' sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-contrast rounded w-full',
   };
+  const {t} = useTranslation();
+
   return (
     <section aria-labelledby="summary-heading" className={summary[layout]}>
       <h2 id="summary-heading" className="sr-only">
-        Order summary
+        {t('shop_exp.order_summary')}
       </h2>
       <dl className={`grid ${layout === 'drawer' ? 'gap-0' : 'gap-4'}`}>
         <div className="flex items-center  justify-between font-medium">
@@ -255,19 +260,19 @@ function CartSummary({
         </div>
         <div className="flex items-center justify-between font-medium">
           <Text as="dt" className={''}>
-            Shipping
+            {t('shop_exp.shipping')}
           </Text>
           <Text
             as="dd"
             className={'text-primary/30 whitespace-nowrap'}
             data-test="subtotal"
           >
-            Calculated at checkout
+            {t('shop_exp.calculated_at')}
           </Text>
         </div>
         <div className="flex items-center justify-between font-medium">
           <Text as="dt" className={' whitespace-nowrap flex-1'}>
-            Shipping country
+            {t('shop_exp.shipping_country')}
           </Text>
           <Text as="dd" className={'underline w-full ml-6 flex-initial'}>
             <CountrySelector />
@@ -280,7 +285,7 @@ function CartSummary({
               className={'w-full tracking-wider uppercase whitespace-nowrap'}
               size={'copy'}
             >
-              Total
+              {t('shop_exp.total')}
             </Text>
             <Text as="dt" className={'w-full text-primary/60'}>
               VAT Included
@@ -385,6 +390,7 @@ function CartLineItem({line}: {line: CartLine}) {
 }
 
 function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
+  const {t} = useTranslation();
   return (
     <CartForm
       route="/cart"
@@ -397,7 +403,7 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
         className="flex items-center justify-center w-10 h-10 border rounded"
         type="submit"
       >
-        <span className="sr-only">Remove</span>
+        <span className="sr-only">{t('cart_actions.remove_item')}</span>
         <IconRemove aria-hidden="true" />
       </button>
       <OptimisticInput id={lineId} data={{action: 'remove'}} />
@@ -516,6 +522,8 @@ export function CartEmpty({
 }) {
   const scrollRef = useRef(null);
   const {y} = useScroll(scrollRef);
+  const {t} = useTranslation();
+
 
   const container = {
     drawer: clsx([
@@ -532,17 +540,16 @@ export function CartEmpty({
     <div ref={scrollRef} className={container[layout]} hidden={hidden}>
       <section className="grid gap-6">
         <Text format>
-          Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-          started!
+          {t('shop_exp.empty_cart_msg')}
         </Text>
         <div>
-          <Button onClick={onClose}>Continue shopping</Button>
+          <Button onClick={onClose}>{t('site.continue_shopping')}</Button>
         </div>
       </section>
       <section className="grid gap-8 pt-16">
         <FeaturedProducts
           count={4}
-          heading="Shop Best Sellers"
+          heading={t('cart_actions.shop_best_sellers')}
           layout={layout}
           onClose={onClose}
           sortKey="BEST_SELLING"

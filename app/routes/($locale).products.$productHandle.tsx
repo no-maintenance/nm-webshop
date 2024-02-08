@@ -544,6 +544,7 @@ function getMetafieldDefsV2(mf: Metafield[], descriptionHTML: string) {
   for (let i = 0; i < mf.length; i++) {
     const pf = {name: '', component: <></>, id: ''};
     const f = mf[i];
+
     if (!f) continue;
     if (f.key === 'details') {
       pf.name = 'Details';

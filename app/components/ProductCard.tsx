@@ -15,6 +15,8 @@ import {Text, Link, AddToCartButton, Button, Skeleton} from '~/components';
 import {isDiscounted, isNewArrival} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
 
+import { useTranslation } from 'react-i18next';
+
 export function ProductCard({
   product,
   label,
@@ -31,7 +33,7 @@ export function ProductCard({
   quickAdd?: boolean;
 }) {
   let cardLabel;
-
+  const {t} = useTranslation();
   const cardProduct: Product = product?.variants
     ? (product as Product)
     : getProductPlaceholder();
@@ -46,7 +48,7 @@ export function ProductCard({
   } else if (isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2)) {
     cardLabel = 'Sale';
   } else if (isNewArrival(product.publishedAt)) {
-    cardLabel = 'New';
+    cardLabel = t('cart_actions.new');
   }
 
   const productAnalytics: ShopifyAnalyticsProduct = {
@@ -130,14 +132,14 @@ export function ProductCard({
           }}
         >
           <Text as="span" className="flex items-center justify-center gap-2">
-            Add to Cart
+            {t('cart_actions.add_to_cart')}
           </Text>
         </AddToCartButton>
       )}
       {quickAdd && !firstVariant.availableForSale && (
         <Button variant="secondary" className="mt-2" disabled>
           <Text as="span" className="flex items-center justify-center gap-2">
-            Sold out
+            {t('shop_exp.sold_out')}
           </Text>
         </Button>
       )}

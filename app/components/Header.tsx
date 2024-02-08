@@ -1,15 +1,9 @@
 import {Await, Form, useLocation, useParams} from '@remix-run/react';
-import {
-  Dispatch,
-  ReactNode,
-  useEffect,
-  useRef,
-  Suspense,
-  useMemo,
-  useState,
-} from 'react';
+import type {Dispatch, ReactNode} from 'react';
+import {useEffect, useRef, Suspense, useMemo, useState} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import {Menu, Search, ShoppingCart, User} from 'react-feather';
+import {useTranslation} from 'react-i18next';
 
 import type {ChildEnhancedMenuItem, EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
@@ -307,6 +301,7 @@ function MegaMenu({
     </svg>
   );
   const [openSubmenu, setOpenSubmenu] = useState<number>(0);
+  const {t} = useTranslation();
   return (
     <div className={'gutter pb-12 mega-menu relative'}>
       <Button
@@ -319,7 +314,7 @@ function MegaMenu({
       <div className={'uppercase grid grid-cols-2'}>
         <div>
           <Heading as={'h3'} size={'fine'} className={'categories pb-4'}>
-            Categories
+            {t('nav.categories')}
           </Heading>
           {(items || []).map((item, idx) => (
             <div
@@ -350,7 +345,7 @@ function MegaMenu({
         </div>
         <div className={'pl-9'}>
           <Heading as={'h3'} size={'fine'} className={'pb-10'}>
-            Collections
+            {t('nav.collections')}
           </Heading>
           {(items || []).map(
             (item: ChildEnhancedMenuItem, idx) =>
@@ -409,6 +404,8 @@ function Dropdown({
 
 function DesktopSearch({isOpen}: {isOpen: boolean}) {
   const params = useParams();
+  const {t} = useTranslation();
+
   return (
     <Form
       method="get"
@@ -419,7 +416,7 @@ function DesktopSearch({isOpen}: {isOpen: boolean}) {
         autoComplete={'off'}
         type="search"
         variant="search"
-        placeholder="Search"
+        placeholder={t('nav.search')}
         name="q"
         className={'text-display w-full text-left border-b-0 gutter '}
         isFocused={isOpen}
@@ -436,11 +433,13 @@ function DesktopSearch({isOpen}: {isOpen: boolean}) {
 
 function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   const rootData = useRootLoaderData();
+  const {t} = useTranslation();
+
   return (
     <Drawer
       open={isOpen}
       onClose={onClose}
-      heading="Order Summary"
+      heading={t('nav.order_summary')}
       openFrom="right"
     >
       <div className="grid">
@@ -457,12 +456,12 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
 function AccountLink({className}: {className?: string}) {
   const rootData = useRootLoaderData();
   const isLoggedIn = rootData?.isLoggedIn;
-
+  const {t} = useTranslation();
   return (
     <Link to="/account" className={className}>
       <Suspense fallback={'Account'}>
         <Await resolve={isLoggedIn} errorElement={'Log In'}>
-          {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Log In')}
+          {(isLoggedIn) => (isLoggedIn ? t('nav.account') : t('account.login'))}
         </Await>
       </Suspense>
     </Link>
@@ -478,6 +477,8 @@ function CartCount({
 }) {
   const rootData = useRootLoaderData();
   const params = useParams();
+  const {t} = useTranslation();
+
   if (!isIcon) {
     return (
       <Suspense
@@ -488,7 +489,7 @@ function CartCount({
             size={'inherit'}
             className={'cursor-pointer font-normal'}
           >
-            Cart
+            {t('nav.cart')}
           </Text>
         }
       >
