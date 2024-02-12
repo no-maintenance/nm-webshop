@@ -5,6 +5,8 @@ import {useIsHomePath} from '~/lib/utils';
 import type {EnhancedMenu, ChildEnhancedMenuItem} from '~/lib/utils';
 import {Heading, Section} from '~/components/Text';
 import {CountrySelector} from '~/components/';
+import {KlaviyoNewsletter} from '~/components/KlavivyoForm';
+import { LanguageSelector } from "~/components/LanguageSelector";
 
 export function Footer({menu}: {menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
@@ -38,7 +40,7 @@ function FooterNewsletter() {
       >
         Newsletter
       </Heading>
-      <div></div>
+      <KlaviyoNewsletter />
     </>
   );
 }
@@ -90,6 +92,7 @@ function FooterMenu({menu}: {menu?: EnhancedMenu}) {
       <div
         className={'row-span-1 sm:row-span-2 w-full md:w-fit hidden md:block'}
       >
+        <LanguageSelector />
         <CountrySelector heading={'Shipping to'} />
       </div>
     </nav>

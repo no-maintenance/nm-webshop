@@ -1,20 +1,22 @@
 import {useFetcher, useLocation} from '@remix-run/react';
-import {useCallback, useEffect, useRef} from 'react';
-import {useInView} from 'react-intersection-observer';
+import {useCallback, useRef} from 'react';
 import clsx from 'clsx';
 import type {
   CartBuyerIdentityInput,
+  CountryCode,
   LanguageCode,
 } from '@shopify/hydrogen/storefront-api-types';
 import {CartForm} from '@shopify/hydrogen';
 
 import {Button, Heading, IconCheck} from '~/components';
-import type {Locale, Localizations} from '~/lib/type';
+import type {Locale} from '~/lib/type';
 import {DEFAULT_LOCALE} from '~/lib/utils';
 import {useRootLoaderData} from '~/root';
 import {useClickOutside} from '~/hooks/useClickOutside';
+import type {SupportedLanguages} from '~/lib/const';
+import {langMap} from '~/lib/const';
 
-export function CountrySelector({heading}: {heading?: string}) {
+export function LanguageSelector({heading}: {heading?: string}) {
   const fetcher = useFetcher();
   const closeRef = useRef<HTMLDetailsElement>(null);
   const rootData = useRootLoaderData();
@@ -24,27 +26,15 @@ export function CountrySelector({heading}: {heading?: string}) {
     selectedLocale.pathPrefix,
     '',
   )}${search}`;
-  const countries = (fetcher.data ?? {}) as Localizations;
-  const defaultLocale = countries?.['default'];
-  const defaultLocalePrefix = defaultLocale
-    ? `${defaultLocale?.language}-${defaultLocale?.country}`
+
+  const defaultLocalePrefix = DEFAULT_LOCALE
+    ? `${DEFAULT_LOCALE?.language}-${DEFAULT_LOCALE?.country}`
     : '';
 
-  const {ref, inView} = useInView({
-    threshold: 0,
-    triggerOnce: true,
-  });
-  const menuRef = useRef(null);
-  const observerRef = useRef(null);
-  useEffect(() => {
-    ref(observerRef.current);
-  }, [ref, observerRef]);
+  const selectedLang =
+    langMap[selectedLocale.language as SupportedLanguages] ?? 'English';
 
-  // Get available countries list when in view
-  useEffect(() => {
-    if (!inView || fetcher.data || fetcher.state === 'loading') return;
-    fetcher.load('/api/countries');
-  }, [inView, fetcher]);
+  const menuRef = useRef(null);
 
   const closeDropdown = useCallback(() => {
     closeRef.current?.removeAttribute('open');
@@ -56,7 +46,7 @@ export function CountrySelector({heading}: {heading?: string}) {
     'absolute bg-contrast z-10 right-0 ',
   ]);
   return (
-    <section ref={observerRef} className="w-full md:max-w-xs md:ml-auto ">
+    <section className="w-full md:max-w-xs md:ml-auto ">
       {heading ? (
         <Heading size="copy" className="cursor-default font-normal" as="h3">
           {heading}
@@ -74,30 +64,34 @@ export function CountrySelector({heading}: {heading?: string}) {
               !heading && 'justify-end'
             }`}
           >
-            {selectedLocale.label}
+            {selectedLang}
           </summary>
           <div ref={menuRef} className={popupStyles}>
             <div className="w-full hiddenScroll border border-black max-h-[200px] border-solid overflow-auto  dark:border-white text-copy">
-              {countries &&
-                Object.entries(countries).map(([code, countryLocale]) => {
-                  const isSelected =
-                    countryLocale.country === selectedLocale.country;
-                  const countryUrlPath = getCountryUrlPath({
-                    language: selectedLocale.language,
-                    countryLocale,
-                    defaultLocalePrefix,
-                    pathWithoutLocale,
-                  });
-                  return (
-                    <Country
-                      key={countryUrlPath}
+              {Object.keys(langMap).map((c) => {
+                const code = c as SupportedLanguages;
+                const label = langMap[code];
+                const isSelected = selectedLocale.language === code;
+                const url = getLangUrlPath({
+                  language: code,
+                  selectedCountry: selectedLocale.country,
+                  defaultLocalePrefix,
+                  pathWithoutLocale,
+                });
+                console.log('url', url)
+                return (
+                  label && (
+                    <Language
+                      key={label}
+                      label={label}
+                      url={url}
+                      countryLocale={selectedLocale}
                       closeDropdown={closeDropdown}
-                      countryUrlPath={countryUrlPath}
                       isSelected={isSelected}
-                      countryLocale={countryLocale}
                     />
-                  );
-                })}
+                  )
+                );
+              })}
             </div>
           </div>
         </details>
@@ -106,21 +100,23 @@ export function CountrySelector({heading}: {heading?: string}) {
   );
 }
 
-function Country({
+function Language({
   closeDropdown,
   countryLocale,
-  countryUrlPath,
+  label,
+  url,
   isSelected,
 }: {
+  label: string;
+  url: string;
   closeDropdown: () => void;
   countryLocale: Locale;
-  countryUrlPath: string;
   isSelected: boolean;
 }) {
   return (
     <ChangeLocaleForm
       key={countryLocale.country}
-      redirectTo={countryUrlPath}
+      redirectTo={url}
       buyerIdentity={{
         countryCode: countryLocale.country,
       }}
@@ -134,7 +130,7 @@ function Country({
         variant="primary"
         onClick={closeDropdown}
       >
-        {countryLocale.label}
+        {label}
         {isSelected ? (
           <span className="ml-2">
             <IconCheck />
@@ -170,20 +166,19 @@ export function ChangeLocaleForm({
   );
 }
 
-export function getCountryUrlPath({
-  countryLocale,
+export function getLangUrlPath({
+  selectedCountry,
   defaultLocalePrefix,
   pathWithoutLocale,
   language,
 }: {
-  countryLocale: Locale;
+  selectedCountry: CountryCode;
   language: LanguageCode;
   pathWithoutLocale: string;
   defaultLocalePrefix: string;
 }) {
   let countryPrefixPath = '';
-  const countryLocalePrefix = `${language}-${countryLocale.country}`;
-
+  const countryLocalePrefix = `${language}-${selectedCountry}`;
   if (countryLocalePrefix !== defaultLocalePrefix) {
     countryPrefixPath = `/${countryLocalePrefix.toLowerCase()}`;
   }

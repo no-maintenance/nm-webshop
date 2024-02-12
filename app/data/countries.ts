@@ -7,223 +7,223 @@ export const countries: Localizations = {
     country: 'US',
     currency: 'USD',
   },
-  '/en-ad': {
+  AD: {
     label: 'Andorra (EUR €)',
     language: 'EN',
     country: 'AD',
     currency: 'EUR',
   },
-  '/en-at': {
+  AT: {
     label: 'Austria (EUR €)',
     language: 'EN',
     country: 'AT',
     currency: 'EUR',
   },
-  '/en-au': {
+  AU: {
     label: 'Australia (AUD $)',
     language: 'EN',
     country: 'AU',
     currency: 'AUD',
   },
-  '/en-be': {
+  BE: {
     label: 'Belgium (EUR €)',
     language: 'EN',
     country: 'BE',
     currency: 'EUR',
   },
-  '/en-ca': {
+  CA: {
     label: 'Canada (CAD $)',
     language: 'EN',
     country: 'CA',
     currency: 'CAD',
   },
-  '/en-cn': {
+  CN: {
     label: 'China (CNY ¥)',
     language: 'EN',
     country: 'CN',
     currency: 'CNY',
   },
-  '/en-cy': {
+  CY: {
     label: 'Cyprus (EUR €)',
     language: 'EN',
     country: 'CY',
     currency: 'EUR',
   },
-  '/en-de': {
+  DE: {
     label: 'Germany (EUR €)',
-    language: 'EN',
+    language: 'DE',
     country: 'DE',
     currency: 'EUR',
   },
-  '/en-ee': {
+  EE: {
     label: 'Estonia (EUR €)',
     language: 'EN',
     country: 'EE',
     currency: 'EUR',
   },
-  '/en-es': {
+  ES: {
     label: 'Spain (EUR €)',
     language: 'EN',
     country: 'ES',
     currency: 'EUR',
   },
-  '/en-fi': {
+  FI: {
     label: 'Finland (EUR €)',
     language: 'EN',
     country: 'FI',
     currency: 'EUR',
   },
-  '/en-fr': {
+  FR: {
     label: 'France (EUR €)',
-    language: 'EN',
+    language: 'FR',
     country: 'FR',
     currency: 'EUR',
   },
-  '/en-gb': {
+  GB: {
     label: 'United Kingdom (GBP £)',
     language: 'EN',
     country: 'GB',
     currency: 'GBP',
   },
-  '/en-gr': {
+  GR: {
     label: 'Greece (EUR €)',
     language: 'EN',
     country: 'GR',
     currency: 'EUR',
   },
-  '/en-id': {
+  ID: {
     label: 'Indonesia (IDR Rp)',
     language: 'EN',
     country: 'ID',
     currency: 'IDR',
   },
-  '/en-ie': {
+  IE: {
     label: 'Ireland (EUR €)',
     language: 'EN',
     country: 'IE',
     currency: 'EUR',
   },
-  '/en-in': {
+  IN: {
     label: 'India (INR ₹)',
     language: 'EN',
     country: 'IN',
     currency: 'INR',
   },
-  '/en-it': {
+  IT: {
     label: 'Italy (EUR €)',
-    language: 'EN',
+    language: 'IT',
     country: 'IT',
     currency: 'EUR',
   },
-  '/en-jp': {
+  JP: {
     label: 'Japan (JPY ¥)',
-    language: 'EN',
+    language: 'JA',
     country: 'JP',
     currency: 'JPY',
   },
-  '/en-kr': {
+  KR: {
     label: 'South Korea (KRW ₩)',
-    language: 'EN',
+    language: 'KO',
     country: 'KR',
     currency: 'KRW',
   },
-  '/en-lt': {
+  LT: {
     label: 'Lithuania (EUR €)',
     language: 'EN',
     country: 'LT',
     currency: 'EUR',
   },
-  '/en-lu': {
+  LU: {
     label: 'Luxembourg (EUR €)',
     language: 'EN',
     country: 'LU',
     currency: 'EUR',
   },
-  '/en-lv': {
+  LV: {
     label: 'Latvia (EUR €)',
     language: 'EN',
     country: 'LV',
     currency: 'EUR',
   },
-  '/en-mc': {
+  MC: {
     label: 'Monaco (EUR €)',
     language: 'EN',
     country: 'MC',
     currency: 'EUR',
   },
-  '/en-me': {
+  ME: {
     label: 'Montenegro (EUR €)',
     language: 'EN',
     country: 'ME',
     currency: 'EUR',
   },
-  '/en-mt': {
+  MT: {
     label: 'Malta (EUR €)',
     language: 'EN',
     country: 'MT',
     currency: 'EUR',
   },
-  '/en-nl': {
+  NL: {
     label: 'Netherlands (EUR €)',
     language: 'EN',
     country: 'NL',
     currency: 'EUR',
   },
-  '/en-nz': {
+  NZ: {
     label: 'New Zealand (NZD $)',
     language: 'EN',
     country: 'NZ',
     currency: 'NZD',
   },
-  '/en-pt': {
+  PT: {
     label: 'Portugal (EUR €)',
     language: 'EN',
     country: 'PT',
     currency: 'EUR',
   },
-  '/en-sg': {
+  SG: {
     label: 'Singapore (SGD $)',
     language: 'EN',
     country: 'SG',
     currency: 'SGD',
   },
-  '/en-si': {
+  SI: {
     label: 'Slovenia (EUR €)',
     language: 'EN',
     country: 'SI',
     currency: 'EUR',
   },
-  '/en-sk': {
+  SK: {
     label: 'Slovakia (EUR €)',
     language: 'EN',
     country: 'SK',
     currency: 'EUR',
   },
-  '/en-sm': {
+  SM: {
     label: 'San Marino (EUR €)',
     language: 'EN',
     country: 'SM',
     currency: 'EUR',
   },
-  '/en-th': {
+  TH: {
     label: 'Thailand (THB ฿)',
     language: 'EN',
     country: 'TH',
     currency: 'THB',
   },
-  '/en-va': {
+  VA: {
     label: 'Vatican City (EUR €)',
-    language: 'EN',
+    language: 'IT',
     country: 'VA',
     currency: 'EUR',
   },
-  '/en-vn': {
+  VN: {
     label: 'Vietnam (VND ₫)',
     language: 'EN',
     country: 'VN',
     currency: 'VND',
   },
-  '/en-xk': {
+  XK: {
     label: 'Kosovo (EUR €)',
     language: 'EN',
     country: 'XK',
