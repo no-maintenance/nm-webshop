@@ -16,6 +16,7 @@ import {isDiscounted, isNewArrival} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
 
 import { useTranslation } from 'react-i18next';
+import { useTranslation } from '~/i18n';
 
 export function ProductCard({
   product,

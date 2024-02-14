@@ -1,147 +1,126 @@
-import {useFetcher, useLocation} from '@remix-run/react';
-import {useCallback, useEffect, useRef} from 'react';
-import {useInView} from 'react-intersection-observer';
-import clsx from 'clsx';
+import {CartForm} from '@shopify/hydrogen';
+import {useEffect} from 'react';
+import {useFetcher} from '@remix-run/react';
+import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import type {
   CartBuyerIdentityInput,
   LanguageCode,
 } from '@shopify/hydrogen/storefront-api-types';
-import {CartForm} from '@shopify/hydrogen';
 
-import {Button, Heading, IconCheck} from '~/components';
-import type {Locale, Localizations} from '~/lib/type';
-import {DEFAULT_LOCALE} from '~/lib/utils';
+import type {I18nSelector} from '~/components/LocaleSelector';
+import {type I18n, localizePath, navigateToLocale} from '~/i18n';
+import {subfolderLocaleParser} from '~/lib/utils';
 import {useRootLoaderData} from '~/root';
-import {useClickOutside} from '~/hooks/useClickOutside';
+import type {Locale} from '~/lib/type';
 
-export function CountrySelector({heading}: {heading?: string}) {
+export function CountrySelector({
+  i18n,
+  localizations,
+  selectedLocale,
+}: I18nSelector) {
   const fetcher = useFetcher();
-  const closeRef = useRef<HTMLDetailsElement>(null);
   const rootData = useRootLoaderData();
-  const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
-  const {pathname, search} = useLocation();
-  const pathWithoutLocale = `${pathname.replace(
-    selectedLocale.pathPrefix,
-    '',
-  )}${search}`;
-  const countries = (fetcher.data ?? {}) as Localizations;
-  const defaultLocale = countries?.['default'];
-  const defaultLocalePrefix = defaultLocale
-    ? `${defaultLocale?.language}-${defaultLocale?.country}`
-    : '';
+  const buyerIdentityCountry = fetcher.data?.cart?.buyerIdentity?.countryCode;
+  /**
+   * Update the cart's buyer identity with the new country code.
+   */
+  function updateCartBuyerIdentity() {
+    const form = new FormData();
+    const variables = {
+      action: CartForm.ACTIONS.BuyerIdentityUpdate,
+      inputs: {
+        buyerIdentity: {
+          countryCode: selectedLocale.current.country.code.toUpperCase(),
+        },
+        redirectTo: localizePath('/cart', selectedLocale.current),
+      },
+    };
+    form.append('cartFormInput', JSON.stringify(variables));
 
-  const {ref, inView} = useInView({
-    threshold: 0,
-    triggerOnce: true,
-  });
-  const menuRef = useRef(null);
-  const observerRef = useRef(null);
+    // update the country code in the cart's buyer identity
+    fetcher.submit(form, {
+      method: 'POST',
+      action: localizePath('/cart', selectedLocale.current),
+    });
+  }
+
+  // Navigate to the selected locale once the cart's buyer identity has been updated
   useEffect(() => {
-    ref(observerRef.current);
-  }, [ref, observerRef]);
+    const updatedBuyerIdentity =
+      buyerIdentityCountry ===
+      selectedLocale.current.country.code.toUpperCase();
 
-  // Get available countries list when in view
-  useEffect(() => {
-    if (!inView || fetcher.data || fetcher.state === 'loading') return;
-    fetcher.load('/api/countries');
-  }, [inView, fetcher]);
+    if (!updatedBuyerIdentity) {
+      return;
+    }
 
-  const closeDropdown = useCallback(() => {
-    closeRef.current?.removeAttribute('open');
-  }, []);
-  useClickOutside(menuRef, closeDropdown);
+    navigateToLocale(selectedLocale.current);
+  }, [fetcher, selectedLocale, buyerIdentityCountry]);
 
-  const popupStyles = clsx([
-    heading && 'bottom-[46px] w-[180px] h-[200px]',
-    'absolute bg-contrast z-10 right-0 ',
-  ]);
   return (
-    <section ref={observerRef} className="w-full md:max-w-xs md:ml-auto ">
-      {heading ? (
-        <Heading size="copy" className="cursor-default font-normal" as="h3">
-          {heading}
-        </Heading>
-      ) : (
-        ''
-      )}
-      <div className="relative">
-        <details
-          className=" w-full dark:border-white open:round-b-none "
-          ref={closeRef}
-        >
-          <summary
-            className={`flex items-center  w-full cursor-pointer text-clip ${
-              !heading && 'justify-end'
-            }`}
-          >
-            {selectedLocale.label}
-          </summary>
-          <div ref={menuRef} className={popupStyles}>
-            <div className="w-full hiddenScroll border border-black max-h-[200px] border-solid overflow-auto  dark:border-white text-copy">
-              {countries &&
-                Object.entries(countries).map(([code, countryLocale]) => {
-                  const isSelected =
-                    countryLocale.country === selectedLocale.country;
-                  const countryUrlPath = getCountryUrlPath({
-                    language: selectedLocale.language,
-                    countryLocale,
-                    defaultLocalePrefix,
-                    pathWithoutLocale,
-                  });
-                  return (
-                    <Country
-                      key={countryUrlPath}
-                      closeDropdown={closeDropdown}
-                      countryUrlPath={countryUrlPath}
-                      isSelected={isSelected}
-                      countryLocale={countryLocale}
-                    />
-                  );
-                })}
-            </div>
-          </div>
-        </details>
-      </div>
-    </section>
-  );
-}
+    <div style={{marginLeft: '1rem', display: 'flex', gap: '.5rem'}}>
+      <select
+        name="localizations"
+        onChange={(event) => {
+          try {
+            const selected = JSON.parse(event.target.value) as I18n;
 
-function Country({
-  closeDropdown,
-  countryLocale,
-  countryUrlPath,
-  isSelected,
-}: {
-  closeDropdown: () => void;
-  countryLocale: Locale;
-  countryUrlPath: string;
-  isSelected: boolean;
-}) {
-  return (
-    <ChangeLocaleForm
-      key={countryLocale.country}
-      redirectTo={countryUrlPath}
-      buyerIdentity={{
-        countryCode: countryLocale.country,
-      }}
-    >
-      <Button
-        className={clsx([
-          'text-primary bg-contrast w-full p-2 transition flex justify-start',
-          'items-center text-left cursor-pointer py-2 px-4',
-        ])}
-        type="submit"
-        variant="primary"
-        onClick={closeDropdown}
+            const prefix = subfolderLocaleParser({
+              country: selected.country.code,
+              language: selected.language.code,
+            });
+
+            selectedLocale.current = {...selected, prefix};
+
+            // already on the selected locale
+            if (selectedLocale.current.country === i18n.country) {
+              return;
+            }
+
+            updateCartBuyerIdentity();
+          } catch (error) {
+            console.error(error);
+          }
+        }}
+        style={{minWidth: 160}}
+        value={JSON.stringify({
+          isDefault: Boolean(i18n.isDefault),
+          language: {
+            code: i18n.language.code,
+          },
+          country: {
+            code: i18n.country.code,
+          },
+        })}
       >
-        {countryLocale.label}
-        {isSelected ? (
-          <span className="ml-2">
-            <IconCheck />
-          </span>
-        ) : null}
-      </Button>
-    </ChangeLocaleForm>
+        {localizations &&
+          localizations.map((country) => {
+            const languageCode =
+              country.languages.find((language) => {
+                return language.code === i18n.language.code;
+              })?.code ?? country.languages[0].code;
+
+            return (
+              <option
+                key={country.code}
+                value={JSON.stringify({
+                  isDefault: Boolean(country?.isDefault),
+                  language: {
+                    code: languageCode,
+                  },
+                  country: {
+                    code: country.code,
+                  },
+                })}
+              >
+                {getUnicodeFlagIcon(country.code)}
+                &nbsp;
+                {country.name}
+              </option>
+            );
+          })}
+      </select>
+    </div>
   );
 }
 

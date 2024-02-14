@@ -17,7 +17,7 @@ import type {
   CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '~/i18n';
 
 import {
   Button,
@@ -275,7 +275,7 @@ function CartSummary({
             {t('shop_exp.shipping_country')}
           </Text>
           <Text as="dd" className={'underline w-full ml-6 flex-initial'}>
-            <CountrySelector />
+            {/*<CountrySelector />*/}
           </Text>
         </div>
         <div className="flex items-center justify-between font-medium">

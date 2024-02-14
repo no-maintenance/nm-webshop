@@ -1,9 +1,18 @@
 import {Await, Form, useLocation, useParams} from '@remix-run/react';
-import type {Dispatch, ReactNode} from 'react';
-import {useEffect, useRef, Suspense, useMemo, useState} from 'react';
+import {
+  Dispatch,
+  ReactNode,
+  useEffect,
+  useRef,
+  Suspense,
+  useMemo,
+  useState,
+  MutableRefObject,
+  RefObject,
+} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import {Menu, Search, ShoppingCart, User} from 'react-feather';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from '~/i18n';
 
 import type {ChildEnhancedMenuItem, EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';

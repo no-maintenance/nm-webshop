@@ -85,7 +85,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const isLoggedInPromise = context.customerAccount.isLoggedIn();
 
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
-
   return defer(
     {
       isLoggedIn: isLoggedInPromise,
@@ -96,6 +95,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         shopifySalesChannel: ShopifySalesChannel.hydrogen,
         shopId: layout.shop.id,
       },
+      i18n: context.i18n,
       isDarkMode: false,
       seo,
     },
@@ -109,14 +109,13 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
 export default function App() {
   const nonce = useNonce();
-  const data = useLoaderData<typeof loader>();
-  const locale = data.selectedLocale ?? DEFAULT_LOCALE;
+  const {i18n, ...data} = useLoaderData<typeof loader>();
   const hasUserConsent = true;
 
   useAnalytics(hasUserConsent);
 
   return (
-    <html lang={locale.language}>
+    <html lang={i18n.language.code}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -131,7 +130,7 @@ export default function App() {
           strict
         >
           <Layout
-            key={`${locale.language}-${locale.country}`}
+            key={`${i18n.language.code}-${i18n.country.code}`}
             layout={data.layout}
           >
             <Outlet />
@@ -148,10 +147,8 @@ export default function App() {
 export function ErrorBoundary({error}: {error: Error}) {
   const nonce = useNonce();
   const routeError = useRouteError();
-  const rootData = useRootLoaderData();
-  const locale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
+  const {i18n, ...rootData} = useRootLoaderData();
   const isRouteError = isRouteErrorResponse(routeError);
-
   let title = 'Error';
   let pageType = 'page';
 
@@ -161,7 +158,7 @@ export function ErrorBoundary({error}: {error: Error}) {
   }
 
   return (
-    <html lang={locale.language}>
+    <html lang={i18n.language.code}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -172,7 +169,7 @@ export function ErrorBoundary({error}: {error: Error}) {
       <body>
         <Layout
           layout={rootData?.layout}
-          key={`${locale.language}-${locale.country}`}
+          key={`${i18n.language.code}-${i18n.country.code}`}
         >
           {isRouteError ? (
             <>

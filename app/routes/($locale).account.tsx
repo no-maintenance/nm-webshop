@@ -34,7 +34,7 @@ import {
   getFeaturedData,
   type FeaturedData,
 } from './($locale).featured-products';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '~/i18n';
 
 export const headers = routeHeaders;
 

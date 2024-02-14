@@ -1,5 +1,9 @@
 import {useLocation} from '@remix-run/react';
-import type {MoneyV2} from '@shopify/hydrogen/storefront-api-types';
+import type {
+  CountryCode,
+  LanguageCode,
+  MoneyV2,
+} from '@shopify/hydrogen/storefront-api-types';
 import type {FulfillmentStatus} from '@shopify/hydrogen/customer-account-api-types';
 import typographicBase from 'typographic-base';
 
@@ -10,8 +14,10 @@ import type {
 } from 'storefrontapi.generated';
 import {useRootLoaderData} from '~/root';
 import {countries} from '~/data/countries';
+import {SupportedLanguages} from '~/lib/const';
 
 import type {I18nLocale} from './type';
+import { createSubfolderLocaleParser } from "~/i18n";
 
 type EnhancedMenuItemProps = {
   to: string;
@@ -270,18 +276,31 @@ export function getLocaleFromRequest(request: Request): I18nLocale {
   const url = new URL(request.url);
   const firstPathPart =
     '/' + url.pathname.substring(1).split('/')[0].toLowerCase();
+  const [lang, c] = firstPathPart.substring(1).split('-');
 
-  return countries[firstPathPart]
-    ? {
-        ...countries[firstPathPart],
-        pathPrefix: firstPathPart,
-      }
-    : {
-        ...countries['default'],
-        pathPrefix: '',
-      };
+  const country = countries[c?.toUpperCase() as CountryCode];
+  const isValidLanguageCode = Object.values(SupportedLanguages).includes(
+    lang.toUpperCase() as LanguageCode,
+  );
+
+  if (country && isValidLanguageCode) {
+    return {
+      ...country,
+      language: lang.toUpperCase() as LanguageCode, // Overwrite language if both codes are valid
+      pathPrefix: firstPathPart,
+    };
+  } else if (country) {
+    return {
+      ...country,
+      pathPrefix: firstPathPart, // Use country's default language if language code is invalid
+    };
+  } else {
+    return {
+      ...countries['default'],
+      pathPrefix: '', // Use default if country code is invalid
+    };
+  }
 }
-
 export function usePrefixPathWithLocale(path: string) {
   const rootData = useRootLoaderData();
   const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
@@ -330,3 +349,12 @@ export const getLegacyId = (gid: string) => {
   const id = gid.split('/').pop();
   return id ?? '';
 };
+
+// file: /utils.ts
+
+
+// Configure the i18n locale format. e.g this will match /fr-CA/ or /en-CA
+export const subfolderLocaleParser = createSubfolderLocaleParser({
+  parser: ({COUNTRY, language, delimiter}) =>
+    `/${language}${delimiter['-']}${COUNTRY}`,
+});

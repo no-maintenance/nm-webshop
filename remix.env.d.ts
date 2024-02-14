@@ -2,9 +2,11 @@
 /// <reference types="@shopify/remix-oxygen" />
 /// <reference types="@shopify/oxygen-workers-types" />
 
-import type {WithCache, HydrogenCart} from '@shopify/hydrogen';
+import type {HydrogenCart} from '@shopify/hydrogen';
 import type {Storefront, CustomerClient} from '~/lib/type';
 import type {AppSession} from '~/lib/session.server';
+import { createContentfulClient } from "~/lib/createContentfulClient.server";
+import { I18n } from "~/i18n";
 
 declare global {
   /**
@@ -16,7 +18,13 @@ declare global {
    * Declare expected Env parameter in fetch handler.
    */
   interface Env {
-    KLAVIYO_PRIVATE_KEY: any;
+    CONTENTFUL_ENVIRONMENT: string;
+    CONTENTFUL_PREV_TOKEN: string;
+    CONTENTFUL_PROD_TOKEN: string;
+    CONTENTFUL_ENV: 'production' | 'preview';
+    CONTENTFUL_TOKEN: string;
+    CONTENTFUL_SPACE_ID: string;
+    KLAVIYO_PRIVATE_KEY: string;
     KLAVIYO_COMPANY_ID: string;
     KLAVIYO_NEWSLETTER_ID: string;
     SESSION_SECRET: string;
@@ -40,6 +48,9 @@ declare module '@shopify/remix-oxygen' {
     customerAccount: CustomerClient;
     cart: HydrogenCart;
     env: Env;
+    i18n: I18n;
+    contentful: ReturnType<typeof createContentfulClient>;
+
   }
 }
 
