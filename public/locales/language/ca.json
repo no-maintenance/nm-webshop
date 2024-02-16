@@ -4,16 +4,37 @@
   "translation": {
     "layout": {
       "header": {
+        "headline": {
+          "categories": "Categories",
+          "collections": "Col·leccions"
+        },
         "ctas": {
-          "login": "Entra",
+          "wishlist": "Llista de desitjos",
+          "login": "Iniciar sessió",
           "account": "Compte",
-          "search": "Cerca",
-          "cart": "Cistella"
+          "search": "Cercar",
+          "cart": "Carret"
+        }
+      },
+      "footer": {
+        "ctas": {
+          "contact": "Contacte",
+          "policies": "Enviament i Devolucions",
+          "faq": "Preguntes freqüents",
+          "about": "Sobre nosaltres",
+          "instagram": "Instagram"
         }
       },
       "cart": {
-        "checkout": "Continua cap a la caixa",
-        "continueShopping": "Continua comprant",
+        "actions": {
+          "addToCart": "Afegir al carret",
+          "removeItem": "Eliminar article"
+        },
+        "checkout": "Continuar amb la compra",
+        "continueShopping": "Continuar comprant",
+        "shipping": "Enviament",
+        "shippingCountry": "País d'enviament",
+        "calculatedAt": "Calculat al finalitzar la compra",
         "empty": "Sembla que encara no has afegit res, comencem!",
         "loading": "Carregant la cerca...",
         "remove": "Elimina",
@@ -23,16 +44,16 @@
         "quantity": "Quantitat",
         "discounts": {
           "title": "Descompte(s)",
-          "remove": "Elimina",
+          "remove": "Eliminar",
           "form": {
             "label": "Codi de descompte",
-            "placeholder": "Entra un codi de descompte",
-            "submit": "Aplica"
+            "placeholder": "Introdueix un codi de descompte",
+            "submit": "Aplicar descompte"
           }
         }
       },
       "search": {
-        "noResults": "No s'ha trobat cap resultat per \"{{query}}\"",
+        "noResults": "No s'han trobat resultats per a \"{{query}}\"",
         "results": {
           "articles": "Articles",
           "collections": "Col·leccions",
@@ -40,92 +61,174 @@
           "pages": "Pàgines",
           "suggestions": "Suggeriments"
         },
-        "loading": "Carregant la cerca...",
-        "title": "Cerca",
-        "viewAll": "Veure tots els resultats per \"{{query}}\"",
+        "loading": "Carregant cerca...",
+        "title": "Cercar",
+        "viewAll": "Veure tots els resultats per a \"{{query}}\"",
         "form": {
-          "placeholder": "Entra un terme de cerca",
-          "label": "Cerca",
-          "submit": "Cerca"
+          "placeholder": "Introdueix un terme de cerca",
+          "label": "Cercar",
+          "submit": "Cercar"
         }
       },
+      "suggested": {
+        "bestSellers": "Comprar els més venuts",
+        "related": "Productes relacionats"
+      },
       "pagination": {
-        "next": "Carrega més ↓",
-        "previous": "↑ Carrega l'anterior",
+        "next": "Carregar més ↓",
+        "previous": "↑ Carregar anterior",
         "loading": "Carregant..."
       }
     },
-    "home": {
-      "welcome": {
-        "title": "Hola món",
-        "subtitle": "Hydrogen es troba amb i18n",
-        "description": "Acelereu la construcció de la vostra botiga amb Hydrogen, la nostra eina sense capçalera basada en React, construïda sobre Remix. Desplegueu de forma gratuïta a Oxygen, la nostra solució d'allotjament global."
+    "sections": {
+      "featuredProducts": {
+        "title": "Comprar els més venuts"
+      }
+    },
+    "form": {
+      "newsletter": {
+        "title": "Butlletí informatiu",
+        "email": {
+          "label": "Adreça de correu electrònic",
+          "placeholder": "Adreça de correu electrònic",
+          "error": "Adreça de correu electrònic no vàlida"
+        },
+        "consent": {
+          "label": "Accepto rebre el butlletí informatiu. Veure més sobre la nostra Política de privacitat."
+        }
+      },
+      "contact": {
+        "name": {
+          "label": "Nom, Cognoms",
+          "placeholder": "Nom, Cognoms"
+        },
+        "email": {
+          "label": "Adreça de correu electrònic",
+          "placeholder": "Adreça de correu electrònic",
+          "error": "Adreça de correu electrònic no vàlida"
+        },
+        "orderNumber": {
+          "label": "Número de comanda",
+          "placeholder": "Número de comanda"
+        },
+        "subject": {
+          "label": "Assumpte",
+          "placeholder": "Assumpte"
+        },
+        "message": {
+          "label": "Missatge",
+          "placeholder": "Missatge"
+        }
+      },
+      "appointment": {
+        "name": {
+          "label": "Nom, Cognoms",
+          "placeholder": "Nom, Cognoms"
+        },
+        "email": {
+          "label": "Adreça de correu electrònic",
+          "placeholder": "Adreça de correu electrònic",
+          "error": "Adreça de correu electrònic no vàlida"
+        },
+        "phone": {
+          "label": "Número de telèfon",
+          "placeholder": "Número de telèfon"
+        },
+        "requestedTime": {
+          "label": "Hora de cita sol·licitada",
+          "placeholder": "Hora de cita sol·licitada"
+        },
+        "partySize": {
+          "label": "Mida del grup",
+          "placeholder": "Mida del grup"
+        },
+        "message": {
+          "label": "Missatge",
+          "placeholder": "Missatge"
+        }
+      },
+      "editAddress": {
+        "firstName": {
+          "label": "Nom",
+          "placeholder": "Nom"
+        },
+        "lastName": {
+          "label": "Cognoms",
+          "placeholder": "Cognoms"
+        },
+        "company": {
+          "label": "Empresa",
+          "placeholder": "Empresa"
+        },
+        "address1": {
+          "label": "Adreça línia 1",
+          "placeholder": "Adreça línia 1*"
+        },
+        "address2": {
+          "label": "Adreça línia 2",
+          "placeholder": "Adreça línia 2"
+        },
+        "city": {
+          "label": "Ciutat",
+          "placeholder": "Ciutat"
+        },
+        "zonecode": {
+          "label": "Estat / Província (zoneCode)",
+          "placeholder": "Estat / Província (zoneCode)"
+        },
+        "zip": {
+          "label": "Codi postal",
+          "placeholder": "Codi postal"
+        },
+        "territoryCode": {
+          "label": "Codi del país (Territori)",
+          "placeholder": "Codi del país (Territori)"
+        },
+        "phone": {
+          "label": "Telèfon",
+          "placeholder": "Telèfon"
+        },
+        "defaultAddress": {
+          "label": "Establir com a adreça predeterminada"
+        }
+      }
+    },
+    "policies": {
+      "title": "Polítiques",
+      "privacy": "Política de privacitat",
+      "shipping": "Política d'enviament"
+    },
+    "product": {
+      "tabs": {
+        "description": "Descripció",
+        "details": "Detalls",
+        "measurements": "Mesures"
+      },
+      "addToCart": "Afegir al carret",
+      "soldOut": "Esgotat",
+      "card": {
+        "new": "Nou",
+        "sale": "Oferta"
       }
     },
     "notFound": {
       "title": "Pàgina no trobada",
       "subtitle": "Ho sentim, no hem pogut trobar la pàgina que estaves buscant.",
-      "description": "Si us plau, comprova l'URL a la barra d'adreces i torna a provar.",
-      "cta": "Ves a la pàgina d'inici"
+      "description": "Si us plau, verifica l'URL a la barra d'adreces i torna a intentar-ho.",
+      "cta": "Anar a la pàgina d'inici"
     },
     "account": {
       "home": {
         "greeting": "Benvingut al teu compte.",
         "personalGreeting": "Benvingut, {{firstName}}",
+        "emptyOrders": "Encara no has fet cap comanda",
+        "startShopping": "Començar a comprar",
         "menu": {
           "orders": "Comandes",
           "profile": "Perfil",
           "addresses": "Adreces",
-          "logout": "Tanca la sessió"
+          "logout": "Tancar sessió"
         }
-      },
-      "login": {
-        "title": "Entra.",
-        "form": {
-          "email": {
-            "label": "Correu electrònic",
-            "placeholder": "Entra la teva adreça de correu electrònic"
-          },
-          "password": {
-            "label": "Contrasenya",
-            "placeholder": "Entra la teva contrasenya"
-          },
-          "submit": "Entra"
-        },
-        "forgot": "Has oblidat la contrasenya?",
-        "register": "Registra't"
-      },
-      "register": {
-        "title": "Registra't.",
-        "description": "Crea el teu compte",
-        "form": {
-          "email": {
-            "label": "Adreça de correu electrònic",
-            "placeholder": "Entra la teva adreça de correu electrònic"
-          },
-          "password": {
-            "label": "Contrasenya",
-            "placeholder": "Introdueix la teva contrasenya"
-          },
-          "confirmPassword": {
-            "label": "Torna a introduir la contrasenya",
-            "placeholder": "Torna a introduir la teva contrasenya"
-          },
-          "submit": "Registra't"
-        },
-        "login": "Entra"
-      },
-      "recover": {
-        "title": "Has oblidat la contrasenya.",
-        "description": "Introdueix l'adreça de correu electrònic associada al teu compte per rebre un enllaç per restablir la teva contrasenya",
-        "form": {
-          "email": {
-            "label": "Adreça de correu electrònic",
-            "placeholder": "Introdueix la teva adreça de correu electrònic"
-          },
-          "submit": "Restableix la contrasenya"
-        },
-        "login": "Entra"
       }
     }
   }

@@ -1,5 +1,8 @@
 {
   "include": ["./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
+  "exclude": [
+    "./scripts/**"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "isolatedModules": true,

@@ -1,0 +1,22 @@
+{
+  "spaceId": "4kk70g3me4yj",
+  "environmentId": "master",
+  "managementToken": "_hnJGFFtqrkbJ7p1OyY4zQHFDNlWH-NU9LFxehtXSKE",
+  "deliveryToken": "FNMfIifVgj2lTrXZMiSweRbqlsZO43UqYKH9YnDfMag",
+  "exportDir": "/Users/groot/programs/no-maintenance/webshop/contentful",
+  "saveFile": true,
+  "contentFile": "export-blog.json",
+  "includeDrafts": false,
+  "includeArchived": false,
+  "skipContentModel": false,
+  "skipContent": true,
+  "skipRoles": true,
+  "skipWebhooks": true,
+  "contentOnly": false,
+  "downloadAssets": false,
+  "host": "api.contentful.com",
+  "rawProxy": false,
+  "maxAllowedLimit": 1000,
+  "errorLogFile": "/path/to/error.log",
+  "useVerboseRenderer": false
+}

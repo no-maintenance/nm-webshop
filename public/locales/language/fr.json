@@ -4,17 +4,38 @@
   "translation": {
     "layout": {
       "header": {
+        "headline": {
+          "categories": "Catégories",
+          "collections": "Collections"
+        },
         "ctas": {
+          "wishlist": "Liste de souhaits",
           "login": "Connexion",
           "account": "Compte",
-          "search": "Rechercher",
+          "search": "Recherche",
           "cart": "Panier"
         }
       },
+      "footer": {
+        "ctas": {
+          "contact": "Contact",
+          "policies": "Livraison & Retours",
+          "faq": "FAQ",
+          "about": "À propos",
+          "instagram": "Instagram"
+        }
+      },
       "cart": {
-        "checkout": "Continuer le paiement",
-        "continueShopping": "Continuer les achats",
-        "empty": "Il semble que vous n'ayez encore rien ajouté. Commençons!",
+        "actions": {
+          "addToCart": "Ajouter au panier",
+          "removeItem": "Supprimer l'article"
+        },
+        "checkout": "Passer à la caisse",
+        "continueShopping": "Continuer vos achats",
+        "shipping": "Livraison",
+        "shippingCountry": "Pays de livraison",
+        "calculatedAt": "Calculé à la caisse",
+        "empty": "Il semble que vous n'ayez encore rien ajouté, commençons !",
         "loading": "Chargement de la recherche...",
         "remove": "Supprimer",
         "subtotal": "Sous-total",
@@ -27,7 +48,7 @@
           "form": {
             "label": "Code de réduction",
             "placeholder": "Entrez un code de réduction",
-            "submit": "Appliquer"
+            "submit": "Appliquer la réduction"
           }
         }
       },
@@ -49,22 +70,150 @@
           "submit": "Rechercher"
         }
       },
+      "suggested": {
+        "bestSellers": "Acheter les meilleures ventes",
+        "related": "Produits associés"
+      },
       "pagination": {
         "next": "Charger plus ↓",
         "previous": "↑ Charger précédent",
         "loading": "Chargement..."
       }
     },
-    "home": {
-      "welcome": {
-        "title": "Bonjour le monde",
-        "subtitle": "Hydrogen rencontre i18n",
-        "description": "Accélérez la création de votre vitrine avec Hydrogen, notre boîte à oh2/i18n sans tête basée sur React et Remix. Déployez-la gratuitement sur Oxygen, notre solution d'hébergement mondiale."
+    "sections": {
+      "featuredProducts": {
+        "title": "Acheter les meilleures ventes"
+      }
+    },
+    "form": {
+      "newsletter": {
+        "title": "Newsletter",
+        "email": {
+          "label": "Adresse e-mail",
+          "placeholder": "Adresse e-mail",
+          "error": "Adresse e-mail invalide"
+        },
+        "consent": {
+          "label": "J'accepte de recevoir la newsletter. Plus d'informations sur notre Politique de confidentialité."
+        }
+      },
+      "contact": {
+        "name": {
+          "label": "Prénom, Nom",
+          "placeholder": "Prénom, Nom"
+        },
+        "email": {
+          "label": "Adresse e-mail",
+          "placeholder": "Adresse e-mail",
+          "error": "Adresse e-mail invalide"
+        },
+        "orderNumber": {
+          "label": "Numéro de commande",
+          "placeholder": "Numéro de commande"
+        },
+        "subject": {
+          "label": "Sujet",
+          "placeholder": "Sujet"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Message"
+        }
+      },
+      "appointment": {
+        "name": {
+          "label": "Prénom, Nom",
+          "placeholder": "Prénom, Nom"
+        },
+        "email": {
+          "label": "Adresse e-mail",
+          "placeholder": "Adresse e-mail",
+          "error": "Adresse e-mail invalide"
+        },
+        "phone": {
+          "label": "Numéro de téléphone",
+          "placeholder": "Numéro de téléphone"
+        },
+        "requestedTime": {
+          "label": "Heure de rendez-vous demandée",
+          "placeholder": "Heure de rendez-vous demandée"
+        },
+        "partySize": {
+          "label": "Taille du groupe",
+          "placeholder": "Taille du groupe"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Message"
+        }
+      },
+      "editAddress": {
+        "firstName": {
+          "label": "Prénom",
+          "placeholder": "Prénom"
+        },
+        "lastName": {
+          "label": "Nom",
+          "placeholder": "Nom"
+        },
+        "company": {
+          "label": "Entreprise",
+          "placeholder": "Entreprise"
+        },
+        "address1": {
+          "label": "Adresse ligne 1",
+          "placeholder": "Adresse ligne 1*"
+        },
+        "address2": {
+          "label": "Adresse ligne 2",
+          "placeholder": "Adresse ligne 2"
+        },
+        "city": {
+          "label": "Ville",
+          "placeholder": "Ville"
+        },
+        "zonecode": {
+          "label": "État / Province (zoneCode)",
+          "placeholder": "État / Province (zoneCode)"
+        },
+        "zip": {
+          "label": "Code postal",
+          "placeholder": "Code postal"
+        },
+        "territoryCode": {
+          "label": "Code du pays (Territoire)",
+          "placeholder": "Code du pays (Territoire)"
+        },
+        "phone": {
+          "label": "Téléphone",
+          "placeholder": "Téléphone"
+        },
+        "defaultAddress": {
+          "label": "Définir comme adresse par défaut"
+        }
+      }
+    },
+    "policies": {
+      "title": "Politiques",
+      "privacy": "Politique de confidentialité",
+      "shipping": "Politique de livraison"
+    },
+    "product": {
+      "tabs": {
+        "description": "Description",
+        "details": "Détails",
+        "measurements": "Mesures"
+      },
+      "addToCart": "Ajouter au panier",
+      "soldOut": "Épuisé",
+      "card": {
+        "new": "Nouveau",
+        "sale": "Soldes"
       }
     },
     "notFound": {
       "title": "Page non trouvée",
-      "subtitle": "Désolé, nous n'avons pas pu trouver la page que vous recherchez.",
+      "subtitle": "Désolé, nous n'avons pas pu trouver la page que vous cherchiez.",
       "description": "Veuillez vérifier l'URL dans la barre d'adresse et réessayer.",
       "cta": "Aller à la page d'accueil"
     },
@@ -72,60 +221,14 @@
       "home": {
         "greeting": "Bienvenue dans votre compte.",
         "personalGreeting": "Bienvenue, {{firstName}}",
+        "emptyOrders": "Vous n'avez pas encore passé de commandes",
+        "startShopping": "Commencer les achats",
         "menu": {
           "orders": "Commandes",
           "profile": "Profil",
           "addresses": "Adresses",
-          "logout": "Déconnexion"
+          "logout": "Se déconnecter"
         }
-      },
-      "login": {
-        "title": "Se connecter",
-        "form": {
-          "email": {
-            "label": "Adresse e-mail",
-            "placeholder": "Entrez votre adresse e-mail"
-          },
-          "password": {
-            "label": "Mot de passe",
-            "placeholder": "Entrez votre mot de passe"
-          },
-          "submit": "Se connecter"
-        },
-        "forgot": "Mot de passe oublié ?",
-        "register": "S'inscrire"
-      },
-      "register": {
-        "title": "S'inscrire",
-        "description": "Créez votre compte",
-        "form": {
-          "email": {
-            "label": "Adresse e-mail",
-            "placeholder": "Entrez votre adresse e-mail"
-          },
-          "password": {
-            "label": "Mot de passe",
-            "placeholder": "Entrez votre mot de passe"
-          },
-          "confirmPassword": {
-            "label": "Confirmer le mot de passe",
-            "placeholder": "Confirmez votre mot de passe"
-          },
-          "submit": "S'inscrire"
-        },
-        "login": "Se connecter"
-      },
-      "recover": {
-        "title": "Mot de passe oublié",
-        "description": "Entrez l'adresse e-mail associée à votre compte pour recevoir un lien de réinitialisation de votre mot de passe",
-        "form": {
-          "email": {
-            "label": "Adresse e-mail",
-            "placeholder": "Entrez votre adresse e-mail"
-          },
-          "submit": "Réinitialiser le mot de passe"
-        },
-        "login": "Se connecter"
       }
     }
   }

@@ -118,7 +118,7 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
       <PageHeader heading={heading}>
         <Form method="post" action={usePrefixPathWithLocale('/account/logout')}>
           <button type="submit" className="text-primary/50">
-            {t('account.sign_out')}
+            {t('account.home.menu.logout')}
           </button>
         </Form>
       </PageHeader>
@@ -156,7 +156,7 @@ function AccountOrderHistory({orders}: OrderCardsProps) {
   return (
     <div className="mt-6">
       <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12">
-        <h2 className="font-bold text-lead">{t('account.order_history')}</h2>
+        <h2 className="font-bold text-lead">{t('account.home.menu.orders')}</h2>
         {orders?.length ? <Orders orders={orders} /> : <EmptyOrders />}
       </div>
     </div>
@@ -168,7 +168,7 @@ function EmptyOrders() {
   return (
     <div>
       <Text className="mb-1" size="fine" width="narrow" as="p">
-        {t('account.no_orders_yet')}
+        {t('account.home.emptyOrders')}
       </Text>
       <div className="w-48">
         <Button
@@ -176,7 +176,7 @@ function EmptyOrders() {
           variant="secondary"
           to={usePrefixPathWithLocale('/')}
         >
-          {t('account.start_shopping')}
+          {t('account.home.startShopping')}
         </Button>
       </div>
     </div>

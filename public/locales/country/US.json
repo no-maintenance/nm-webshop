@@ -1,5 +1,7 @@
 {
-  "code": "US",
-  "name": "United States",
-  "languages": ["en"]
+    "code": "US",
+    "name": "United States",
+    "languages": [
+        "en"
+    ]
 }

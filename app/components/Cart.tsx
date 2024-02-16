@@ -243,7 +243,7 @@ function CartSummary({
   return (
     <section aria-labelledby="summary-heading" className={summary[layout]}>
       <h2 id="summary-heading" className="sr-only">
-        {t('shop_exp.order_summary')}
+        {t('layout.cart.orderSummary')}
       </h2>
       <dl className={`grid ${layout === 'drawer' ? 'gap-0' : 'gap-4'}`}>
         <div className="flex items-center  justify-between font-medium">
@@ -260,19 +260,19 @@ function CartSummary({
         </div>
         <div className="flex items-center justify-between font-medium">
           <Text as="dt" className={''}>
-            {t('shop_exp.shipping')}
+            {t('layout.cart.shipping')}
           </Text>
           <Text
             as="dd"
             className={'text-primary/30 whitespace-nowrap'}
             data-test="subtotal"
           >
-            {t('shop_exp.calculated_at')}
+            {t('layout.cart.calculatedAt')}
           </Text>
         </div>
         <div className="flex items-center justify-between font-medium">
           <Text as="dt" className={' whitespace-nowrap flex-1'}>
-            {t('shop_exp.shipping_country')}
+            {t('layout.cart.shippingCountry')}
           </Text>
           <Text as="dd" className={'underline w-full ml-6 flex-initial'}>
             {/*<CountrySelector />*/}
@@ -285,7 +285,7 @@ function CartSummary({
               className={'w-full tracking-wider uppercase whitespace-nowrap'}
               size={'copy'}
             >
-              {t('shop_exp.total')}
+              {t('layout.cart.total')}
             </Text>
             <Text as="dt" className={'w-full text-primary/60'}>
               VAT Included
@@ -403,7 +403,7 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
         className="flex items-center justify-center w-10 h-10 border rounded"
         type="submit"
       >
-        <span className="sr-only">{t('cart_actions.remove_item')}</span>
+        <span className="sr-only">{t('layout.cart.actions.removeItem')}</span>
         <IconRemove aria-hidden="true" />
       </button>
       <OptimisticInput id={lineId} data={{action: 'remove'}} />
@@ -540,16 +540,16 @@ export function CartEmpty({
     <div ref={scrollRef} className={container[layout]} hidden={hidden}>
       <section className="grid gap-6">
         <Text format>
-          {t('shop_exp.empty_cart_msg')}
+          {t('layout.cart.empty')}
         </Text>
         <div>
-          <Button onClick={onClose}>{t('site.continue_shopping')}</Button>
+          <Button onClick={onClose}>{t('layout.cart.continueShopping')}</Button>
         </div>
       </section>
       <section className="grid gap-8 pt-16">
         <FeaturedProducts
           count={4}
-          heading={t('cart_actions.shop_best_sellers')}
+          heading={t('layout.sections.featuredProducts.shopBestSellers')}
           layout={layout}
           onClose={onClose}
           sortKey="BEST_SELLING"

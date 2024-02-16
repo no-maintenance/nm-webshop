@@ -1,39 +1,535 @@
 [
   {
-    "isDefault": true,
     "code": "US",
     "name": "United States (USD $)",
-    "languages": [{"code": "en", "name": "English"}],
-    "prefixes": ["/en-US"]
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-US"
+    ],
+    "isDefault": true
   },
   {
     "code": "CA",
-    "name": "Canada (CAD $)",
+    "name": "Canada (CAD CA$)",
     "languages": [
-      {"code": "en", "name": "English"},
-      {"code": "fr", "name": "French"}
+      {
+        "code": "en",
+        "name": "English"
+      },
+      {
+        "code": "fr",
+        "name": "French"
+      }
     ],
-    "prefixes": ["/en-CA", "/fr-CA"]
+    "prefixes": [
+      "/en-CA",
+      "/fr-CA"
+    ]
   },
   {
-    "code": "ES",
-    "name": "Spain (EUR €)",
+    "code": "GB",
+    "name": "United Kingdom (GBP £)",
     "languages": [
-      {"code": "es", "name": "Spanish"},
-      {"code": "ca", "name": "Catalan"}
+      {
+        "code": "en",
+        "name": "English"
+      }
     ],
-    "prefixes": ["/es-ES", "/ca-ES"]
+    "prefixes": [
+      "/en-GB"
+    ]
   },
   {
-    "code": "FR",
-    "name": "France (EUR €)",
-    "languages": [{"code": "fr", "name": "French"}],
-    "prefixes": ["/fr-FR"]
+    "code": "JP",
+    "name": "Japan (JPY ¥)",
+    "languages": [
+      {
+        "code": "ja",
+        "name": "日本語"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/ja-JP",
+      "/en-JP"
+    ]
   },
   {
     "code": "DE",
     "name": "Germany (EUR €)",
-    "languages": [{"code": "de", "name": "German"}],
-    "prefixes": ["/de-DE"]
+    "languages": [
+      {
+        "code": "de",
+        "name": "Deutsch"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/de-DE",
+      "/en-DE"
+    ]
+  },
+  {
+    "code": "FR",
+    "name": "France (EUR €)",
+    "languages": [
+      {
+        "code": "fr",
+        "name": "French"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/fr-FR",
+      "/en-FR"
+    ]
+  },
+  {
+    "code": "IT",
+    "name": "Italy (EUR €)",
+    "languages": [
+      {
+        "code": "it",
+        "name": "Italiano"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/it-IT",
+      "/en-IT"
+    ]
+  },
+  {
+    "code": "SG",
+    "name": "Singapore (SGD S$)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-SG"
+    ]
+  },
+  {
+    "code": "DK",
+    "name": "Denmark (DKK Dkr)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-DK"
+    ]
+  },
+  {
+    "code": "TR",
+    "name": "Türkiye (TRY ₺)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-TR"
+    ]
+  },
+  {
+    "code": "IE",
+    "name": "Ireland (EUR €)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-IE"
+    ]
+  },
+  {
+    "code": "MX",
+    "name": "Mexico (MXN MX$)",
+    "languages": [
+      {
+        "code": "es",
+        "name": "Español"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/es-MX",
+      "/en-MX"
+    ]
+  },
+  {
+    "code": "ES",
+    "name": "España (EUR €)",
+    "languages": [
+      {
+        "code": "es",
+        "name": "Español"
+      },
+      {
+        "code": "ca",
+        "name": "Català"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/es-ES",
+      "/ca-ES",
+      "/en-ES"
+    ]
+  },
+  {
+    "code": "CH",
+    "name": "Switzerland (CHF CHF)",
+    "languages": [
+      {
+        "code": "de",
+        "name": "Deutsch"
+      },
+      {
+        "code": "fr",
+        "name": "French"
+      },
+      {
+        "code": "it",
+        "name": "Italiano"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/de-CH",
+      "/fr-CH",
+      "/it-CH",
+      "/en-CH"
+    ]
+  },
+  {
+    "code": "AT",
+    "name": "Austria (EUR €)",
+    "languages": [
+      {
+        "code": "de",
+        "name": "Deutsch"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/de-AT",
+      "/en-AT"
+    ]
+  },
+  {
+    "code": "HK",
+    "name": "Hong Kong (HKD HK$)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-HK"
+    ]
+  },
+  {
+    "code": "BE",
+    "name": "Belgium (EUR €)",
+    "languages": [
+      {
+        "code": "fr",
+        "name": "French"
+      },
+      {
+        "code": "de",
+        "name": "Deutsch"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/fr-BE",
+      "/de-BE",
+      "/en-BE"
+    ]
+  },
+  {
+    "code": "KR",
+    "name": "South Korea (KRW ₩)",
+    "languages": [
+      {
+        "code": "ko",
+        "name": "한국어"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/ko-KR",
+      "/en-KR"
+    ]
+  },
+  {
+    "code": "GR",
+    "name": "Greece (EUR €)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-GR"
+    ]
+  },
+  {
+    "code": "NL",
+    "name": "Netherlands (EUR €)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-NL"
+    ]
+  },
+  {
+    "code": "CO",
+    "name": "Colombia (COP CO$)",
+    "languages": [
+      {
+        "code": "es",
+        "name": "Español"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/es-CO",
+      "/en-CO"
+    ]
+  },
+  {
+    "code": "NZ",
+    "name": "New Zealand (NZD NZ$)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-NZ"
+    ]
+  },
+  {
+    "code": "PR",
+    "name": "Puerto Rico (USD $)",
+    "languages": [
+      {
+        "code": "es",
+        "name": "Español"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/es-PR",
+      "/en-PR"
+    ]
+  },
+  {
+    "code": "CN",
+    "name": "China (CNY CN¥)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-CN"
+    ]
+  },
+  {
+    "code": "IN",
+    "name": "India (INR ₹)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-IN"
+    ]
+  },
+  {
+    "code": "TH",
+    "name": "Thailand (THB ฿)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-TH"
+    ]
+  },
+  {
+    "code": "CR",
+    "name": "Costa Rica (CRC ₡)",
+    "languages": [
+      {
+        "code": "es",
+        "name": "Español"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/es-CR",
+      "/en-CR"
+    ]
+  },
+  {
+    "code": "AE",
+    "name": "United Arab Emirates (AED AED)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-AE"
+    ]
+  },
+  {
+    "code": "ID",
+    "name": "Indonesia (IDR Rp)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-ID"
+    ]
+  },
+  {
+    "code": "SE",
+    "name": "Sweden (SEK Skr)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-SE"
+    ]
+  },
+  {
+    "code": "TW",
+    "name": "Taiwan (TWD NT$)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-TW"
+    ]
+  },
+  {
+    "code": "NO",
+    "name": "Norway (NOK Nkr)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-NO"
+    ]
+  },
+  {
+    "code": "MY",
+    "name": "Malaysia (MYR RM)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-MY"
+    ]
+  },
+  {
+    "code": "PT",
+    "name": "Portugal (EUR €)",
+    "languages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ],
+    "prefixes": [
+      "/en-PT"
+    ]
   }
 ]

@@ -323,7 +323,7 @@ function MegaMenu({
       <div className={'uppercase grid grid-cols-2'}>
         <div>
           <Heading as={'h3'} size={'fine'} className={'categories pb-4'}>
-            {t('nav.categories')}
+            {t('layout.header.headline.categories')}
           </Heading>
           {(items || []).map((item, idx) => (
             <div
@@ -354,7 +354,7 @@ function MegaMenu({
         </div>
         <div className={'pl-9'}>
           <Heading as={'h3'} size={'fine'} className={'pb-10'}>
-            {t('nav.collections')}
+            {t('layout.header.headline.collections')}
           </Heading>
           {(items || []).map(
             (item: ChildEnhancedMenuItem, idx) =>
@@ -425,7 +425,7 @@ function DesktopSearch({isOpen}: {isOpen: boolean}) {
         autoComplete={'off'}
         type="search"
         variant="search"
-        placeholder={t('nav.search')}
+        placeholder={t('layout.header.ctas.search')}
         name="q"
         className={'text-display w-full text-left border-b-0 gutter '}
         isFocused={isOpen}
@@ -448,7 +448,7 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
     <Drawer
       open={isOpen}
       onClose={onClose}
-      heading={t('nav.order_summary')}
+      heading={t('layout.cart.orderSummary')}
       openFrom="right"
     >
       <div className="grid">
@@ -498,7 +498,7 @@ function CartCount({
             size={'inherit'}
             className={'cursor-pointer font-normal'}
           >
-            {t('nav.cart')}
+            {t('layout.cart.title')}
           </Text>
         }
       >

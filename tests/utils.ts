@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 /**
  * Formats a number as USD. Example: 1800 => $1,800.00
  */
@@ -31,3 +33,8 @@ export function normalizePrice(price: string | null) {
       .replace('-', '.'),
   );
 }
+
+export const readJsonFile = (filePath: string): any => {
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  return JSON.parse(fileContent);
+};

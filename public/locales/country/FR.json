@@ -1,5 +1,8 @@
 {
-  "code": "FR",
-  "name": "la France",
-  "languages": ["fr"]
+    "code": "FR",
+    "name": "France",
+    "languages": [
+        "fr",
+        "en"
+    ]
 }

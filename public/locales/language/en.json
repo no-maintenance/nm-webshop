@@ -4,16 +4,37 @@
   "translation": {
     "layout": {
       "header": {
+        "headline": {
+          "categories": "Categories",
+          "collections": "Collections"
+        },
         "ctas": {
+          "wishlist": "Wishlist",
           "login": "Login",
           "account": "Account",
           "search": "Search",
           "cart": "Cart"
         }
       },
+      "footer": {
+        "ctas": {
+          "contact": "Contact",
+          "policies": "Shipping & Returns",
+          "faq": "FAQ",
+          "about": "About",
+          "instagram": "Instagram"
+        }
+      },
       "cart": {
+        "actions": {
+          "addToCart": "Add to cart",
+          "removeItem": "Remove item"
+        },
         "checkout": "Continue to checkout",
         "continueShopping": "Continue shopping",
+        "shipping": "Shipping",
+        "shippingCountry": "Shipping Country",
+        "calculatedAt": "Calculated at Checkout",
         "empty": "Looks like you haven’t added anything yet, let’s get you started!",
         "loading": "Loading search...",
         "remove": "Remove",
@@ -27,7 +48,7 @@
           "form": {
             "label": "Discount code",
             "placeholder": "Enter a discount code",
-            "submit": "Apply"
+            "submit": "Apply discount"
           }
         }
       },
@@ -49,17 +70,145 @@
           "submit": "Search"
         }
       },
+      "suggested": {
+        "bestSellers": "Shop Best Sellers",
+        "related": "Related Products"
+      },
       "pagination": {
         "next": "Load more ↓",
         "previous": "↑ Load previous",
         "loading": "Loading..."
       }
     },
-    "home": {
-      "welcome": {
-        "title": "Hello world",
-        "subtitle": "Hydrogen meets i18n",
-        "description": "Fast-track your storefront build with Hydrogen, our React-based headless toolkit, built on Remix. Deploy for free on Oxygen, our global hosting solution."
+    "sections": {
+      "featuredProducts": {
+        "title": "Shop best sellers"
+      }
+    },
+    "form": {
+      "newsletter": {
+        "title": "Newsletter",
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Email Address",
+          "error": "Invalid Email Address"
+        },
+        "consent": {
+          "label": "I agree to receive the newsletter. See more about our Privacy Policy."
+        }
+      },
+      "contact": {
+        "name": {
+          "label": "First, Last Name",
+          "placeholder": "First, Last Name"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Email Address",
+          "error": "Invalid Email Address"
+        },
+        "orderNumber": {
+          "label": "Order Number",
+          "placeholder": "Order Number"
+        },
+        "subject": {
+          "label": "Subject",
+          "placeholder": "Subject"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Message"
+        }
+      },
+      "appointment": {
+        "name": {
+          "label": "First, Last Name",
+          "placeholder": "First, Last Name"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Email Address",
+          "error": "Invalid Email Address"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "Phone Number"
+        },
+        "requestedTime": {
+          "label": "Requested Appointment Time",
+          "placeholder": "Requested Appointment Time"
+        },
+        "partySize": {
+          "label": "Party Size",
+          "placeholder": "Party Size"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Message"
+        }
+      },
+      "editAddress": {
+        "firstName": {
+          "label": "First Name",
+          "placeholder": "First Name"
+        },
+        "lastName": {
+          "label": "Last Name",
+          "placeholder": "Last Name"
+        },
+        "company": {
+          "label": "Company",
+          "placeholder": "Company"
+        },
+        "address1": {
+          "label": "Address line 1",
+          "placeholder": "Address line 1*"
+        },
+        "address2": {
+          "label": "Address line 2",
+          "placeholder": "Address line 2"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "City"
+        },
+        "zonecode": {
+          "label": "State / Province (zoneCode)",
+          "placeholder": "State / Province (zoneCode)"
+        },
+        "zip": {
+          "label": "Zip / Postal Code",
+          "placeholder": "Zip / Postal Code"
+        },
+        "territoryCode": {
+          "label": "Country (Territory) Code",
+          "placeholder": "Country (Territory) Code"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Phone"
+        },
+        "defaultAddress": {
+          "label": "Set as default address"
+        }
+      }
+    },
+    "policies": {
+      "title": "Policies",
+      "privacy": "Privacy Policy",
+      "shipping": "Shipping Policy"
+    },
+    "product": {
+      "tabs": {
+        "description": "Description",
+        "details": "Details",
+        "measurements": "Measurements"
+      },
+      "addToCart": "Add to Cart",
+      "soldOut": "Sold out",
+      "card": {
+        "new": "New",
+        "sale": "Sale"
       }
     },
     "notFound": {
@@ -72,60 +221,14 @@
       "home": {
         "greeting": "Welcome to your account.",
         "personalGreeting": "Welcome, {{firstName}}",
+        "emptyOrders": "You haven't placed any orders yet",
+        "startShopping": "Start Shopping",
         "menu": {
           "orders": "Orders",
           "profile": "Profile",
           "addresses": "Addresses",
           "logout": "Sign out"
         }
-      },
-      "login": {
-        "title": "Sign in.",
-        "form": {
-          "email": {
-            "label": "Email",
-            "placeholder": "Enter your email address"
-          },
-          "password": {
-            "label": "Password",
-            "placeholder": "Enter your password"
-          },
-          "submit": "Sign in"
-        },
-        "forgot": "Forgot password?",
-        "register": "Register"
-      },
-      "register": {
-        "title": "Register.",
-        "description": "Create your account",
-        "form": {
-          "email": {
-            "label": "Email address",
-            "placeholder": "Enter your email address"
-          },
-          "password": {
-            "label": "Password",
-            "placeholder": "Enter your password"
-          },
-          "confirmPassword": {
-            "label": "Re-enter password",
-            "placeholder": "Re-enter your password"
-          },
-          "submit": "Register"
-        },
-        "login": "Login"
-      },
-      "recover": {
-        "title": "Forgot password.",
-        "description": "Enter the email address associated with your account to receive a link to reset your password",
-        "form": {
-          "email": {
-            "label": "Email address",
-            "placeholder": "Enter your email address"
-          },
-          "submit": "Reset password"
-        },
-        "login": "Login"
       }
     }
   }
