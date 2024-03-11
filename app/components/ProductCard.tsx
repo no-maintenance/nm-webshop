@@ -2,20 +2,28 @@ import clsx from 'clsx';
 import {MediaFile, flattenConnection, Money, useMoney} from '@shopify/hydrogen';
 import type {ShopifyAnalyticsProduct, Video, Image} from '@shopify/hydrogen';
 import type {
-  MediaImage,
   MoneyV2,
   Product,
 } from '@shopify/hydrogen/storefront-api-types';
 import type {ComponentProps} from 'react';
-import {useEffect, useState} from 'react';
 import type {HydrogenImageProps} from '@shopify/hydrogen-react/Image';
 
 import type {MediaFragment, ProductCardFragment} from 'storefrontapi.generated';
 import {Text, Link, AddToCartButton, Button, Skeleton} from '~/components';
 import {isDiscounted, isNewArrival} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
+import {m} from 'framer-motion';
 
-import { useTranslation } from 'react-i18next';
+type ProductCardProps = {
+  product: ProductCardFragment;
+  label?: string;
+  className?: string;
+  loading?: HTMLImageElement['loading'];
+  onClick?: () => void;
+  quickAdd?: boolean;
+  idx: number;
+};
+
 import { useTranslation } from '~/i18n';
 
 export function ProductCard({
@@ -25,14 +33,8 @@ export function ProductCard({
   loading,
   onClick,
   quickAdd,
-}: {
-  product: ProductCardFragment;
-  label?: string;
-  className?: string;
-  loading?: HTMLImageElement['loading'];
-  onClick?: () => void;
-  quickAdd?: boolean;
-}) {
+  idx,
+}: ProductCardProps) {
   let cardLabel;
   const {t} = useTranslation();
   const cardProduct: Product = product?.variants
@@ -64,7 +66,12 @@ export function ProductCard({
   const {media, handle, title, variants} = product;
 
   return (
-    <div className="flex flex-col gap-2">
+    <m.div
+      initial={{opacity: 0}}
+      animate={{opacity: 1}}
+      transition={{duration: 0.2, delay: idx * 0.15}}
+      className="flex flex-col gap-2 product-card"
+    >
       <Link
         onClick={onClick}
         to={`/products/${handle}`}
@@ -133,18 +140,18 @@ export function ProductCard({
           }}
         >
           <Text as="span" className="flex items-center justify-center gap-2">
-            {t('cart_actions.add_to_cart')}
+            {t('product.addToCart')}
           </Text>
         </AddToCartButton>
       )}
       {quickAdd && !firstVariant.availableForSale && (
         <Button variant="secondary" className="mt-2" disabled>
           <Text as="span" className="flex items-center justify-center gap-2">
-            {t('shop_exp.sold_out')}
+            {t('product.soldOut')}
           </Text>
         </Button>
       )}
-    </div>
+    </m.div>
   );
 }
 
@@ -161,7 +168,7 @@ function ProductCardVariants({
             variant.title
           ) : (
             <span
-              className={`strike ${variant.title.length < 4 ? 'small' : ''}`}
+              className={clsx(['strike', variant.title.length < 4 && 'small'])}
             >
               {variant.title}
             </span>

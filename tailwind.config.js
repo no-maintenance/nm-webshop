@@ -10,6 +10,7 @@ export default {
       colors: {
         primary: 'rgb(var(--color-primary) / <alpha-value>)',
         contrast: 'rgb(var(--color-contrast) / <alpha-value>)',
+        error: 'rgb(var(--color-error) / <alpha-value>)',
         notice: 'rgb(var(--color-notice) / <alpha-value>)',
         accent: 'rgb(var(--color-accent) / <alpha-value>)',
         shopPay: 'rgb(var(--color-shop-pay) / <alpha-value>)',
@@ -51,6 +52,7 @@ export default {
         serif: ['ui-serif'],
       },
       fontSize: {
+        oversize: ['var(--font-size-oversize)', '1.25'],
         display: ['var(--font-size-display)', '1.1'],
         heading: ['var(--font-size-heading)', '1.25'],
         lead: ['var(--font-size-lead)', '1.333'],
@@ -61,6 +63,7 @@ export default {
       maxWidth: {
         'prose-narrow': '45ch',
         'prose-wide': '80ch',
+        portrait: '370px',
       },
       boxShadow: {
         border: 'inset 0px 0px 0px 1px rgb(var(--color-primary) / 0.08)',

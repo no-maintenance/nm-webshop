@@ -1,7 +1,7 @@
 import {useState, useRef, Suspense, forwardRef, Fragment} from 'react';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, Await, useNavigate} from '@remix-run/react';
+import {useLoaderData, Await, useNavigate, useParams} from '@remix-run/react';
 import type {ShopifyAnalyticsProduct} from '@shopify/hydrogen';
 import {
   AnalyticsPageType,
@@ -41,6 +41,9 @@ import {seoPayload} from '~/lib/seo.server';
 import type {Storefront} from '~/lib/type';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+import {KlaviyoBackInStock} from '~/components/KlavivyoForm';
+import {Popup, usePopup} from '~/components/Popup';
+import {useTranslation} from '~/i18n';
 
 export const headers = routeHeaders;
 const USE_LISTBOX_VARIANT_SELECTOR = true;
@@ -230,6 +233,62 @@ export default function Product() {
   );
 }
 
+function ProductVariantSelector({
+  variants,
+  showVariantTitle,
+  setVariantStatefully,
+}: {
+  setVariantStatefully?: () => void;
+  showVariantTitle: boolean;
+  variants: ProductVariantFragmentFragment[];
+}) {
+  const {product} = useLoaderData<typeof loader>();
+
+  return (
+    <VariantSelector
+      handle={product.handle}
+      options={product.options}
+      variants={variants}
+    >
+      {({option}) => {
+        return (
+          <div
+            key={option.name}
+            className="flex flex-col flex-wrap gap-y-2 last:mb-0"
+          >
+            {showVariantTitle && (
+              <Heading as="legend" size="lead" className="min-w-[4rem]">
+                {option.name}
+              </Heading>
+            )}
+            <div className="flex flex-wrap items-baseline gap-4">
+              {USE_LISTBOX_VARIANT_SELECTOR ? (
+                <ProductListbox option={option} />
+              ) : (
+                option.values.map(({value, isAvailable, isActive, to}) => (
+                  <Link
+                    key={option.name + value}
+                    to={to}
+                    preventScrollReset
+                    prefetch="intent"
+                    replace
+                    className={clsx(
+                      'leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200',
+                      isActive ? 'border-primary/50' : 'border-primary/0',
+                      isAvailable ? 'opacity-100' : 'opacity-50',
+                    )}
+                  >
+                    {value}
+                  </Link>
+                ))
+              )}
+            </div>
+          </div>
+        );
+      }}
+    </VariantSelector>
+  );
+}
 export function ProductForm({
   variants,
   showVariantTitle = false,
@@ -257,54 +316,14 @@ export function ProductForm({
   return (
     <div className="grid gap-10">
       <div className="grid gap-4">
-        <VariantSelector
-          handle={product.handle}
-          options={product.options}
+        <ProductVariantSelector
           variants={variants}
-        >
-          {({option}) => {
-            return (
-              <div
-                key={option.name}
-                className="flex flex-col flex-wrap gap-y-2 last:mb-0"
-              >
-                {showVariantTitle && (
-                  <Heading as="legend" size="lead" className="min-w-[4rem]">
-                    {option.name}
-                  </Heading>
-                )}
-                <div className="flex flex-wrap items-baseline gap-4">
-                  {USE_LISTBOX_VARIANT_SELECTOR ? (
-                    <ProductListbox option={option} />
-                  ) : (
-                    option.values.map(({value, isAvailable, isActive, to}) => (
-                      <Link
-                        key={option.name + value}
-                        to={to}
-                        preventScrollReset
-                        prefetch="intent"
-                        replace
-                        className={clsx(
-                          'leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200',
-                          isActive ? 'border-primary/50' : 'border-primary/0',
-                          isAvailable ? 'opacity-100' : 'opacity-50',
-                        )}
-                      >
-                        {value}
-                      </Link>
-                    ))
-                  )}
-                </div>
-              </div>
-            );
-          }}
-        </VariantSelector>
+          showVariantTitle={showVariantTitle}
+        />
         {selectedVariant && (
           <div className="grid items-stretch gap-4">
             {isOutOfStock ? (
-              <Button isThin width={'full'} variant="secondary" disabled>
-                <Text size={'fine'}>Sold out</Text>
-              </Button>
+              <SoldOutButton variants={variants} />
             ) : (
               <AddToCartButton
                 isThin
@@ -333,17 +352,7 @@ export function ProductForm({
             )}
             <div className={''}>
               <AnimatePresence initial={false} mode={'wait'}>
-                {isOutOfStock ? (
-                  <m.div
-                    key={'back-in-stock-btn'}
-                    initial={{opacity: 0, height: 45}}
-                    animate={{opacity: 1, height: 80}}
-                    transition={{ease: 'linear', duration: 0.2}}
-                    exit={{opacity: 0, height: 45}}
-                  >
-                    <BackInStockForm selectedVariantId={selectedVariant.id} />
-                  </m.div>
-                ) : (
+                {!isOutOfStock && (
                   <m.div
                     key={'shop-pay-btn'}
                     initial={{opacity: 0, height: 80}}
@@ -366,9 +375,70 @@ export function ProductForm({
     </div>
   );
 }
+function SoldOutButton({
+  variants,
+}: {
+  variants: ProductVariantFragmentFragment[];
+}) {
+  const {t} = useTranslation();
+  const {isOpen, openPopup, closePopup} = usePopup();
+  const {product} = useLoaderData<typeof loader>();
+  const [selectedVariant, setSelectedVariant] = useState(
+    product.selectedVariant?.id ?? '',
+  );
 
-function BackInStockForm({selectedVariantId}: {selectedVariantId: string}) {
-  return <div>BACK IN STOCK</div>;
+  return (
+    <div>
+      <Button
+        isThin
+        width={'full'}
+        variant="secondary"
+        as="button"
+        onClick={openPopup}
+        className={'text-fine font-semibold cursor-pointer'}
+      >
+        {t('product.soldOut')} — {t('product.notifyMe')}
+      </Button>
+      <Popup open={isOpen} onClose={closePopup} fullScreenOnMobile={false}>
+        <div className={'p-6'}>
+          <section>
+            <Heading as={'h2'} className={'uppercase font-medium text-lead'}>
+              NOTIFY ME WHEN BACK IN STOCK
+            </Heading>
+            <div>
+              <Text>
+                We will send you a notification when this product is back in
+                stock.
+              </Text>
+            </div>
+          </section>
+          <Section padding={'y'}>
+            <div className={'pb-6'}>
+              <Heading as={'h4'} size={'copy'} className={'mb-2'}>
+                {product.title}
+              </Heading>
+              <div className={'w-full'}>
+                <ProductVariantSelector
+                  showVariantTitle={false}
+                  variants={variants}
+                />
+              </div>
+            </div>
+            <KlaviyoBackInStock source={'popup'} variantId={selectedVariant} />
+          </Section>
+          <section>
+            <Heading size={'copy'} className={'font-medium'}>
+              Log In
+            </Heading>
+            <Link to={`/account`} className={'underline'}>
+              Sign in
+            </Link>{' '}
+            to your account to request a return or ask a question
+          </section>
+        </div>
+      </Popup>
+    </div>
+  );
 }
 
 function ProductListbox({option}: {option: VariantOption}) {

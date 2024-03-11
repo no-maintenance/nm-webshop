@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import {useEffect, useId, useMemo} from 'react';
-import {useFetcher} from '@remix-run/react';
+import {useFetcher, useParams} from '@remix-run/react';
 import type {
   Product,
   ProductSortKeys,
@@ -8,7 +8,8 @@ import type {
 
 import {Heading, ProductCard, Skeleton, Text} from '~/components';
 import {usePrefixPathWithLocale} from '~/lib/utils';
-import type { ApiAllProductsQuery, ProductCardFragment } from "storefrontapi.generated";
+import type {ProductCardFragment} from 'storefrontapi.generated';
+import {useRootLoaderData} from '~/root';
 
 interface FeaturedProductsProps {
   count: number;
@@ -45,6 +46,7 @@ export function FeaturedProducts({
   const {load, data} = useFetcher<{
     products: ProductCardFragment[];
   }>();
+  const params = useParams();
   const queryString = useMemo(
     () =>
       Object.entries({count, sortKey, query, reverse})
@@ -53,9 +55,7 @@ export function FeaturedProducts({
         .join('&'),
     [count, sortKey, query, reverse],
   );
-  const productsApiPath = usePrefixPathWithLocale(
-    `/api/products?${queryString}`,
-  );
+  const productsApiPath = `${params.lang}/api/products?${queryString}`;
 
   useEffect(() => {
     load(productsApiPath);
@@ -114,11 +114,12 @@ function FeatureProductsContent({
 
   return (
     <>
-      {products.map((product) => (
+      {products.map((product, i) => (
         <ProductCard
           product={product}
           key={product.id}
           onClick={onClick}
+          idx={i}
           quickAdd
         />
       ))}

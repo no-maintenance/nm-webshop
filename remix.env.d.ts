@@ -5,8 +5,8 @@
 import type {HydrogenCart} from '@shopify/hydrogen';
 import type {Storefront, CustomerClient} from '~/lib/type';
 import type {AppSession} from '~/lib/session.server';
-import { createContentfulClient } from "~/lib/createContentfulClient.server";
 import { I18n } from "~/i18n";
+import { createHygraphClient } from "~/lib/createHygraphClient.server";
 
 declare global {
   /**
@@ -18,12 +18,10 @@ declare global {
    * Declare expected Env parameter in fetch handler.
    */
   interface Env {
-    CONTENTFUL_ENVIRONMENT: string;
-    CONTENTFUL_PREV_TOKEN: string;
-    CONTENTFUL_PROD_TOKEN: string;
-    CONTENTFUL_ENV: 'production' | 'preview';
-    CONTENTFUL_TOKEN: string;
-    CONTENTFUL_SPACE_ID: string;
+    HYGRAPH_URL: string;
+    HYGRAPH_PROD_TOKEN: string;
+    HYGRAPH_DEV_TOKEN: string;
+    HYGRAPH_ENV: string;
     KLAVIYO_PRIVATE_KEY: string;
     KLAVIYO_COMPANY_ID: string;
     KLAVIYO_NEWSLETTER_ID: string;
@@ -49,8 +47,7 @@ declare module '@shopify/remix-oxygen' {
     cart: HydrogenCart;
     env: Env;
     i18n: I18n;
-    contentful: ReturnType<typeof createContentfulClient>;
-
+    hygraph: ReturnType<typeof createHygraphClient>
   }
 }
 

@@ -17,8 +17,7 @@ import type {
   CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
 
-import { useTranslation } from '~/i18n';
-
+import {useTranslation} from '~/i18n';
 import {
   Button,
   Heading,
@@ -28,9 +27,7 @@ import {
   FeaturedProducts,
   CountrySelector,
 } from '~/components';
-
-import { getInputStyleClasses } from "~/components/Form";
-
+import {getInputStyleClasses} from '~/components/Form';
 
 type Layouts = 'page' | 'drawer';
 
@@ -524,7 +521,6 @@ export function CartEmpty({
   const {y} = useScroll(scrollRef);
   const {t} = useTranslation();
 
-
   const container = {
     drawer: clsx([
       'content-start gap-4 pb-8 transition overflow-y-scroll md:gap-12 px-4 md:px-6 h-screen-no-nav md:pb-12',
@@ -539,9 +535,7 @@ export function CartEmpty({
   return (
     <div ref={scrollRef} className={container[layout]} hidden={hidden}>
       <section className="grid gap-6">
-        <Text format>
-          {t('layout.cart.empty')}
-        </Text>
+        <Text format>{t('layout.cart.empty')}</Text>
         <div>
           <Button onClick={onClose}>{t('layout.cart.continueShopping')}</Button>
         </div>

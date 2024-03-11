@@ -81,13 +81,13 @@ export function getSubFolderLocaleFromRequest({
   const matches = regex.exec(url.pathname) || [];
 
   if (matches.length < 3) {
-    console.log(
+    console.warn(
       `Failed to match a locale in ${request.url}\n using default locale`,
     );
     return defaultI18n;
   }
 
-  let locale = {
+  const locale = {
     isDefault: true,
     country: defaultI18n.country,
     language: defaultI18n.language,

@@ -114,6 +114,7 @@ export default function Search() {
                   key={product.id}
                   product={product}
                   loading={getImageLoadingPriority(i)}
+                  idx={i}
                 />
               ));
 

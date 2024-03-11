@@ -2,8 +2,8 @@ import {useLocation} from '@remix-run/react';
 import type {
   CountryCode,
   LanguageCode,
-  MoneyV2,
-} from '@shopify/hydrogen/storefront-api-types';
+  MoneyV2, ProductVariant
+} from "@shopify/hydrogen/storefront-api-types";
 import type {FulfillmentStatus} from '@shopify/hydrogen/customer-account-api-types';
 import typographicBase from 'typographic-base';
 
@@ -350,11 +350,21 @@ export const getLegacyId = (gid: string) => {
   return id ?? '';
 };
 
-// file: /utils.ts
-
-
 // Configure the i18n locale format. e.g this will match /fr-CA/ or /en-CA
 export const subfolderLocaleParser = createSubfolderLocaleParser({
   parser: ({COUNTRY, language, delimiter}) =>
     `/${language}${delimiter['-']}${COUNTRY}`,
 });
+
+export const parseNumberFromShopGid = (gid?: string) => {
+  if (!gid) return
+  const id = gid.split('/').pop();
+  return id ?? '';
+};
+
+export const getFirstAvailableVariant = (v: ProductVariant[]) => {
+  for (let i = 0; i < v.length; i++) {
+    if (v[i].availableForSale) return v[i];
+  }
+  return v[0];
+};

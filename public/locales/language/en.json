@@ -95,7 +95,8 @@
         },
         "consent": {
           "label": "I agree to receive the newsletter. See more about our Privacy Policy."
-        }
+        },
+        "success": "You have been successfully registered to our newsletter."
       },
       "contact": {
         "name": {
@@ -205,7 +206,8 @@
         "measurements": "Measurements"
       },
       "addToCart": "Add to Cart",
-      "soldOut": "Sold out",
+      "soldOut": "Sold Out",
+      "notifyMe": "Notify Me",
       "card": {
         "new": "New",
         "sale": "Sale"

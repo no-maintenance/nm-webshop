@@ -31,9 +31,9 @@ function root({
 }): SeoConfig<Organization> {
   return {
     title: shop?.name,
-    titleTemplate: '%s | Hydrogen Demo Store',
+    titleTemplate: '%s | No Maintenance',
     description: truncate(shop?.description ?? ''),
-    handle: '@shopify',
+    handle: '@nomaintenance',
     url,
     robots: {
       noIndex: false,
@@ -45,11 +45,8 @@ function root({
       name: shop.name,
       logo: shop.brand?.logo?.image?.url,
       sameAs: [
-        'https://twitter.com/shopify',
-        'https://facebook.com/shopify',
-        'https://instagram.com/shopify',
-        'https://youtube.com/shopify',
-        'https://tiktok.com/@shopify',
+        'https://instagram.com/nomaintenance',
+        'https://tiktok.com/@nomaintenance',
       ],
       url,
       potentialAction: {

@@ -1,7 +1,9 @@
 import clsx from 'clsx';
+import { ComponentProps } from "react";
 
 type IconProps = JSX.IntrinsicElements['svg'] & {
   direction?: 'up' | 'right' | 'down' | 'left';
+  viewbox?: string;
 };
 
 function Icon({
@@ -9,16 +11,17 @@ function Icon({
   className,
   fill = 'currentColor',
   stroke,
+  viewBox = '0 0 24 24',
   ...props
 }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
+      viewBox={viewBox}
       {...props}
       fill={fill}
       stroke={stroke}
-      className={clsx('w-5 h-5', className)}
+      className={clsx(className)}
     >
       {children}
     </svg>
@@ -133,18 +136,6 @@ export function IconSelect(props: IconProps) {
   );
 }
 
-export function IconBag(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <title>Bag</title>
-      <path
-        fillRule="evenodd"
-        d="M8.125 5a1.875 1.875 0 0 1 3.75 0v.375h-3.75V5Zm-1.25.375V5a3.125 3.125 0 1 1 6.25 0v.375h3.5V15A2.625 2.625 0 0 1 14 17.625H6A2.625 2.625 0 0 1 3.375 15V5.375h3.5ZM4.625 15V6.625h10.75V15c0 .76-.616 1.375-1.375 1.375H6c-.76 0-1.375-.616-1.375-1.375Z"
-      />
-    </Icon>
-  );
-}
-
 export function IconLogin(props: IconProps) {
   return (
     <Icon {...props}>
@@ -164,35 +155,11 @@ export function IconLogin(props: IconProps) {
   );
 }
 
-export function IconAccount(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <title>Account</title>
-      <path
-        fillRule="evenodd"
-        d="M9.9998 12.625c-1.9141 0-3.6628.698-5.0435 1.8611C3.895 13.2935 3.25 11.7221 3.25 10c0-3.728 3.022-6.75 6.75-6.75 3.7279 0 6.75 3.022 6.75 6.75 0 1.7222-.645 3.2937-1.7065 4.4863-1.3807-1.1632-3.1295-1.8613-5.0437-1.8613ZM10 18c-2.3556 0-4.4734-1.0181-5.9374-2.6382C2.7806 13.9431 2 12.0627 2 10c0-4.4183 3.5817-8 8-8s8 3.5817 8 8-3.5817 8-8 8Zm0-12.5c-1.567 0-2.75 1.394-2.75 3s1.183 3 2.75 3 2.75-1.394 2.75-3-1.183-3-2.75-3Z"
-      />
-    </Icon>
-  );
-}
-
 export function IconHelp(props: IconProps) {
   return (
     <Icon {...props}>
       <title>Help</title>
       <path d="M3.375 10a6.625 6.625 0 1 1 13.25 0 6.625 6.625 0 0 1-13.25 0ZM10 2.125a7.875 7.875 0 1 0 0 15.75 7.875 7.875 0 0 0 0-15.75Zm.699 10.507H9.236V14h1.463v-1.368ZM7.675 7.576A3.256 3.256 0 0 0 7.5 8.67h1.245c0-.496.105-.89.316-1.182.218-.299.553-.448 1.005-.448a1 1 0 0 1 .327.065c.124.044.24.113.35.208.108.095.2.223.272.383.08.154.12.34.12.558a1.3 1.3 0 0 1-.076.471c-.044.131-.11.252-.197.361-.08.102-.174.197-.283.285-.102.087-.212.182-.328.284a3.157 3.157 0 0 0-.382.383c-.102.124-.19.27-.262.438a2.476 2.476 0 0 0-.164.591 6.333 6.333 0 0 0-.043.81h1.179c0-.263.021-.485.065-.668a1.65 1.65 0 0 1 .207-.47c.088-.139.19-.263.306-.372.117-.11.244-.223.382-.34l.35-.306c.116-.11.218-.23.305-.361.095-.139.168-.3.219-.482.058-.19.087-.412.087-.667 0-.35-.062-.664-.186-.942a1.881 1.881 0 0 0-.513-.689 2.07 2.07 0 0 0-.753-.427A2.721 2.721 0 0 0 10.12 6c-.4 0-.764.066-1.092.197a2.36 2.36 0 0 0-.83.536c-.225.234-.4.515-.523.843Z" />
-    </Icon>
-  );
-}
-
-export function IconSearch(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <title>Search</title>
-      <path
-        fillRule="evenodd"
-        d="M13.3 8.52a4.77 4.77 0 1 1-9.55 0 4.77 4.77 0 0 1 9.55 0Zm-.98 4.68a6.02 6.02 0 1 1 .88-.88l4.3 4.3-.89.88-4.3-4.3Z"
-      />
     </Icon>
   );
 }
@@ -217,16 +184,14 @@ export function IconCheck({
 
 export function IconXMark({
   stroke = 'currentColor',
+  title = 'Delete',
+  viewbox = '0 0 25px 24px',
   ...props
-}: React.ComponentProps<typeof Icon>) {
+}: ComponentProps<typeof Icon> & {title?: string}) {
   return (
-    <Icon {...props} fill="transparent" stroke={stroke}>
-      <title>Delete</title>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M6 18L18 6M6 6l12 12"
-      />
+    <Icon {...props} fill="transparent" stroke={stroke} viewBox={viewbox}>
+      <title>{title}</title>
+      <path stroke="#514F4F" d="M20.335 1.081L1 23m23-2.273L2.517 1"></path>
     </Icon>
   );
 }
@@ -267,6 +232,73 @@ export function IconFilters(props: IconProps) {
       <line x1="4.37114e-08" y1="13.5" x2="8" y2="13.5" />
       <line x1="11" y1="13.5" x2="14" y2="13.5" />
       <circle cx="9.5" cy="13.5" r="2" />
+    </Icon>
+  );
+}
+
+export function IconGlobe(props: IconProps) {
+  return (
+    <Icon {...props} stroke={props.stroke || 'currentColor'}>
+      <title>Country & Language</title>
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM2 12h20"
+      ></path>
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"
+      ></path>
+    </Icon>
+  );
+}
+
+export function IconAccount(props: IconProps) {
+  return (
+    <Icon {...props} fill="transparent" stroke={props.stroke || 'currentColor'}>
+      <title>Account</title>
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"
+      ></path>
+    </Icon>
+  );
+}
+
+export function IconCart(props: IconProps) {
+  return (
+    <Icon {...props} fill="transparent" stroke={props.stroke || 'currentColor'}>
+      <title>Cart</title>
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M9 22a1 1 0 100-2 1 1 0 000 2zM20 22a1 1 0 100-2 1 1 0 000 2zM1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"
+      ></path>
+    </Icon>
+  );
+}
+
+export function IconSearch(props: IconProps) {
+  return (
+    <Icon {...props} fill="transparent" stroke={props.stroke || 'currentColor'}>
+      <title>Search</title>
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35"
+      ></path>
     </Icon>
   );
 }

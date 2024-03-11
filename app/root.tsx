@@ -32,11 +32,12 @@ import {
 
 import favicon from '../public/favicon.svg';
 
-import fonts from './styles/custom-font.css';
 import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
 import styles from './styles/app.css';
-import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
+import hygraphStyles from './styles/hygraph.css';
+import customFont from './styles/custom-font.css'
+import {parseMenu} from './lib/utils';
 import {useAnalytics} from './hooks/useAnalytics';
 
 // This is important to avoid re-fetching root queries on sub-navigations
@@ -60,8 +61,9 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 
 export const links: LinksFunction = () => {
   return [
-    {rel: 'stylesheet', href: fonts},
     {rel: 'stylesheet', href: styles},
+    {rel: 'stylesheet', href: hygraphStyles},
+    {rel: 'stylesheet', href: customFont},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',

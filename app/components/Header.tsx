@@ -1,28 +1,35 @@
 import {Await, Form, useLocation, useParams} from '@remix-run/react';
+import type {ReactNode, RefObject} from 'react';
+import {Fragment, Suspense, useEffect, useMemo, useRef, useState} from 'react';
+import {CartForm, Image} from '@shopify/hydrogen';
+import {Menu, Search, User} from 'react-feather';
+import {AnimatePresence, m} from 'framer-motion';
 import {
-  Dispatch,
-  ReactNode,
-  useEffect,
-  useRef,
-  Suspense,
-  useMemo,
-  useState,
-  MutableRefObject,
-  RefObject,
-} from 'react';
-import {CartForm} from '@shopify/hydrogen';
-import {Menu, Search, ShoppingCart, User} from 'react-feather';
-import { useTranslation } from '~/i18n';
+  disableBodyScroll,
+  enableBodyScroll,
+  clearAllBodyScrollLocks,
+} from 'body-scroll-lock';
 
-import type {ChildEnhancedMenuItem, EnhancedMenu} from '~/lib/utils';
+import Hamburger from '~/components/hamburger';
+import {useTranslation} from '~/i18n';
+import type {EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
 import {Drawer, useDrawer} from '~/components/Drawer';
-import {Link, Input, Button, MobileDrawer} from '~/components';
+import {
+  IconAccount,
+  IconCart,
+  IconGlobe,
+  IconSearch,
+  Input,
+  Link,
+  MobileDrawer,
+} from '~/components';
 import {useRootLoaderData} from '~/root';
 import {CartLoading} from '~/components/CartLoading';
 import {Cart} from '~/components/Cart';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 import {Heading, Text} from '~/components/Text';
+import {Footer} from '~/components/Footer';
 
 export function Header({
   title,
@@ -53,7 +60,6 @@ export function Header({
       {desktopMenu && (
         <DesktopHeader title={title} menu={desktopMenu} openCart={openCart} />
       )}
-      {mobileMenu && <MobileHeader menu={mobileMenu} title={title} />}
     </>
   );
 }
@@ -73,6 +79,7 @@ function MobileHeader({title, menu}: {title: string; menu: EnhancedMenu}) {
     if (lastLocationKey.current === location.key) return;
     lastLocationKey.current = location.key;
     closeMenu();
+    setOpenDropdown(null);
   }, [location]);
   return (
     <>
@@ -96,10 +103,10 @@ function MobileHeader({title, menu}: {title: string; menu: EnhancedMenu}) {
               isMenuOpen ? 'pointer-events-none cursor-pointer' : ''
             }`}
           >
-            <Menu strokeWidth={1} />
+            <Menu strokeWidth={2} />
           </button>
           <button onClick={() => setOpenDropdown((d) => (d === 1 ? null : 1))}>
-            <Search strokeWidth={1} size={20} />
+            <Search strokeWidth={2} size={24} />
           </button>
           <Dropdown idx={1} openDropdown={openDropdown}>
             <DesktopSearch isOpen={openDropdown === 1} />
@@ -124,30 +131,12 @@ function MobileHeader({title, menu}: {title: string; menu: EnhancedMenu}) {
             to="/account"
             className="relative flex items-center justify-center w-8 h-8 md:block"
           >
-            <User size={20} strokeWidth={1} />
+            <User size={24} strokeWidth={2} />
           </Link>
           <CartCount isIcon={true} openCart={() => null} />
         </div>
       </header>
     </>
-  );
-}
-
-export function MenuDrawer({
-  isOpen,
-  onClose,
-  menu,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  menu: EnhancedMenu;
-}) {
-  return (
-    <Drawer open={isOpen} onClose={onClose} openFrom="left" heading="Menu">
-      <div className="grid">
-        <MenuMobileNav menu={menu} onClose={onClose} />
-      </div>
-    </Drawer>
   );
 }
 
@@ -181,6 +170,12 @@ function MenuMobileNav({
   );
 }
 
+enum DropdownState {
+  CLOSED,
+  HAMBURGER,
+  SEARCH,
+  COUNTRYSELECTOR,
+}
 function DesktopHeader({
   menu,
   openCart,
@@ -190,217 +185,187 @@ function DesktopHeader({
   menu?: EnhancedMenu;
   title: string;
 }) {
-  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-  const params = useParams();
+  const [openDropdown, setOpenDropdown] = useState<DropdownState>(
+    DropdownState.CLOSED,
+  );
+
   const location = useLocation();
+  const menuRef = useRef<HTMLDivElement>(null);
+  const isHome = useIsHomePath();
+  const isOpen = (o: DropdownState) => o === openDropdown;
+  const toggle = (o: DropdownState) =>
+    setOpenDropdown(isOpen(o) ? DropdownState.CLOSED : o);
   useEffect(() => {
-    setOpenDropdown(null);
+    setOpenDropdown(DropdownState.CLOSED);
+    clearAllBodyScrollLocks();
   }, [location]);
 
-  const DesktopNavItemsRight = () => (
-    <nav className={'flex-1 flex justify-end items-center uppercase gap-10'}>
-      <Text
-        onClick={() =>
-          setOpenDropdown(
-            openDropdown === (menu?.items.length ?? 1)
-              ? null
-              : menu?.items.length ?? 1,
-          )
-        }
-        className={'cursor-pointer font-normal'}
-        size={'inherit'}
-      >
-        Search
-      </Text>
-      <Dropdown idx={menu?.items.length ?? 1} openDropdown={openDropdown}>
-        <DesktopSearch isOpen={openDropdown == menu?.items.length ?? 1} />
-      </Dropdown>
-      <AccountLink />
-      <CartCount isIcon={false} openCart={openCart} />
-    </nav>
-  );
-
-  const DesktopNavItemsLeft = () => (
-    <nav className="flex pl-0 flex-1 items-center gap-10 uppercase justify-left w-full items-center">
-      {/* Top level menu items */}
-      {(menu?.items || []).map((item, idx) => {
-        if (item.items.length) {
-          return (
-            <div key={`${item.id}--menu-item`}>
-              <Text
-                as={'span'}
-                className={` cursor-pointer ${
-                  openDropdown === idx ? 'font-bold' : 'font-normal'
-                }`}
-                size={'inherit'}
-                onClick={() =>
-                  setOpenDropdown(openDropdown === idx ? null : idx)
-                }
-              >
-                {item.title}
-              </Text>
-              <div className={'sub-menu'}>
-                <Dropdown openDropdown={openDropdown} idx={idx}>
-                  <MegaMenu
-                    items={item.items}
-                    setOpenDropdown={setOpenDropdown}
-                  />
-                </Dropdown>
-              </div>
-            </div>
-          );
-        } else {
-          return (
-            <Link
-              onClick={() => setOpenDropdown(null)}
-              key={`${item.id}--no-megamenu`}
-              to={item.to}
-              target={item.target}
-              prefetch="intent"
-              className={''}
-            >
-              {item.title}
-            </Link>
-          );
-        }
-      })}
-    </nav>
-  );
   return (
     <header
       role="banner"
-      className={`bg-contrast text-primary hidden h-nav md:flex items-center sticky z-40 top-0 justify-between w-full leading-none gap-8 gutter py-8 `}
+      className={`bg-contrast text-primary h-nav flex items-center sticky z-40 top-0 justify-between w-full leading-none gap-8 gutter py-8 `}
     >
       <div className="flex gap-12 w-full items-center">
-        <DesktopNavItemsLeft />
-        <div className={'flex-1 text-center'}>
-          <Link
-            className=" uppercase text-2xl whitespace-nowrap"
-            to="/"
-            prefetch="intent"
+        <div className={'flex-1'}>
+          <div className={'-ml-4'}>
+            <Hamburger
+              size={25}
+              label={'main menu'}
+              toggled={isOpen(DropdownState.HAMBURGER)}
+              toggle={() => toggle(DropdownState.HAMBURGER)}
+            />
+          </div>
+          <FullScreenNav open={isOpen(DropdownState.HAMBURGER)} menu={menu} />
+        </div>
+        <Link
+          className="flex-1 flex items-center self-center leading-[3rem] md:leading-[4rem] justify-center grow w-full h-full"
+          to="/"
+        >
+          <Heading
+            className="text-center uppercase text-[20px] md:text-2xl lg:text-3xl xl:text-4xl whitespace-nowrap"
+            as={isHome ? 'h1' : 'h2'}
           >
             {title}
-          </Link>
-        </div>
-        <DesktopNavItemsRight />
+          </Heading>
+        </Link>
+
+        <nav className={'flex-1'}>
+          <ul className={' flex justify-end items-center uppercase gap-10'}>
+            <li className={'w-7 h-7 hidden md:block'}>
+              <button onClick={() => toggle(DropdownState.SEARCH)}>
+                <IconSearch strokeWidth={2} width={'100%'} height={'100%'} />
+              </button>
+              <Dropdown
+                menuRef={menuRef}
+                idx={DropdownState.SEARCH}
+                openDropdown={openDropdown}
+              >
+                <DesktopSearch isOpen={isOpen(DropdownState.SEARCH)} />
+              </Dropdown>
+            </li>
+            <li className={'w-7 h-7 hidden md:block'}>
+              <button onClick={() => toggle(DropdownState.COUNTRYSELECTOR)}>
+                <IconGlobe
+                  fill={'transparent'}
+                  width={'100%'}
+                  height={'100%'}
+                  viewBox={'0 0 24 24'}
+                />
+              </button>
+            </li>
+            <li className={'w-7 h-7 hidden md:block'}>
+              <AccountLink />
+            </li>
+            <li className={'w-7 h-7'}>
+              <CartCount isIcon={true} openCart={openCart} />
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );
 }
+interface FullScreenNavProps {
+  open: boolean;
+}
 
-function MegaMenu({
-  items,
-  setOpenDropdown,
-}: {
-  items: ChildEnhancedMenuItem[];
-  setOpenDropdown: Dispatch<number | null>;
-}) {
-  const CloseIcon = () => (
-    <svg
-      width="13"
-      height="12"
-      viewBox="0 0 13 12"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M9.99993 1.03716L0.999926 11.0372M11.7061 10L1.70606 1"
-        stroke="#514F4F"
-      />
-    </svg>
-  );
-  const [openSubmenu, setOpenSubmenu] = useState<number>(0);
-  const {t} = useTranslation();
+const FullScreenNav = ({
+  open,
+  menu,
+}: FullScreenNavProps & {menu?: EnhancedMenu}) => {
+  const root = useRootLoaderData();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const containerVariants = {
+    hidden: {opacity: 0},
+    visible: {opacity: 1, transition: {staggerChildren: 0.1}},
+  };
+
+  const itemVariants = {
+    hidden: {opacity: 0},
+    visible: {opacity: 1},
+  };
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    if (open) {
+      disableBodyScroll(scrollRef.current);
+    } else {
+      enableBodyScroll(scrollRef.current);
+    }
+  }, [open]);
   return (
-    <div className={'gutter pb-12 mega-menu relative'}>
-      <Button
-        variant={'unstyled'}
-        onClick={() => setOpenDropdown(null)}
-        className={'absolute right-6 top-0'}
-      >
-        <CloseIcon />
-      </Button>
-      <div className={'uppercase grid grid-cols-2'}>
-        <div>
-          <Heading as={'h3'} size={'fine'} className={'categories pb-4'}>
-            {t('layout.header.headline.categories')}
-          </Heading>
-          {(items || []).map((item, idx) => (
-            <div
-              key={`top-level--${idx}`}
-              className={`mr-auto text-left capitalize mega-menu-fade`}
-            >
-              {item?.items.length ? (
-                <Button
-                  onClick={() => setOpenSubmenu(idx)}
-                  variant={'unstyled'}
-                  className={`uppercase  sub-menu-title text-fine pb-1 ${
-                    idx === openSubmenu ? 'font-bold' : ''
-                  }`}
-                >
-                  {item.title}
-                </Button>
-              ) : (
-                <Link
-                  to={item.to}
-                  className={'pb-1 block uppercase text-fine'}
-                  onClick={() => setOpenDropdown(null)}
-                >
-                  {item.title}
-                </Link>
+    <AnimatePresence>
+      {open && (
+        <m.div
+          className="fixed inset-0 bg-white justify-center z-60"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
+          <div ref={scrollRef} className={'nav-offset flex flex-wrap h-full'}>
+            <div className={'flex-1 gutter w-full '}>
+              <div
+                className={
+                  ' flex items-center justify-center relative max-w-screen-2xl mx-12 md:mx-24 sm:mx-16 mt-8 sm:mt-6 md:mt-0'
+                }
+              >
+                <m.ul className="space-y-4 flex-1 ">
+                  {menu?.items.map((item) => (
+                    <m.li key={item.id} variants={itemVariants}>
+                      <Link
+                        className="font-medium sm:text-display xl:text-oversize text-heading animated-underline"
+                        to={item.to}
+                      >
+                        {item.title}
+                      </Link>
+                    </m.li>
+                  ))}
+                </m.ul>
+                <div className={'hidden md:block'}>
+                  <video
+                    className={'absolute top-0 right-0 h-full object-cover '}
+                    controls={false}
+                    muted
+                    loop
+                    playsInline
+                    autoPlay
+                  >
+                    <source
+                      src={
+                        'https://res.cloudinary.com/do8kdtxoi/video/upload/v1693522347/NM_JAE_1_ra7hrp.mp4'
+                      }
+                    ></source>
+                  </video>
+                </div>
+              </div>
+            </div>
+            <div className={'flex-shrink-0 w-full flex justify-end border-t'}>
+              {root.layout?.footerMenu && (
+                <Footer menu={root.layout.footerMenu} />
               )}
             </div>
-          ))}
-        </div>
-        <div className={'pl-9'}>
-          <Heading as={'h3'} size={'fine'} className={'pb-10'}>
-            {t('layout.header.headline.collections')}
-          </Heading>
-          {(items || []).map(
-            (item: ChildEnhancedMenuItem, idx) =>
-              item?.items && (
-                <nav
-                  key={`submenu--${idx}`}
-                  className={`${idx === openSubmenu ? '' : 'hidden'}`}
-                >
-                  {item.items.map(
-                    (subItem, idx) =>
-                      subItem.url && (
-                        <div
-                          key={`sub-menu-item--${idx}`}
-                          className={` sub-menu-item--${idx}`}
-                        >
-                          <Link
-                            to={subItem.to}
-                            className={'text-fine pb-3 block'}
-                            onClick={() => setOpenDropdown(null)}
-                          >
-                            {subItem.title}
-                          </Link>
-                        </div>
-                      ),
-                  )}
-                </nav>
-              ),
-          )}
-        </div>
-      </div>
-    </div>
+          </div>
+        </m.div>
+      )}
+    </AnimatePresence>
   );
-}
+};
 
 function Dropdown({
   idx,
   children,
   openDropdown,
+  menuRef,
 }: {
   idx: number;
   children: ReactNode;
   openDropdown: number | null;
+  menuRef?: RefObject<HTMLDivElement>;
 }) {
   return (
     <>
       <div
+        ref={menuRef}
         className={`${
           openDropdown === idx ? 'opened' : ''
         } absolute left-0 top-0 w-full desktop-nav bg-contrast -z-10`}
@@ -434,7 +399,7 @@ function DesktopSearch({isOpen}: {isOpen: boolean}) {
         type="submit"
         className="relative items-center justify-center w-8 h-8 focus:ring-primary/5 hidden"
       >
-        {/*<IconSearch />*/}
+        <IconSearch strokeWidth={2} />
       </button>
     </Form>
   );
@@ -462,17 +427,29 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   );
 }
 
-function AccountLink({className}: {className?: string}) {
+function AccountLink({
+  className,
+  useIcon = true,
+}: {
+  className?: string;
+  useIcon?: boolean;
+}) {
   const rootData = useRootLoaderData();
   const isLoggedIn = rootData?.isLoggedIn;
   const {t} = useTranslation();
   return (
     <Link to="/account" className={className}>
-      <Suspense fallback={'Account'}>
-        <Await resolve={isLoggedIn} errorElement={'Log In'}>
-          {(isLoggedIn) => (isLoggedIn ? t('nav.account') : t('account.login'))}
-        </Await>
-      </Suspense>
+      {useIcon ? (
+        <IconAccount strokeWidth={2} />
+      ) : (
+        <Suspense fallback={'Account'}>
+          <Await resolve={isLoggedIn} errorElement={'Log In'}>
+            {(isLoggedIn) =>
+              isLoggedIn ? t('nav.account') : t('account.login')
+            }
+          </Await>
+        </Suspense>
+      )}
     </Link>
   );
 }
@@ -480,7 +457,9 @@ function AccountLink({className}: {className?: string}) {
 function CartCount({
   openCart,
   isIcon = true,
+  linkType = 'drawer',
 }: {
+  linkType?: 'drawer' | 'page';
   openCart: () => void;
   isIcon?: boolean;
 }) {
@@ -519,14 +498,30 @@ function CartCount({
       </Suspense>
     );
   } else {
-    return (
+    return linkType === 'drawer' ? (
+      <button
+        onClick={() => openCart()}
+        className={
+          'cursor-pointer font-normal text-inherit relative flex items-center justify-end focus:ring-primary/5 w-7 h-7'
+        }
+      >
+        <IconCart strokeWidth={2} />
+        <Suspense fallback={<Badge count={0} openCart={openCart} />}>
+          <Await resolve={rootData?.cart}>
+            {(cart) => (
+              <Badge openCart={openCart} count={cart?.totalQuantity || 0} />
+            )}
+          </Await>
+        </Suspense>
+      </button>
+    ) : (
       <Link
         className={
-          'cursor-pointer font-normal text-inherit relative flex items-center justify-end  sm:w-6 h-6 focus:ring-primary/5'
+          'cursor-pointer font-normal text-inherit relative flex items-center justify-end focus:ring-primary/5 w-7 h-7'
         }
         to={params.lang ? `/${params.lang}/cart` : '/cart'}
       >
-        <ShoppingCart strokeWidth={1} size={20} />
+        <IconCart strokeWidth={2} />
         <Suspense fallback={<Badge count={0} openCart={openCart} />}>
           <Await resolve={rootData?.cart}>
             {(cart) => (

@@ -15,15 +15,7 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import {
-  PageHeader,
-  Section,
-  Text,
-  SortFilter,
-  Grid,
-  ProductCard,
-  Button,
-} from '~/components';
+import {Section, SortFilter, Grid, ProductCard, Button} from '~/components';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {routeHeaders} from '~/data/cache';
 import {seoPayload} from '~/lib/seo.server';
@@ -213,7 +205,6 @@ function ProductsLoadedOnScroll({
       });
     }
   }, [inView, navigate, state, nextPageUrl, hasNextPage]);
-
   return (
     <Grid layout="products" data-test="product-grid">
       {nodes.map((product: any, i: number) => (
@@ -221,6 +212,7 @@ function ProductsLoadedOnScroll({
           key={product.id}
           product={product}
           loading={getImageLoadingPriority(i)}
+          idx={i}
         />
       ))}
     </Grid>

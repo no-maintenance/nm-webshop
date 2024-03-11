@@ -8,15 +8,15 @@ import {
   cartGetIdDefault,
   cartSetIdDefault,
   createCartHandler,
+  createCustomerAccountClient,
   createStorefrontClient,
   storefrontRedirect,
-  createCustomerAccountClient,
 } from '@shopify/hydrogen';
 
 import {AppSession} from '~/lib/session.server';
-import {getLocaleFromRequest, subfolderLocaleParser} from '~/lib/utils';
-import {createContentfulClient} from '~/lib/createContentfulClient.server';
+import {subfolderLocaleParser} from '~/lib/utils';
 import {getI18n} from '~/i18n/server';
+import {createHygraphClient} from '~/lib/createHygraphClient.server';
 
 import defaultCountry from './public/locales/country/US.json';
 import defaultLanguage from './public/locales/language/en.json';
@@ -62,13 +62,7 @@ export default {
         strategy: 'subfolder',
         waitUntil,
       });
-      console.log('i18n',i18n)
 
-      const contentful = createContentfulClient({
-        env,
-        cache,
-        waitUntil,
-      });
       /**
        * Create Hydrogen's Storefront client.
        */
@@ -83,6 +77,12 @@ export default {
         storefrontHeaders: getStorefrontHeaders(request),
       });
 
+      const hygraph = createHygraphClient({
+        storefront,
+        env,
+        cache,
+        waitUntil,
+      });
       /**
        * Create a client for Customer Account API.
        */
@@ -115,7 +115,7 @@ export default {
           customerAccount,
           cart,
           env,
-          contentful,
+          hygraph,
         }),
       });
 

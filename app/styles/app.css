@@ -1,22 +1,22 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
-
 /* Tokens */
 :root {
   --color-primary: 20 20 20; /* Text, buttons, etc. */
   --color-contrast: 250 250 250; /* Backgrounds, borders, etc. */
-  --color-notice: 191 72 0; /* Labels like "On sale" */
-  --color-accent: 106 96 84; /* Labels like "On sale" */
+  --color-error: 204 0 0; /* Labels like "Error" / red */
+  --color-notice: 191 72 0; /* brown  */
+  --color-accent: 106 96 84; /* green/grey  */
   --font-size-fine: 0.8rem; /* text-xs */
   --font-size-copy: 0.9rem; /* text-base */
   --font-size-lead: 1.125rem; /* text-lg */
   --font-size-mid: 1.5rem;
   --font-size-heading: 2rem; /* text-2xl */
   --font-size-display: 3rem; /* text-4xl */
+  --font-size-oversize: 3.5rem;
   --color-shop-pay: #5a31f4;
   --shop-pay-button--width: 100%; /* Sets the width for the shop-pay-button web component */
-  --height-nav: 4.5rem;
+  --height-nav: 5rem;
   --screen-height: 100vh;
   --screen-height-dynamic: 100vh;
 
@@ -24,6 +24,7 @@
     --height-nav: 6rem;
     --font-size-heading: 2.25rem; /* text-4xl */
     --font-size-display: 3.75rem; /* text-6xl */
+    --font-size-oversize: 4.5rem;
   }
   @supports (height: 100svh) {
     --screen-height: 100svh;
@@ -133,8 +134,17 @@ shop-pay-button {
     @apply grid w-full snap-x snap-mandatory scroll-px-6 grid-flow-col justify-start overflow-x-scroll px-6 pb-4 gap-x-3 md:gap-x-6 xl:gap-x-8;
   }
 }
-
+@tailwind utilities;
 @layer utilities {
+  .nav-offset {
+    padding-top: var(--height-nav)
+  }
+  .z-60 {
+    z-index: 60;
+  }
+  .z-100 {
+    z-index: 100;
+  }
   .gutter {
     @apply px-4 md:px-6 lg:px-8 xl:px-10;
   }
@@ -198,6 +208,34 @@ shop-pay-button {
       @apply aspect-[inherit] w-full object-cover;
     }
   }
+  .animated-underline {
+    position: relative;
+    &.red::after {
+      @apply bg-error
+    }
+    @apply pb-1;
+  }
+  .animated-underline:hover::after {
+    left: 0;
+    right: auto;
+    width: 100%;
+  }
+  .animated-underline::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    width: 0;
+    bottom: 0;
+    background: #2e2e2e;
+    height: 1px;
+    transition: width 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) 0s;
+  }
+  .underline {
+    @apply underline-offset-4;
+  }
+
+
 }
 
 .size-chart {
@@ -214,7 +252,6 @@ shop-pay-button {
     padding: 10px 0 8px;
   }
 }
-
 .desktop-nav {
   z-index: -1;
   transition: all 0.5s;

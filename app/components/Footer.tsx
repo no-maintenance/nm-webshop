@@ -1,12 +1,10 @@
 import {Link} from '@remix-run/react';
 import {Fragment} from 'react';
 
+import type {ChildEnhancedMenuItem, EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
-import type {EnhancedMenu, ChildEnhancedMenuItem} from '~/lib/utils';
 import {Heading, Section} from '~/components/Text';
-import {CountrySelector} from '~/components/';
 import {KlaviyoNewsletter} from '~/components/KlavivyoForm';
-import { LanguageSelector } from "~/components/LanguageSelector";
 
 export function Footer({menu}: {menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
@@ -21,51 +19,36 @@ export function Footer({menu}: {menu?: EnhancedMenu}) {
       padding={'x'}
       as="footer"
       role="contentinfo"
-      className={`bg-accent/60 grid mt-8 items-center w-full pt-8 pb-6 gutter gap-2 md:gap-4 grid-cols-1 md:grid-cols-2`}
+      className={`grid sm:mt-8 items-center w-full pt-8 pb-6 gutter gap-2 md:gap-4 grid-cols-1 md:grid-cols-2`}
     >
-      <FooterNewsletter />
       <FooterMenu menu={menu} />
-      <h6 className={'text-copy mt-8'}>© No Maintenance Corp. 2023</h6>
-    </Section>
-  );
-}
-
-function FooterNewsletter() {
-  return (
-    <>
-      <Heading
-        size={'copy'}
-        key="newsletter-title"
-        className="col-span-1 md:col-span-2"
+      <div className={'col-span-2 sm:col-span-1 flex sm:justify-center'}>
+        <div className={'sm:max-w-xs w-full max-w-[295px]'}>
+          <KlaviyoNewsletter hasSubmitBtn={true} />
+        </div>
+      </div>
+      <h6
+        className={
+          'col-span-2 text-mid sm:text-heading font-bold uppercase sm:mt-8 sm:mb-8 '
+        }
       >
-        Newsletter
-      </Heading>
-      <KlaviyoNewsletter />
-    </>
+        © No Maintenance Corp. 2024
+      </h6>
+    </Section>
   );
 }
 
 function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
   if (item.to.startsWith('http')) {
     return (
-      <a
-        href={item.to}
-        target={item.target}
-        rel="noopener noreferrer"
-        className={'col-span-1'}
-      >
+      <a href={item.to} target={item.target} rel="noopener noreferrer">
         {item.title}
       </a>
     );
   }
 
   return (
-    <Link
-      to={item.to}
-      target={item.target}
-      prefetch="intent"
-      className={'col-span-1'}
-    >
+    <Link to={item.to} target={item.target} prefetch="intent">
       {item.title}
     </Link>
   );
@@ -73,22 +56,14 @@ function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
 
 function FooterMenu({menu}: {menu?: EnhancedMenu}) {
   return (
-    <nav
-      className={
-        'flex gap-y-0 gap-x-6 justify-start md:justify-end flex-wrap md:flex-nowrap'
-      }
-    >
-      <div
-        className={
-          'flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-0 gap-x-6 flex-wrap justify-between p-0 m-0 font-sans text-left text-primary '
-        }
-      >
+    <nav>
+      <ul className={'gap-2 grid grid-cols-2'}>
         {(menu?.items || []).map((item: ChildEnhancedMenuItem, idx) => (
-          <Fragment key={item.id}>
+          <li key={item.id} className={'col-span-1 sm:col-span-2 py-1'}>
             <FooterLink item={item} />
-          </Fragment>
+          </li>
         ))}
-      </div>
+      </ul>
       <div
         className={'row-span-1 sm:row-span-2 w-full md:w-fit hidden md:block'}
       >

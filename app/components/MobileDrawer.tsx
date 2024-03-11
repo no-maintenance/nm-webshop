@@ -626,7 +626,7 @@ const CartLink = () => {
       <Suspense fallback={'Shopping Bag'}>
         <Await resolve={rootData?.cart}>
           {(cart) =>
-            cart.totalQuantity
+            cart?.totalQuantity
               ? `Shopping Bag (${
                   cart?.totalQuantity ? cart?.totalQuantity : 0
                 })`

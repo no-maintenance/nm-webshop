@@ -2,7 +2,6 @@ import {
   json,
   redirect,
   type ActionFunction,
-  type AppLoadContext,
 } from '@shopify/remix-oxygen';
 import {
   Form,
