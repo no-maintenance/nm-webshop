@@ -313,7 +313,7 @@ const FullScreenNav = ({
                   {menu?.items.map((item) => (
                     <m.li key={item.id} variants={itemVariants}>
                       <Link
-                        className="font-medium sm:text-display xl:text-oversize text-heading animated-underline"
+                        className="font-medium text-display xl:text-oversize animated-underline"
                         to={item.to}
                       >
                         {item.title}
@@ -339,7 +339,8 @@ const FullScreenNav = ({
                 </div>
               </div>
             </div>
-            <div className={'flex-shrink-0 w-full flex justify-end border-t'}>
+            <div className={'flex-shrink-0 w-full flex justify-end flex-col'}>
+              <div className={'flex-1 border-b'}></div>
               {root.layout?.footerMenu && (
                 <Footer menu={root.layout.footerMenu} />
               )}
