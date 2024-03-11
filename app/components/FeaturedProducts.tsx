@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import {useEffect, useId, useMemo} from 'react';
-import {useFetcher} from '@remix-run/react';
+import {useFetcher, useParams} from '@remix-run/react';
 import type {
   Product,
   ProductSortKeys,
@@ -8,6 +8,8 @@ import type {
 
 import {Heading, ProductCard, Skeleton, Text} from '~/components';
 import {usePrefixPathWithLocale} from '~/lib/utils';
+import type {ProductCardFragment} from 'storefrontapi.generated';
+import {useRootLoaderData} from '~/root';
 
 interface FeaturedProductsProps {
   count: number;
@@ -23,6 +25,9 @@ interface FeaturedProductsProps {
  * Display a grid of products and a heading based on some options.
  * This components uses the storefront API products query
  * @param count number of products to display
+ * @param heading
+ * @param layout
+ * @param onClose
  * @param query a filtering query
  * @param reverse wether to reverse the product results
  * @param sortKey Sort the underlying list by the given key.
@@ -38,7 +43,10 @@ export function FeaturedProducts({
   reverse,
   sortKey = 'BEST_SELLING',
 }: FeaturedProductsProps) {
-  const {load, data} = useFetcher<{products: Product[]}>();
+  const {load, data} = useFetcher<{
+    products: ProductCardFragment[];
+  }>();
+  const params = useParams();
   const queryString = useMemo(
     () =>
       Object.entries({count, sortKey, query, reverse})
@@ -47,9 +55,7 @@ export function FeaturedProducts({
         .join('&'),
     [count, sortKey, query, reverse],
   );
-  const productsApiPath = usePrefixPathWithLocale(
-    `/api/products?${queryString}`,
-  );
+  const productsApiPath = `${params.lang}/api/products?${queryString}`;
 
   useEffect(() => {
     load(productsApiPath);
@@ -85,11 +91,10 @@ function FeatureProductsContent({
   products,
 }: {
   count: FeaturedProductsProps['count'];
-  products: Product[] | undefined;
+  products: ProductCardFragment[] | undefined;
   onClick?: () => void;
 }) {
   const id = useId();
-
   if (!products) {
     return (
       <>
@@ -109,11 +114,12 @@ function FeatureProductsContent({
 
   return (
     <>
-      {products.map((product) => (
+      {products.map((product, i) => (
         <ProductCard
           product={product}
           key={product.id}
           onClick={onClick}
+          idx={i}
           quickAdd
         />
       ))}

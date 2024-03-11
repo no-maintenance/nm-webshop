@@ -20,16 +20,24 @@ import {
 } from '@remix-run/react';
 import {ShopifySalesChannel, Seo, useNonce} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
+import {LazyMotion} from 'framer-motion';
 
 import {Layout} from '~/components';
 import {seoPayload} from '~/lib/seo.server';
+import {
+  FOOTER_MENU_HANDLE,
+  DESKTOP_HEADER_HANDLE,
+  MOBILE_HEADER_HANDLE,
+} from '~/lib/const';
 
 import favicon from '../public/favicon.svg';
 
 import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
 import styles from './styles/app.css';
-import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
+import hygraphStyles from './styles/hygraph.css';
+import customFont from './styles/custom-font.css'
+import {parseMenu} from './lib/utils';
 import {useAnalytics} from './hooks/useAnalytics';
 
 // This is important to avoid re-fetching root queries on sub-navigations
@@ -54,6 +62,8 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 export const links: LinksFunction = () => {
   return [
     {rel: 'stylesheet', href: styles},
+    {rel: 'stylesheet', href: hygraphStyles},
+    {rel: 'stylesheet', href: customFont},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -77,7 +87,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const isLoggedInPromise = context.customerAccount.isLoggedIn();
 
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
-
   return defer(
     {
       isLoggedIn: isLoggedInPromise,
@@ -88,6 +97,8 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         shopifySalesChannel: ShopifySalesChannel.hydrogen,
         shopId: layout.shop.id,
       },
+      i18n: context.i18n,
+      isDarkMode: false,
       seo,
     },
     {
@@ -100,14 +111,13 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
 export default function App() {
   const nonce = useNonce();
-  const data = useLoaderData<typeof loader>();
-  const locale = data.selectedLocale ?? DEFAULT_LOCALE;
+  const {i18n, ...data} = useLoaderData<typeof loader>();
   const hasUserConsent = true;
 
   useAnalytics(hasUserConsent);
 
   return (
-    <html lang={locale.language}>
+    <html lang={i18n.language.code}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -117,12 +127,17 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Layout
-          key={`${locale.language}-${locale.country}`}
-          layout={data.layout}
+        <LazyMotion
+          features={async () => (await import('./lib/motion-features')).default}
+          strict
         >
-          <Outlet />
-        </Layout>
+          <Layout
+            key={`${i18n.language.code}-${i18n.country.code}`}
+            layout={data.layout}
+          >
+            <Outlet />
+          </Layout>
+        </LazyMotion>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />
@@ -134,10 +149,8 @@ export default function App() {
 export function ErrorBoundary({error}: {error: Error}) {
   const nonce = useNonce();
   const routeError = useRouteError();
-  const rootData = useRootLoaderData();
-  const locale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
+  const {i18n, ...rootData} = useRootLoaderData();
   const isRouteError = isRouteErrorResponse(routeError);
-
   let title = 'Error';
   let pageType = 'page';
 
@@ -147,7 +160,7 @@ export function ErrorBoundary({error}: {error: Error}) {
   }
 
   return (
-    <html lang={locale.language}>
+    <html lang={i18n.language.code}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -158,7 +171,7 @@ export function ErrorBoundary({error}: {error: Error}) {
       <body>
         <Layout
           layout={rootData?.layout}
-          key={`${locale.language}-${locale.country}`}
+          key={`${i18n.language.code}-${i18n.country.code}`}
         >
           {isRouteError ? (
             <>
@@ -185,17 +198,21 @@ export function ErrorBoundary({error}: {error: Error}) {
 const LAYOUT_QUERY = `#graphql
   query layout(
     $language: LanguageCode
-    $headerMenuHandle: String!
+    $desktopHeaderHandle: String!
+    $mobileHeaderHandle: String!
     $footerMenuHandle: String!
   ) @inContext(language: $language) {
     shop {
       ...Shop
     }
-    headerMenu: menu(handle: $headerMenuHandle) {
+    desktopHeaderMenu: menu(handle: $desktopHeaderHandle) {
       ...Menu
     }
+    mobileHeaderMenu:  menu(handle: $mobileHeaderHandle) {
+        ...Menu
+    }
     footerMenu: menu(handle: $footerMenuHandle) {
-      ...Menu
+        ...Menu
     }
   }
   fragment Shop on Shop {
@@ -221,8 +238,14 @@ const LAYOUT_QUERY = `#graphql
     type
     url
   }
+  fragment YoungestChildMenuItem on MenuItem {
+    ...MenuItem
+  }
   fragment ChildMenuItem on MenuItem {
     ...MenuItem
+    items {
+      ...YoungestChildMenuItem
+    }
   }
   fragment ParentMenuItem on MenuItem {
     ...MenuItem
@@ -241,8 +264,9 @@ const LAYOUT_QUERY = `#graphql
 async function getLayoutData({storefront, env}: AppLoadContext) {
   const data = await storefront.query(LAYOUT_QUERY, {
     variables: {
-      headerMenuHandle: 'main-menu',
-      footerMenuHandle: 'footer',
+      desktopHeaderHandle: DESKTOP_HEADER_HANDLE,
+      mobileHeaderHandle: MOBILE_HEADER_HANDLE,
+      footerMenuHandle: FOOTER_MENU_HANDLE,
       language: storefront.i18n.language,
     },
   });
@@ -258,10 +282,18 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
       - /collections/all -> /products
   */
   const customPrefixes = {BLOG: '', CATALOG: 'products'};
-
-  const headerMenu = data?.headerMenu
+  const desktopHeaderMenu = data?.desktopHeaderMenu
     ? parseMenu(
-        data.headerMenu,
+        data.desktopHeaderMenu,
+        data.shop.primaryDomain.url,
+        env,
+        customPrefixes,
+      )
+    : undefined;
+
+  const mobileHeaderMenu = data?.mobileHeaderMenu
+    ? parseMenu(
+        data.mobileHeaderMenu,
         data.shop.primaryDomain.url,
         env,
         customPrefixes,
@@ -276,6 +308,5 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
         customPrefixes,
       )
     : undefined;
-
-  return {shop: data.shop, headerMenu, footerMenu};
+  return {shop: data.shop, desktopHeaderMenu, mobileHeaderMenu, footerMenu};
 }

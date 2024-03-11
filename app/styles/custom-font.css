@@ -1,13 +1,63 @@
 @font-face {
-  font-family: 'IBMPlexSerif';
+  font-family: 'SyndicatGrotesk';
+  src: url('./fonts/SyndicatGrotesk-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
-  font-weight: 400;
-  src: url('./fonts/IBMPlexSerif-Text.woff2') format('woff2');
 }
+
 @font-face {
-  font-family: 'IBMPlexSerif';
+  font-family: 'SyndicatGrotesk';
+  src: url('./fonts/SyndicatGrotesk-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
   font-display: swap;
+}
+
+@font-face {
+  font-family: 'SyndicatGrotesk';
+  src: url('./fonts/SyndicatGrotesk-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SyndicatGrotesk';
+  src: url('./fonts/SyndicatGrotesk-LightItalic.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SyndicatGrotesk';
+  src: url('./fonts/SyndicatGrotesk-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SyndicatGrotesk';
+  src: url('./fonts/SyndicatGrotesk-RegularItalic.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
-  src: url('./fonts/IBMPlexSerif-TextItalic.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SyndicatGrotesk';
+  src: url('./fonts/SyndicatGrotesk-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SyndicatGrotesk';
+  src: url('./fonts/SyndicatGrotesk-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }

@@ -1,0 +1,237 @@
+{
+  "name": "English",
+  "code": "en",
+  "translation": {
+    "layout": {
+      "header": {
+        "headline": {
+          "categories": "Categories",
+          "collections": "Collections"
+        },
+        "ctas": {
+          "wishlist": "Wishlist",
+          "login": "Login",
+          "account": "Account",
+          "search": "Search",
+          "cart": "Cart"
+        }
+      },
+      "footer": {
+        "ctas": {
+          "contact": "Contact",
+          "policies": "Shipping & Returns",
+          "faq": "FAQ",
+          "about": "About",
+          "instagram": "Instagram"
+        }
+      },
+      "cart": {
+        "actions": {
+          "addToCart": "Add to cart",
+          "removeItem": "Remove item"
+        },
+        "checkout": "Continue to checkout",
+        "continueShopping": "Continue shopping",
+        "shipping": "Shipping",
+        "shippingCountry": "Shipping Country",
+        "calculatedAt": "Calculated at Checkout",
+        "empty": "Looks like you haven’t added anything yet, let’s get you started!",
+        "loading": "Loading search...",
+        "remove": "Remove",
+        "subtotal": "Subtotal",
+        "title": "Cart",
+        "total": "Total",
+        "quantity": "Quantity",
+        "discounts": {
+          "title": "Discount(s)",
+          "remove": "Remove",
+          "form": {
+            "label": "Discount code",
+            "placeholder": "Enter a discount code",
+            "submit": "Apply discount"
+          }
+        }
+      },
+      "search": {
+        "noResults": "No results found for \"{{query}}\"",
+        "results": {
+          "articles": "Articles",
+          "collections": "Collections",
+          "products": "Products",
+          "pages": "Pages",
+          "suggestions": "Suggestions"
+        },
+        "loading": "Loading search...",
+        "title": "Search",
+        "viewAll": "View all results for \"{{query}}\"",
+        "form": {
+          "placeholder": "Enter a search term",
+          "label": "Search",
+          "submit": "Search"
+        }
+      },
+      "suggested": {
+        "bestSellers": "Shop Best Sellers",
+        "related": "Related Products"
+      },
+      "pagination": {
+        "next": "Load more ↓",
+        "previous": "↑ Load previous",
+        "loading": "Loading..."
+      }
+    },
+    "sections": {
+      "featuredProducts": {
+        "title": "Shop best sellers"
+      }
+    },
+    "form": {
+      "newsletter": {
+        "title": "Newsletter",
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Email Address",
+          "error": "Invalid Email Address"
+        },
+        "consent": {
+          "label": "I agree to receive the newsletter. See more about our Privacy Policy."
+        },
+        "success": "You have been successfully registered to our newsletter."
+      },
+      "contact": {
+        "name": {
+          "label": "First, Last Name",
+          "placeholder": "First, Last Name"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Email Address",
+          "error": "Invalid Email Address"
+        },
+        "orderNumber": {
+          "label": "Order Number",
+          "placeholder": "Order Number"
+        },
+        "subject": {
+          "label": "Subject",
+          "placeholder": "Subject"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Message"
+        }
+      },
+      "appointment": {
+        "name": {
+          "label": "First, Last Name",
+          "placeholder": "First, Last Name"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Email Address",
+          "error": "Invalid Email Address"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "Phone Number"
+        },
+        "requestedTime": {
+          "label": "Requested Appointment Time",
+          "placeholder": "Requested Appointment Time"
+        },
+        "partySize": {
+          "label": "Party Size",
+          "placeholder": "Party Size"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Message"
+        }
+      },
+      "editAddress": {
+        "firstName": {
+          "label": "First Name",
+          "placeholder": "First Name"
+        },
+        "lastName": {
+          "label": "Last Name",
+          "placeholder": "Last Name"
+        },
+        "company": {
+          "label": "Company",
+          "placeholder": "Company"
+        },
+        "address1": {
+          "label": "Address line 1",
+          "placeholder": "Address line 1*"
+        },
+        "address2": {
+          "label": "Address line 2",
+          "placeholder": "Address line 2"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "City"
+        },
+        "zonecode": {
+          "label": "State / Province (zoneCode)",
+          "placeholder": "State / Province (zoneCode)"
+        },
+        "zip": {
+          "label": "Zip / Postal Code",
+          "placeholder": "Zip / Postal Code"
+        },
+        "territoryCode": {
+          "label": "Country (Territory) Code",
+          "placeholder": "Country (Territory) Code"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Phone"
+        },
+        "defaultAddress": {
+          "label": "Set as default address"
+        }
+      }
+    },
+    "policies": {
+      "title": "Policies",
+      "privacy": "Privacy Policy",
+      "shipping": "Shipping Policy"
+    },
+    "product": {
+      "tabs": {
+        "description": "Description",
+        "details": "Details",
+        "measurements": "Measurements"
+      },
+      "addToCart": "Add to Cart",
+      "soldOut": "Sold Out",
+      "notifyMe": "Notify Me",
+      "card": {
+        "new": "New",
+        "sale": "Sale"
+      }
+    },
+    "notFound": {
+      "title": "Page not found",
+      "subtitle": "Sorry, we couldn't find the page you were looking for.",
+      "description": "Please check the URL in the address bar and try again.",
+      "cta": "Go to homepage"
+    },
+    "account": {
+      "home": {
+        "greeting": "Welcome to your account.",
+        "personalGreeting": "Welcome, {{firstName}}",
+        "emptyOrders": "You haven't placed any orders yet",
+        "startShopping": "Start Shopping",
+        "menu": {
+          "orders": "Orders",
+          "profile": "Profile",
+          "addresses": "Addresses",
+          "logout": "Sign out"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,235 @@
+{
+  "name": "Italiano",
+  "code": "it",
+  "translation": {
+    "layout": {
+      "header": {
+        "headline": {
+          "categories": "Categorie",
+          "collections": "Collezioni"
+        },
+        "ctas": {
+          "wishlist": "Lista dei desideri",
+          "login": "Accedi",
+          "account": "Account",
+          "search": "Cerca",
+          "cart": "Carrello"
+        }
+      },
+      "footer": {
+        "ctas": {
+          "contact": "Contatto",
+          "policies": "Spedizione e Resi",
+          "faq": "FAQ",
+          "about": "Chi siamo",
+          "instagram": "Instagram"
+        }
+      },
+      "cart": {
+        "actions": {
+          "addToCart": "Aggiungi al carrello",
+          "removeItem": "Rimuovi articolo"
+        },
+        "checkout": "Procedi al checkout",
+        "continueShopping": "Continua lo shopping",
+        "shipping": "Spedizione",
+        "shippingCountry": "Paese di spedizione",
+        "calculatedAt": "Calcolato al checkout",
+        "empty": "Sembra che tu non abbia ancora aggiunto nulla, iniziamo!",
+        "loading": "Caricamento ricerca...",
+        "remove": "Rimuovi",
+        "subtotal": "Subtotale",
+        "title": "Carrello",
+        "total": "Totale",
+        "quantity": "Quantità",
+        "discounts": {
+          "title": "Sconto(i)",
+          "remove": "Rimuovi",
+          "form": {
+            "label": "Codice sconto",
+            "placeholder": "Inserisci un codice sconto",
+            "submit": "Applica sconto"
+          }
+        }
+      },
+      "search": {
+        "noResults": "Nessun risultato trovato per \"{{query}}\"",
+        "results": {
+          "articles": "Articoli",
+          "collections": "Collezioni",
+          "products": "Prodotti",
+          "pages": "Pagine",
+          "suggestions": "Suggerimenti"
+        },
+        "loading": "Caricamento ricerca...",
+        "title": "Cerca",
+        "viewAll": "Visualizza tutti i risultati per \"{{query}}\"",
+        "form": {
+          "placeholder": "Inserisci un termine di ricerca",
+          "label": "Cerca",
+          "submit": "Cerca"
+        }
+      },
+      "suggested": {
+        "bestSellers": "Acquista i più venduti",
+        "related": "Prodotti correlati"
+      },
+      "pagination": {
+        "next": "Carica altro ↓",
+        "previous": "↑ Carica precedente",
+        "loading": "Caricamento..."
+      }
+    },
+    "sections": {
+      "featuredProducts": {
+        "title": "Acquista i più venduti"
+      }
+    },
+    "form": {
+      "newsletter": {
+        "title": "Newsletter",
+        "email": {
+          "label": "Indirizzo email",
+          "placeholder": "Indirizzo email",
+          "error": "Indirizzo email non valido"
+        },
+        "consent": {
+          "label": "Acconsento a ricevere la newsletter. Vedi di più sulla nostra Politica sulla privacy."
+        }
+      },
+      "contact": {
+        "name": {
+          "label": "Nome, Cognome",
+          "placeholder": "Nome, Cognome"
+        },
+        "email": {
+          "label": "Indirizzo email",
+          "placeholder": "Indirizzo email",
+          "error": "Indirizzo email non valido"
+        },
+        "orderNumber": {
+          "label": "Numero d'ordine",
+          "placeholder": "Numero d'ordine"
+        },
+        "subject": {
+          "label": "Oggetto",
+          "placeholder": "Oggetto"
+        },
+        "message": {
+          "label": "Messaggio",
+          "placeholder": "Messaggio"
+        }
+      },
+      "appointment": {
+        "name": {
+          "label": "Nome, Cognome",
+          "placeholder": "Nome, Cognome"
+        },
+        "email": {
+          "label": "Indirizzo email",
+          "placeholder": "Indirizzo email",
+          "error": "Indirizzo email non valido"
+        },
+        "phone": {
+          "label": "Numero di telefono",
+          "placeholder": "Numero di telefono"
+        },
+        "requestedTime": {
+          "label": "Orario richiesto per l'appuntamento",
+          "placeholder": "Orario richiesto per l'appuntamento"
+        },
+        "partySize": {
+          "label": "Numero di persone",
+          "placeholder": "Numero di persone"
+        },
+        "message": {
+          "label": "Messaggio",
+          "placeholder": "Messaggio"
+        }
+      },
+      "editAddress": {
+        "firstName": {
+          "label": "Nome",
+          "placeholder": "Nome"
+        },
+        "lastName": {
+          "label": "Cognome",
+          "placeholder": "Cognome"
+        },
+        "company": {
+          "label": "Azienda",
+          "placeholder": "Azienda"
+        },
+        "address1": {
+          "label": "Indirizzo linea 1",
+          "placeholder": "Indirizzo linea 1*"
+        },
+        "address2": {
+          "label": "Indirizzo linea 2",
+          "placeholder": "Indirizzo linea 2"
+        },
+        "city": {
+          "label": "Città",
+          "placeholder": "Città"
+        },
+        "zonecode": {
+          "label": "Stato / Provincia (zoneCode)",
+          "placeholder": "Stato / Provincia (zoneCode)"
+        },
+        "zip": {
+          "label": "CAP",
+          "placeholder": "CAP"
+        },
+        "territoryCode": {
+          "label": "Codice Paese (Territorio)",
+          "placeholder": "Codice Paese (Territorio)"
+        },
+        "phone": {
+          "label": "Telefono",
+          "placeholder": "Telefono"
+        },
+        "defaultAddress": {
+          "label": "Imposta come indirizzo predefinito"
+        }
+      }
+    },
+    "policies": {
+      "title": "Politiche",
+      "privacy": "Politica sulla privacy",
+      "shipping": "Politica di spedizione"
+    },
+    "product": {
+      "tabs": {
+        "description": "Descrizione",
+        "details": "Dettagli",
+        "measurements": "Misure"
+      },
+      "addToCart": "Aggiungi al carrello",
+      "soldOut": "Esaurito",
+      "card": {
+        "new": "Nuovo",
+        "sale": "Saldi"
+      }
+    },
+    "notFound": {
+      "title": "Pagina non trovata",
+      "subtitle": "Spiacenti, non siamo riusciti a trovare la pagina che stavi cercando.",
+      "description": "Controlla l'URL nella barra degli indirizzi e riprova.",
+      "cta": "Vai alla homepage"
+    },
+    "account": {
+      "home": {
+        "greeting": "Benvenuto nel tuo account.",
+        "personalGreeting": "Benvenuto, {{firstName}}",
+        "emptyOrders": "Non hai ancora effettuato nessun ordine",
+        "startShopping": "Inizia lo shopping",
+        "menu": {
+          "orders": "Ordini",
+          "profile": "Profilo",
+          "addresses": "Indirizzi",
+          "logout": "Esci"
+        }
+      }
+    }
+  }
+}

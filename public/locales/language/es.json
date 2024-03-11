@@ -1,0 +1,235 @@
+{
+  "name": "Español",
+  "code": "es",
+  "translation": {
+    "layout": {
+      "header": {
+        "headline": {
+          "categories": "Categorías",
+          "collections": "Colecciones"
+        },
+        "ctas": {
+          "wishlist": "Lista de deseos",
+          "login": "Iniciar sesión",
+          "account": "Cuenta",
+          "search": "Buscar",
+          "cart": "Carrito"
+        }
+      },
+      "footer": {
+        "ctas": {
+          "contact": "Contacto",
+          "policies": "Envío y Devoluciones",
+          "faq": "Preguntas frecuentes",
+          "about": "Acerca de",
+          "instagram": "Instagram"
+        }
+      },
+      "cart": {
+        "actions": {
+          "addToCart": "Añadir al carrito",
+          "removeItem": "Eliminar artículo"
+        },
+        "checkout": "Continuar con la compra",
+        "continueShopping": "Continuar comprando",
+        "shipping": "Envío",
+        "shippingCountry": "País de envío",
+        "calculatedAt": "Calculado al finalizar la compra",
+        "empty": "Parece que aún no has añadido nada, ¡empecemos!",
+        "loading": "Cargando búsqueda...",
+        "remove": "Eliminar",
+        "subtotal": "Subtotal",
+        "title": "Carrito",
+        "total": "Total",
+        "quantity": "Cantidad",
+        "discounts": {
+          "title": "Descuento(s)",
+          "remove": "Eliminar",
+          "form": {
+            "label": "Código de descuento",
+            "placeholder": "Introduce un código de descuento",
+            "submit": "Aplicar descuento"
+          }
+        }
+      },
+      "search": {
+        "noResults": "No se encontraron resultados para \"{{query}}\"",
+        "results": {
+          "articles": "Artículos",
+          "collections": "Colecciones",
+          "products": "Productos",
+          "pages": "Páginas",
+          "suggestions": "Sugerencias"
+        },
+        "loading": "Cargando búsqueda...",
+        "title": "Buscar",
+        "viewAll": "Ver todos los resultados para \"{{query}}\"",
+        "form": {
+          "placeholder": "Introduce un término de búsqueda",
+          "label": "Buscar",
+          "submit": "Buscar"
+        }
+      },
+      "suggested": {
+        "bestSellers": "Comprar los más vendidos",
+        "related": "Productos relacionados"
+      },
+      "pagination": {
+        "next": "Cargar más ↓",
+        "previous": "↑ Cargar anterior",
+        "loading": "Cargando..."
+      }
+    },
+    "sections": {
+      "featuredProducts": {
+        "title": "Comprar los más vendidos"
+      }
+    },
+    "form": {
+      "newsletter": {
+        "title": "Boletín informativo",
+        "email": {
+          "label": "Dirección de correo electrónico",
+          "placeholder": "Dirección de correo electrónico",
+          "error": "Dirección de correo electrónico no válida"
+        },
+        "consent": {
+          "label": "Acepto recibir el boletín informativo. Ver más sobre nuestra Política de privacidad."
+        }
+      },
+      "contact": {
+        "name": {
+          "label": "Nombre, Apellidos",
+          "placeholder": "Nombre, Apellidos"
+        },
+        "email": {
+          "label": "Dirección de correo electrónico",
+          "placeholder": "Dirección de correo electrónico",
+          "error": "Dirección de correo electrónico no válida"
+        },
+        "orderNumber": {
+          "label": "Número de pedido",
+          "placeholder": "Número de pedido"
+        },
+        "subject": {
+          "label": "Asunto",
+          "placeholder": "Asunto"
+        },
+        "message": {
+          "label": "Mensaje",
+          "placeholder": "Mensaje"
+        }
+      },
+      "appointment": {
+        "name": {
+          "label": "Nombre, Apellidos",
+          "placeholder": "Nombre, Apellidos"
+        },
+        "email": {
+          "label": "Dirección de correo electrónico",
+          "placeholder": "Dirección de correo electrónico",
+          "error": "Dirección de correo electrónico no válida"
+        },
+        "phone": {
+          "label": "Número de teléfono",
+          "placeholder": "Número de teléfono"
+        },
+        "requestedTime": {
+          "label": "Hora de cita solicitada",
+          "placeholder": "Hora de cita solicitada"
+        },
+        "partySize": {
+          "label": "Tamaño del grupo",
+          "placeholder": "Tamaño del grupo"
+        },
+        "message": {
+          "label": "Mensaje",
+          "placeholder": "Mensaje"
+        }
+      },
+      "editAddress": {
+        "firstName": {
+          "label": "Nombre",
+          "placeholder": "Nombre"
+        },
+        "lastName": {
+          "label": "Apellidos",
+          "placeholder": "Apellidos"
+        },
+        "company": {
+          "label": "Empresa",
+          "placeholder": "Empresa"
+        },
+        "address1": {
+          "label": "Dirección línea 1",
+          "placeholder": "Dirección línea 1*"
+        },
+        "address2": {
+          "label": "Dirección línea 2",
+          "placeholder": "Dirección línea 2"
+        },
+        "city": {
+          "label": "Ciudad",
+          "placeholder": "Ciudad"
+        },
+        "zonecode": {
+          "label": "Estado / Provincia (zoneCode)",
+          "placeholder": "Estado / Provincia (zoneCode)"
+        },
+        "zip": {
+          "label": "Código postal",
+          "placeholder": "Código postal"
+        },
+        "territoryCode": {
+          "label": "Código del país (Territorio)",
+          "placeholder": "Código del país (Territorio)"
+        },
+        "phone": {
+          "label": "Teléfono",
+          "placeholder": "Teléfono"
+        },
+        "defaultAddress": {
+          "label": "Establecer como dirección predeterminada"
+        }
+      }
+    },
+    "policies": {
+      "title": "Políticas",
+      "privacy": "Política de privacidad",
+      "shipping": "Política de envío"
+    },
+    "product": {
+      "tabs": {
+        "description": "Descripción",
+        "details": "Detalles",
+        "measurements": "Medidas"
+      },
+      "addToCart": "Añadir al carrito",
+      "soldOut": "Agotado",
+      "card": {
+        "new": "Nuevo",
+        "sale": "Oferta"
+      }
+    },
+    "notFound": {
+      "title": "Página no encontrada",
+      "subtitle": "Lo sentimos, no pudimos encontrar la página que estabas buscando.",
+      "description": "Por favor, verifica la URL en la barra de direcciones e inténtalo de nuevo.",
+      "cta": "Ir a la página de inicio"
+    },
+    "account": {
+      "home": {
+        "greeting": "Bienvenido a tu cuenta.",
+        "personalGreeting": "Bienvenido, {{firstName}}",
+        "emptyOrders": "Aún no has realizado ningún pedido",
+        "startShopping": "Comenzar a comprar",
+        "menu": {
+          "orders": "Pedidos",
+          "profile": "Perfil",
+          "addresses": "Direcciones",
+          "logout": "Cerrar sesión"
+        }
+      }
+    }
+  }
+}

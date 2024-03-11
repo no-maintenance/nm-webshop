@@ -1,18 +1,24 @@
-import {useRef, Suspense} from 'react';
+import {useState, useRef, Suspense, forwardRef, Fragment} from 'react';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, Await} from '@remix-run/react';
+import {useLoaderData, Await, useNavigate, useParams} from '@remix-run/react';
 import type {ShopifyAnalyticsProduct} from '@shopify/hydrogen';
 import {
   AnalyticsPageType,
   Money,
   ShopPayButton,
-  VariantSelector,
   getSelectedProductOptions,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
+import type {Maybe, Metafield} from '@shopify/hydrogen/storefront-api-types';
+import {AnimatePresence, m} from 'framer-motion';
+import {convertSchemaToHtml} from '@thebeyondgroup/shopify-rich-text-renderer';
 
+import type {
+  VariantOption,
+  VariantOptionValue,
+} from '~/components/VariantSelector';
 import type {
   ProductQuery,
   ProductVariantFragmentFragment,
@@ -20,8 +26,6 @@ import type {
 import {
   Heading,
   IconCaret,
-  IconCheck,
-  IconClose,
   ProductGallery,
   ProductSwimlane,
   Section,
@@ -30,14 +34,19 @@ import {
   Link,
   AddToCartButton,
   Button,
+  Accordion,
+  VariantSelector,
 } from '~/components';
-import {getExcerpt} from '~/lib/utils';
 import {seoPayload} from '~/lib/seo.server';
 import type {Storefront} from '~/lib/type';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+import {KlaviyoBackInStock} from '~/components/KlavivyoForm';
+import {Popup, usePopup} from '~/components/Popup';
+import {useTranslation} from '~/i18n';
 
 export const headers = routeHeaders;
+const USE_LISTBOX_VARIANT_SELECTOR = true;
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {productHandle} = params;
@@ -135,61 +144,77 @@ function redirectToFirstVariant({
 
 export default function Product() {
   const {product, shop, recommended, variants} = useLoaderData<typeof loader>();
-  const {media, title, vendor, descriptionHtml} = product;
+  const {media, title, vendor, descriptionHtml, metafields} = product;
   const {shippingPolicy, refundPolicy} = shop;
-
+  const selectedVariant = product.selectedVariant!;
+  const isOnSale =
+    selectedVariant?.price?.amount &&
+    selectedVariant?.compareAtPrice?.amount &&
+    selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
   return (
     <>
-      <Section className="px-0 md:px-8 lg:px-12">
-        <div className="grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
-          <ProductGallery
-            media={media.nodes}
-            className="w-full lg:col-span-2"
-          />
-          <div className="sticky md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
-            <section className="flex flex-col w-full max-w-xl gap-8 p-6 md:mx-auto md:max-w-sm md:px-0">
-              <div className="grid gap-2">
-                <Heading as="h1" className="whitespace-normal">
-                  {title}
-                </Heading>
-                {vendor && (
-                  <Text className={'opacity-50 font-medium'}>{vendor}</Text>
-                )}
+      <Section className="px-0 pt-0 md:px-6 lg:px-8 xl:px-10">
+        <div className="grid items-start md:grid-cols-2 grid-cols-1">
+          <div className={'col-span-1'}>
+            <ProductGallery media={media.nodes} />
+          </div>
+          <div className="px-8 md:px-0 sticky col-span-1 md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
+            <section className="flex flex-col w-full gap-8 md:p-8 md:pt-20 md:mx-auto md:max-w-lg ">
+              <div className={'md:max-w-sm md:px-0 grid gap-8'}>
+                <div className="grid gap-1">
+                  {vendor && (
+                    <Text size={'fine'} className={'opacity-50 uppercase'}>
+                      {vendor}
+                    </Text>
+                  )}
+                  <Heading
+                    size={'copy'}
+                    as="h1"
+                    className="whitespace-normal uppercase font-normal"
+                  >
+                    {title}
+                  </Heading>
+                  <Text>
+                    <Money
+                      withoutTrailingZeros
+                      data={selectedVariant?.price!}
+                      as="span"
+                      data-test="price"
+                    />
+                    {isOnSale && (
+                      <Money
+                        withoutTrailingZeros
+                        data={selectedVariant?.compareAtPrice!}
+                        as="span"
+                        className="opacity-50 strike"
+                      />
+                    )}
+                  </Text>
+                </div>
+                <Suspense fallback={<ProductForm variants={[]} />}>
+                  <Await
+                    errorElement="There was a problem loading related products"
+                    resolve={variants}
+                  >
+                    {(resp) => (
+                      <ProductForm
+                        variants={resp.product?.variants.nodes || []}
+                      />
+                    )}
+                  </Await>
+                </Suspense>
               </div>
-              <Suspense fallback={<ProductForm variants={[]} />}>
+              <Suspense fallback={<ProductDetailsSkeleton />}>
                 <Await
                   errorElement="There was a problem loading related products"
-                  resolve={variants}
+                  resolve={metafields}
                 >
-                  {(resp) => (
-                    <ProductForm
-                      variants={resp.product?.variants.nodes || []}
-                    />
-                  )}
+                  <ProductDetails
+                    metafields={metafields}
+                    descriptionHtml={descriptionHtml}
+                  />
                 </Await>
               </Suspense>
-              <div className="grid gap-4 py-4">
-                {descriptionHtml && (
-                  <ProductDetail
-                    title="Product Details"
-                    content={descriptionHtml}
-                  />
-                )}
-                {shippingPolicy?.body && (
-                  <ProductDetail
-                    title="Shipping"
-                    content={getExcerpt(shippingPolicy.body)}
-                    learnMore={`/policies/${shippingPolicy.handle}`}
-                  />
-                )}
-                {refundPolicy?.body && (
-                  <ProductDetail
-                    title="Returns"
-                    content={getExcerpt(refundPolicy.body)}
-                    learnMore={`/policies/${refundPolicy.handle}`}
-                  />
-                )}
-              </div>
             </section>
           </div>
         </div>
@@ -208,9 +233,67 @@ export default function Product() {
   );
 }
 
+function ProductVariantSelector({
+  variants,
+  showVariantTitle,
+  setVariantStatefully,
+}: {
+  setVariantStatefully?: () => void;
+  showVariantTitle: boolean;
+  variants: ProductVariantFragmentFragment[];
+}) {
+  const {product} = useLoaderData<typeof loader>();
+
+  return (
+    <VariantSelector
+      handle={product.handle}
+      options={product.options}
+      variants={variants}
+    >
+      {({option}) => {
+        return (
+          <div
+            key={option.name}
+            className="flex flex-col flex-wrap gap-y-2 last:mb-0"
+          >
+            {showVariantTitle && (
+              <Heading as="legend" size="lead" className="min-w-[4rem]">
+                {option.name}
+              </Heading>
+            )}
+            <div className="flex flex-wrap items-baseline gap-4">
+              {USE_LISTBOX_VARIANT_SELECTOR ? (
+                <ProductListbox option={option} />
+              ) : (
+                option.values.map(({value, isAvailable, isActive, to}) => (
+                  <Link
+                    key={option.name + value}
+                    to={to}
+                    preventScrollReset
+                    prefetch="intent"
+                    replace
+                    className={clsx(
+                      'leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200',
+                      isActive ? 'border-primary/50' : 'border-primary/0',
+                      isAvailable ? 'opacity-100' : 'opacity-50',
+                    )}
+                  >
+                    {value}
+                  </Link>
+                ))
+              )}
+            </div>
+          </div>
+        );
+      }}
+    </VariantSelector>
+  );
+}
 export function ProductForm({
   variants,
+  showVariantTitle = false,
 }: {
+  showVariantTitle?: boolean;
   variants: ProductVariantFragmentFragment[];
 }) {
   const {product, analytics, storeDomain} = useLoaderData<typeof loader>();
@@ -225,11 +308,6 @@ export function ProductForm({
   const selectedVariant = product.selectedVariant!;
   const isOutOfStock = !selectedVariant?.availableForSale;
 
-  const isOnSale =
-    selectedVariant?.price?.amount &&
-    selectedVariant?.compareAtPrice?.amount &&
-    selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
-
   const productAnalytics: ShopifyAnalyticsProduct = {
     ...analytics.products[0],
     quantity: 1,
@@ -238,109 +316,18 @@ export function ProductForm({
   return (
     <div className="grid gap-10">
       <div className="grid gap-4">
-        <VariantSelector
-          handle={product.handle}
-          options={product.options}
+        <ProductVariantSelector
           variants={variants}
-        >
-          {({option}) => {
-            return (
-              <div
-                key={option.name}
-                className="flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
-              >
-                <Heading as="legend" size="lead" className="min-w-[4rem]">
-                  {option.name}
-                </Heading>
-                <div className="flex flex-wrap items-baseline gap-4">
-                  {option.values.length > 7 ? (
-                    <div className="relative w-full">
-                      <Listbox>
-                        {({open}) => (
-                          <>
-                            <Listbox.Button
-                              ref={closeRef}
-                              className={clsx(
-                                'flex items-center justify-between w-full py-3 px-4 border border-primary',
-                                open
-                                  ? 'rounded-b md:rounded-t md:rounded-b-none'
-                                  : 'rounded',
-                              )}
-                            >
-                              <span>{option.value}</span>
-                              <IconCaret direction={open ? 'up' : 'down'} />
-                            </Listbox.Button>
-                            <Listbox.Options
-                              className={clsx(
-                                'border-primary bg-contrast absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
-                                open ? 'max-h-48' : 'max-h-0',
-                              )}
-                            >
-                              {option.values
-                                .filter((value) => value.isAvailable)
-                                .map(({value, to, isActive}) => (
-                                  <Listbox.Option
-                                    key={`option-${option.name}-${value}`}
-                                    value={value}
-                                  >
-                                    {({active}) => (
-                                      <Link
-                                        to={to}
-                                        className={clsx(
-                                          'text-primary w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer',
-                                          active && 'bg-primary/10',
-                                        )}
-                                        onClick={() => {
-                                          if (!closeRef?.current) return;
-                                          closeRef.current.click();
-                                        }}
-                                      >
-                                        {value}
-                                        {isActive && (
-                                          <span className="ml-2">
-                                            <IconCheck />
-                                          </span>
-                                        )}
-                                      </Link>
-                                    )}
-                                  </Listbox.Option>
-                                ))}
-                            </Listbox.Options>
-                          </>
-                        )}
-                      </Listbox>
-                    </div>
-                  ) : (
-                    option.values.map(({value, isAvailable, isActive, to}) => (
-                      <Link
-                        key={option.name + value}
-                        to={to}
-                        preventScrollReset
-                        prefetch="intent"
-                        replace
-                        className={clsx(
-                          'leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200',
-                          isActive ? 'border-primary/50' : 'border-primary/0',
-                          isAvailable ? 'opacity-100' : 'opacity-50',
-                        )}
-                      >
-                        {value}
-                      </Link>
-                    ))
-                  )}
-                </div>
-              </div>
-            );
-          }}
-        </VariantSelector>
+          showVariantTitle={showVariantTitle}
+        />
         {selectedVariant && (
           <div className="grid items-stretch gap-4">
             {isOutOfStock ? (
-              <Button variant="secondary" disabled>
-                <Text>Sold out</Text>
-              </Button>
+              <SoldOutButton variants={variants} />
             ) : (
               <AddToCartButton
+                isThin
+                width={'full'}
                 lines={[
                   {
                     merchandiseId: selectedVariant.id!,
@@ -356,33 +343,354 @@ export function ProductForm({
               >
                 <Text
                   as="span"
+                  size={'fine'}
                   className="flex items-center justify-center gap-2"
                 >
-                  <span>Add to Cart</span> <span>·</span>{' '}
-                  <Money
-                    withoutTrailingZeros
-                    data={selectedVariant?.price!}
-                    as="span"
-                    data-test="price"
-                  />
-                  {isOnSale && (
-                    <Money
-                      withoutTrailingZeros
-                      data={selectedVariant?.compareAtPrice!}
-                      as="span"
-                      className="opacity-50 strike"
-                    />
-                  )}
+                  <span>Add to Cart</span>
                 </Text>
               </AddToCartButton>
             )}
-            {!isOutOfStock && (
-              <ShopPayButton
-                width="100%"
-                variantIds={[selectedVariant?.id!]}
-                storeDomain={storeDomain}
-              />
-            )}
+            <div className={''}>
+              <AnimatePresence initial={false} mode={'wait'}>
+                {!isOutOfStock && (
+                  <m.div
+                    key={'shop-pay-btn'}
+                    initial={{opacity: 0, height: 80}}
+                    animate={{opacity: 1, height: 45}}
+                    transition={{ease: 'linear', duration: 0.2}}
+                    exit={{opacity: 0, height: 80}}
+                  >
+                    <ShopPayButton
+                      width="100%"
+                      variantIds={[selectedVariant?.id!]}
+                      storeDomain={storeDomain}
+                    />
+                  </m.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+function SoldOutButton({
+  variants,
+}: {
+  variants: ProductVariantFragmentFragment[];
+}) {
+  const {t} = useTranslation();
+  const {isOpen, openPopup, closePopup} = usePopup();
+  const {product} = useLoaderData<typeof loader>();
+  const [selectedVariant, setSelectedVariant] = useState(
+    product.selectedVariant?.id ?? '',
+  );
+
+  return (
+    <div>
+      <Button
+        isThin
+        width={'full'}
+        variant="secondary"
+        as="button"
+        onClick={openPopup}
+        className={'text-fine font-semibold cursor-pointer'}
+      >
+        {t('product.soldOut')} — {t('product.notifyMe')}
+      </Button>
+      <Popup open={isOpen} onClose={closePopup} fullScreenOnMobile={false}>
+        <div className={'p-6'}>
+          <section>
+            <Heading as={'h2'} className={'uppercase font-medium text-lead'}>
+              NOTIFY ME WHEN BACK IN STOCK
+            </Heading>
+            <div>
+              <Text>
+                We will send you a notification when this product is back in
+                stock.
+              </Text>
+            </div>
+          </section>
+          <Section padding={'y'}>
+            <div className={'pb-6'}>
+              <Heading as={'h4'} size={'copy'} className={'mb-2'}>
+                {product.title}
+              </Heading>
+              <div className={'w-full'}>
+                <ProductVariantSelector
+                  showVariantTitle={false}
+                  variants={variants}
+                />
+              </div>
+            </div>
+            <KlaviyoBackInStock source={'popup'} variantId={selectedVariant} />
+          </Section>
+          <section>
+            <Heading size={'copy'} className={'font-medium'}>
+              Log In
+            </Heading>
+            <Link to={`/account`} className={'underline'}>
+              Sign in
+            </Link>{' '}
+            to your account to request a return or ask a question
+          </section>
+        </div>
+      </Popup>
+    </div>
+  );
+}
+
+function ProductListbox({option}: {option: VariantOption}) {
+  const {product} = useLoaderData<typeof loader>();
+  const selectedVariant = product.selectedVariant!;
+
+  const [selectedOption, setSelectedOption] = useState<
+    Pick<VariantOptionValue, 'value' | 'to' | 'quantityAvailable'>
+  >({
+    value: option.value ?? '',
+    to: '',
+    quantityAvailable: selectedVariant.quantityAvailable,
+  });
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const navigate = useNavigate();
+  const handleSelection = (
+    value: Pick<VariantOptionValue, 'value' | 'to' | 'quantityAvailable'>,
+  ) => {
+    setSelectedOption(value);
+    navigate(value.to);
+    if (!btnRef?.current) return;
+    btnRef.current.click();
+  };
+  return (
+    <div className="relative w-full">
+      <Listbox value={selectedOption} onChange={handleSelection}>
+        {({open}) => (
+          <>
+            <Listbox.Button as={Fragment}>
+              <Button
+                isThin
+                className={'text-fine flex items-center justify-between'}
+                width={'full'}
+                variant={'secondary'}
+              >
+                {selectedOption.value &&
+                  GetVariantLabel(
+                    selectedOption.value,
+                    selectedVariant.quantityAvailable,
+                  )}
+              </Button>
+            </Listbox.Button>
+            <Listbox.Options
+              className={clsx(
+                'border-primary/10 bg-contrast absolute bottom-12 z-30 grid w-full overflow-y-scroll  border py-2 transition-[max-height] duration-150 sm:bottom-auto border-t-0 md:border-b',
+                open ? 'max-h-60' : 'max-h-0',
+              )}
+            >
+              {option.values.map(
+                ({value, to, isActive, isAvailable, quantityAvailable}) => (
+                  <Listbox.Option
+                    key={`option-${option.name}-${value}`}
+                    value={{value, to, quantityAvailable}}
+                    as={Fragment}
+                  >
+                    {({active}) => (
+                      <li
+                        className={clsx(
+                          'text-primary w-full py-2 text-copy transition flex justify-between items-center text-left cursor-pointer px-4',
+                          active && 'bg-primary/10',
+                        )}
+                      >
+                        {GetVariantLabel(value, quantityAvailable)}
+                      </li>
+                    )}
+                  </Listbox.Option>
+                ),
+              )}
+            </Listbox.Options>
+          </>
+        )}
+      </Listbox>
+    </div>
+  );
+}
+
+function GetVariantLabel(value: string, quantityAvailable?: Maybe<number>) {
+  const urgencyLabel = () => {
+    if (!value) return <></>;
+    if (quantityAvailable === 0) {
+      return <span>Sold Out</span>;
+    }
+    if (quantityAvailable && quantityAvailable < 5 && quantityAvailable > 0) {
+      return <span>Only {quantityAvailable} remaining</span>;
+    }
+    return <></>;
+  };
+  return (
+    <>
+      <span>{value}</span>
+      {urgencyLabel()}
+    </>
+  );
+}
+
+function ProductDetailsSkeleton() {
+  return (
+    <div className={'flex justify-between w-full gap-4 pt-4 uppercase'}>
+      <Heading className={`uppercase`} as={'h4'} size={'copy'}>
+        Description
+      </Heading>
+      <Heading className={`uppercase`} as={'h4'} size={'copy'}>
+        Details
+      </Heading>
+      <Heading className={`uppercase`} as={'h4'} size={'copy'}>
+        Measurments
+      </Heading>
+    </div>
+  );
+}
+
+function ProductDetails({
+  metafields,
+  descriptionHtml,
+}: {
+  metafields: Metafield[];
+  descriptionHtml: string;
+}) {
+  const [openTab, setOpenTab] = useState<number>(0);
+  const tabs = getMetafieldDefsV2(metafields, descriptionHtml);
+  return (
+    <div>
+      <div
+        className={
+          'flex justify-between w-full gap-4 uppercase md:max-w-sm md:px-0'
+        }
+      >
+        {tabs.map((tab, idx: number) => (
+          <button key={tab.id} onClick={() => setOpenTab(idx)}>
+            <Heading
+              className={`uppercase ${
+                openTab === idx ? 'font-semibold text-copy ' : ''
+              }`}
+              as={'h4'}
+              size={'copy'}
+            >
+              {tab.name}
+            </Heading>
+          </button>
+        ))}
+      </div>
+      <div className={'min-h-[200px] max-w-xl  md:max-w-md md:px-0 pt-6'}>
+        {tabs.map(
+          (tab, idx: number) =>
+            openTab === idx && <m.div key={tab.id}>{tab.component}</m.div>,
+        )}
+      </div>
+    </div>
+  );
+}
+
+function getMfDescriptionV2(mf: Metafield[]) {
+  const res = mf.find((f) => f.key === 'description');
+  return res?.value;
+}
+
+function getMetafieldDefsV2(mf: Metafield[], descriptionHTML: string) {
+  const res = [
+    {
+      name: 'Description',
+      id: 'description',
+      component: (
+        <div
+          className={'rte text-copy text-primary/50 size-chart'}
+          dangerouslySetInnerHTML={{
+            __html: convertSchemaToHtml(getMfDescriptionV2(mf)),
+          }}
+        ></div>
+      ),
+    },
+  ];
+
+  for (let i = 0; i < mf.length; i++) {
+    const pf = {name: '', component: <></>, id: ''};
+    const f = mf[i];
+
+    if (!f) continue;
+    if (f.key === 'details') {
+      pf.name = 'Details';
+      pf.id = 'details';
+      pf.component = (
+        <div className={'h-full flex items-center'}>
+          <div
+            className={'rte text-copy text-primary/50'}
+            dangerouslySetInnerHTML={{
+              __html: convertSchemaToHtml(f.value),
+            }}
+          ></div>
+        </div>
+      );
+      res.push(pf);
+    }
+    if (f.key === 'show_policies_product_tab' && f.value == 'true') {
+      pf.name = 'Policies';
+      pf.id = 'policies';
+      pf.component = <Policies />;
+      res.push(pf);
+    }
+  }
+  res.push({
+    name: 'Measurements',
+    id: 'measurements',
+    component: (
+      <div
+        className={'rte text-copy text-primary/50 size-chart'}
+        dangerouslySetInnerHTML={{__html: descriptionHTML}}
+      ></div>
+    ),
+  });
+  return res;
+}
+
+function Policies() {
+  const {shop} = useLoaderData<typeof loader>();
+
+  if (!shop) return <></>;
+  const {shippingPolicy, refundPolicy} = shop;
+  const p = [
+    {id: 0, name: 'Refund Policy', policy: refundPolicy?.body},
+    {id: 1, name: 'Shipping Policy', policy: shippingPolicy?.body},
+  ];
+  const Title = ({name, isOpen}: {name: string; isOpen: boolean}) => {
+    return (
+      <Heading as={'h3'} size={'copy'}>
+        {name}
+      </Heading>
+    );
+  };
+  const Description = ({policy}: {policy: string}) => {
+    return (
+      <div className={'rte'} dangerouslySetInnerHTML={{__html: policy}}></div>
+    );
+  };
+  return (
+    <div className={'mx-auto h-full w-full flex items-center'}>
+      <div className={'w-full overflow-auto max-h-full'}>
+        {shippingPolicy?.body && (
+          <div className={'py-6 border-b border-black'}>
+            <Accordion
+              isHTML={true}
+              question={'Shipping Policy'}
+              answer={shippingPolicy.body}
+            />
+          </div>
+        )}
+        {refundPolicy?.body && (
+          <div className={'py-6'}>
+            <Accordion
+              isHTML={true}
+              question={'Refund Policy'}
+              answer={refundPolicy.body}
+            />
           </div>
         )}
       </div>
@@ -390,59 +698,11 @@ export function ProductForm({
   );
 }
 
-function ProductDetail({
-  title,
-  content,
-  learnMore,
-}: {
-  title: string;
-  content: string;
-  learnMore?: string;
-}) {
-  return (
-    <Disclosure key={title} as="div" className="grid w-full gap-2">
-      {({open}) => (
-        <>
-          <Disclosure.Button className="text-left">
-            <div className="flex justify-between">
-              <Text size="lead" as="h4">
-                {title}
-              </Text>
-              <IconClose
-                className={clsx(
-                  'transition-transform transform-gpu duration-200',
-                  !open && 'rotate-[45deg]',
-                )}
-              />
-            </div>
-          </Disclosure.Button>
-
-          <Disclosure.Panel className={'pb-4 pt-2 grid gap-2'}>
-            <div
-              className="prose dark:prose-invert"
-              dangerouslySetInnerHTML={{__html: content}}
-            />
-            {learnMore && (
-              <div className="">
-                <Link
-                  className="pb-px border-b border-primary/30 text-primary/50"
-                  to={learnMore}
-                >
-                  Learn more
-                </Link>
-              </div>
-            )}
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
-  );
-}
-
 const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariantFragment on ProductVariant {
     id
     availableForSale
+    quantityAvailable
     selectedOptions {
       name
       value
@@ -500,6 +760,17 @@ const PRODUCT_QUERY = `#graphql
         nodes {
           ...Media
         }
+      }
+      metafields(identifiers: [
+            {namespace: "product_tab", key: "description"},
+            {namespace: "custom", key: "size_guide_description"},
+            {namespace: "product_tab", key: "details"},
+            {namespace: "product_tab", key: "measurements"},
+            {namespace: "product_tab", key: "size"},
+            {namespace: "custom", key: "show_policies_product_tab"}
+      ]) {
+          value
+          key
       }
       variants(first: 1) {
         nodes {

@@ -1,0 +1,235 @@
+{
+  "name": "Français",
+  "code": "fr",
+  "translation": {
+    "layout": {
+      "header": {
+        "headline": {
+          "categories": "Catégories",
+          "collections": "Collections"
+        },
+        "ctas": {
+          "wishlist": "Liste de souhaits",
+          "login": "Connexion",
+          "account": "Compte",
+          "search": "Recherche",
+          "cart": "Panier"
+        }
+      },
+      "footer": {
+        "ctas": {
+          "contact": "Contact",
+          "policies": "Livraison & Retours",
+          "faq": "FAQ",
+          "about": "À propos",
+          "instagram": "Instagram"
+        }
+      },
+      "cart": {
+        "actions": {
+          "addToCart": "Ajouter au panier",
+          "removeItem": "Supprimer l'article"
+        },
+        "checkout": "Passer à la caisse",
+        "continueShopping": "Continuer vos achats",
+        "shipping": "Livraison",
+        "shippingCountry": "Pays de livraison",
+        "calculatedAt": "Calculé à la caisse",
+        "empty": "Il semble que vous n'ayez encore rien ajouté, commençons !",
+        "loading": "Chargement de la recherche...",
+        "remove": "Supprimer",
+        "subtotal": "Sous-total",
+        "title": "Panier",
+        "total": "Total",
+        "quantity": "Quantité",
+        "discounts": {
+          "title": "Réduction(s)",
+          "remove": "Supprimer",
+          "form": {
+            "label": "Code de réduction",
+            "placeholder": "Entrez un code de réduction",
+            "submit": "Appliquer la réduction"
+          }
+        }
+      },
+      "search": {
+        "noResults": "Aucun résultat trouvé pour \"{{query}}\"",
+        "results": {
+          "articles": "Articles",
+          "collections": "Collections",
+          "products": "Produits",
+          "pages": "Pages",
+          "suggestions": "Suggestions"
+        },
+        "loading": "Chargement de la recherche...",
+        "title": "Recherche",
+        "viewAll": "Voir tous les résultats pour \"{{query}}\"",
+        "form": {
+          "placeholder": "Entrez un terme de recherche",
+          "label": "Recherche",
+          "submit": "Rechercher"
+        }
+      },
+      "suggested": {
+        "bestSellers": "Acheter les meilleures ventes",
+        "related": "Produits associés"
+      },
+      "pagination": {
+        "next": "Charger plus ↓",
+        "previous": "↑ Charger précédent",
+        "loading": "Chargement..."
+      }
+    },
+    "sections": {
+      "featuredProducts": {
+        "title": "Acheter les meilleures ventes"
+      }
+    },
+    "form": {
+      "newsletter": {
+        "title": "Newsletter",
+        "email": {
+          "label": "Adresse e-mail",
+          "placeholder": "Adresse e-mail",
+          "error": "Adresse e-mail invalide"
+        },
+        "consent": {
+          "label": "J'accepte de recevoir la newsletter. Plus d'informations sur notre Politique de confidentialité."
+        }
+      },
+      "contact": {
+        "name": {
+          "label": "Prénom, Nom",
+          "placeholder": "Prénom, Nom"
+        },
+        "email": {
+          "label": "Adresse e-mail",
+          "placeholder": "Adresse e-mail",
+          "error": "Adresse e-mail invalide"
+        },
+        "orderNumber": {
+          "label": "Numéro de commande",
+          "placeholder": "Numéro de commande"
+        },
+        "subject": {
+          "label": "Sujet",
+          "placeholder": "Sujet"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Message"
+        }
+      },
+      "appointment": {
+        "name": {
+          "label": "Prénom, Nom",
+          "placeholder": "Prénom, Nom"
+        },
+        "email": {
+          "label": "Adresse e-mail",
+          "placeholder": "Adresse e-mail",
+          "error": "Adresse e-mail invalide"
+        },
+        "phone": {
+          "label": "Numéro de téléphone",
+          "placeholder": "Numéro de téléphone"
+        },
+        "requestedTime": {
+          "label": "Heure de rendez-vous demandée",
+          "placeholder": "Heure de rendez-vous demandée"
+        },
+        "partySize": {
+          "label": "Taille du groupe",
+          "placeholder": "Taille du groupe"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Message"
+        }
+      },
+      "editAddress": {
+        "firstName": {
+          "label": "Prénom",
+          "placeholder": "Prénom"
+        },
+        "lastName": {
+          "label": "Nom",
+          "placeholder": "Nom"
+        },
+        "company": {
+          "label": "Entreprise",
+          "placeholder": "Entreprise"
+        },
+        "address1": {
+          "label": "Adresse ligne 1",
+          "placeholder": "Adresse ligne 1*"
+        },
+        "address2": {
+          "label": "Adresse ligne 2",
+          "placeholder": "Adresse ligne 2"
+        },
+        "city": {
+          "label": "Ville",
+          "placeholder": "Ville"
+        },
+        "zonecode": {
+          "label": "État / Province (zoneCode)",
+          "placeholder": "État / Province (zoneCode)"
+        },
+        "zip": {
+          "label": "Code postal",
+          "placeholder": "Code postal"
+        },
+        "territoryCode": {
+          "label": "Code du pays (Territoire)",
+          "placeholder": "Code du pays (Territoire)"
+        },
+        "phone": {
+          "label": "Téléphone",
+          "placeholder": "Téléphone"
+        },
+        "defaultAddress": {
+          "label": "Définir comme adresse par défaut"
+        }
+      }
+    },
+    "policies": {
+      "title": "Politiques",
+      "privacy": "Politique de confidentialité",
+      "shipping": "Politique de livraison"
+    },
+    "product": {
+      "tabs": {
+        "description": "Description",
+        "details": "Détails",
+        "measurements": "Mesures"
+      },
+      "addToCart": "Ajouter au panier",
+      "soldOut": "Épuisé",
+      "card": {
+        "new": "Nouveau",
+        "sale": "Soldes"
+      }
+    },
+    "notFound": {
+      "title": "Page non trouvée",
+      "subtitle": "Désolé, nous n'avons pas pu trouver la page que vous cherchiez.",
+      "description": "Veuillez vérifier l'URL dans la barre d'adresse et réessayer.",
+      "cta": "Aller à la page d'accueil"
+    },
+    "account": {
+      "home": {
+        "greeting": "Bienvenue dans votre compte.",
+        "personalGreeting": "Bienvenue, {{firstName}}",
+        "emptyOrders": "Vous n'avez pas encore passé de commandes",
+        "startShopping": "Commencer les achats",
+        "menu": {
+          "orders": "Commandes",
+          "profile": "Profil",
+          "addresses": "Adresses",
+          "logout": "Se déconnecter"
+        }
+      }
+    }
+  }
+}

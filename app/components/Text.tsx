@@ -16,7 +16,7 @@ export function Text({
   className?: string;
   color?: 'default' | 'primary' | 'subtle' | 'notice' | 'contrast';
   format?: boolean;
-  size?: 'lead' | 'copy' | 'fine';
+  size?: 'lead' | 'copy' | 'fine' | 'inherit';
   width?: 'default' | 'narrow' | 'wide';
   children: React.ReactNode;
   [key: string]: any;
@@ -33,6 +33,7 @@ export function Text({
     lead: 'text-lead font-medium',
     copy: 'text-copy',
     fine: 'text-fine subpixel-antialiased',
+    inherit: 'text-inherit',
   };
 
   const widths: Record<string, string> = {
@@ -68,14 +69,16 @@ export function Heading({
   as?: React.ElementType;
   children: React.ReactNode;
   format?: boolean;
-  size?: 'display' | 'heading' | 'lead' | 'copy';
+  size?: 'display' | 'heading' | 'mid' | 'lead' | 'copy' | 'fine';
   width?: 'default' | 'narrow' | 'wide';
 } & React.HTMLAttributes<HTMLHeadingElement>) {
   const sizes = {
-    display: 'font-bold text-display',
-    heading: 'font-bold text-heading',
-    lead: 'font-bold text-lead',
-    copy: 'font-medium text-copy',
+    display: 'font-normal text-display',
+    heading: 'font-normal text-heading',
+    mid: 'font-normal text-mid',
+    lead: 'font-normal text-lead',
+    copy: 'font-normal text-copy',
+    fine: 'text-fine subpixel-antialiased',
   };
 
   const widths = {
@@ -118,10 +121,10 @@ export function Section({
   [key: string]: any;
 }) {
   const paddings = {
-    x: 'px-6 md:px-8 lg:px-12',
+    x: 'px-4 md:px-6 lg:px-8 xl:px-10',
     y: 'py-6 md:py-8 lg:py-12',
     swimlane: 'pt-4 md:pt-8 lg:pt-12 md:pb-4 lg:pb-8',
-    all: 'p-6 md:p-8 lg:p-12',
+    all: 'p-4 md:p-6 lg:p-8 xl:p-10',
   };
 
   const dividers = {
@@ -135,7 +138,6 @@ export function Section({
     flex: 'flex',
     grid: 'grid',
   };
-
   const styles = clsx(
     'w-full gap-4 md:gap-8',
     displays[display],

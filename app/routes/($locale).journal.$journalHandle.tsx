@@ -11,15 +11,9 @@ import {PageHeader, Section} from '~/components';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 
-import styles from '../styles/custom-font.css';
-
 const BLOG_HANDLE = 'journal';
 
 export const headers = routeHeaders;
-
-export const links: LinksFunction = () => {
-  return [{rel: 'stylesheet', href: styles}];
-};
 
 export async function loader({request, params, context}: LoaderFunctionArgs) {
   const {language, country} = context.storefront.i18n;

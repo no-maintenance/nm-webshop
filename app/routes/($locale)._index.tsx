@@ -1,73 +1,49 @@
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {Suspense} from 'react';
+import type {SeoHandleFunction} from '@shopify/hydrogen';
+import {AnalyticsPageType, CacheShort} from '@shopify/hydrogen';
 import {Await, useLoaderData} from '@remix-run/react';
-import {AnalyticsPageType} from '@shopify/hydrogen';
+import {Suspense} from 'react';
 
-import {ProductSwimlane, FeaturedCollections, Hero} from '~/components';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
-import {getHeroPlaceholder} from '~/lib/placeholders';
-import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
-
+import {
+  DYNAMIC_PAGE_CONTENT_FRAGMENT,
+  HY_PAGE_SEO_FRAGMENT,
+} from '~/graphql/hygraph/hygraph-fragments';
+import {HygraphDynamicContent} from '~/components/hygraph/HygraphDynamicContent';
 export const headers = routeHeaders;
 
+const seo: SeoHandleFunction<typeof loader> = ({data}) => ({
+  title: data?.seo?.pageTitle ?? 'No Maintenance',
+  description:
+    data?.seo?.metaDescription ??
+    'No Maintenance is a Los Angeles based brand and vintage showroom.',
+  templateTitle: data.seo?.hasTitleTemplate ? '%s | No Maintenance' : '%s',
+});
+
+export const handle = {
+  seo,
+};
 export async function loader({params, context}: LoaderFunctionArgs) {
   const {language, country} = context.storefront.i18n;
-
   if (
     params.locale &&
     params.locale.toLowerCase() !== `${language}-${country}`.toLowerCase()
   ) {
     // If the locale URL param is defined, yet we still are on `EN-US`
-    // the the locale param must be invalid, send to the 404 page
+    // the locale param must be invalid, send to the 404 page
     throw new Response(null, {status: 404});
   }
-
-  const {shop, hero} = await context.storefront.query(HOMEPAGE_SEO_QUERY, {
-    variables: {handle: 'freestyle'},
+  const data = await context.hygraph.query(HYGRAPH_PAGE_QUERY, {
+    variables: {
+      slug: 'home',
+    },
+    cache: CacheShort(),
   });
-
-  const seo = seoPayload.home();
-
+  if (!data) throw new Response(null, {status: 404});
+  const {seo, ...content} = data;
   return defer({
-    shop,
-    primaryHero: hero,
-    // These different queries are separated to illustrate how 3rd party content
-    // fetching can be optimized for both above and below the fold.
-    featuredProducts: context.storefront.query(
-      HOMEPAGE_FEATURED_PRODUCTS_QUERY,
-      {
-        variables: {
-          /**
-           * Country and language properties are automatically injected
-           * into all queries. Passing them is unnecessary unless you
-           * want to override them from the following default:
-           */
-          country,
-          language,
-        },
-      },
-    ),
-    secondaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
-      variables: {
-        handle: 'backcountry',
-        country,
-        language,
-      },
-    }),
-    featuredCollections: context.storefront.query(FEATURED_COLLECTIONS_QUERY, {
-      variables: {
-        country,
-        language,
-      },
-    }),
-    tertiaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
-      variables: {
-        handle: 'winter-2022',
-        country,
-        language,
-      },
-    }),
+    content,
     analytics: {
       pageType: AnalyticsPageType.home,
     },
@@ -76,77 +52,23 @@ export async function loader({params, context}: LoaderFunctionArgs) {
 }
 
 export default function Homepage() {
-  const {
-    primaryHero,
-    secondaryHero,
-    tertiaryHero,
-    featuredCollections,
-    featuredProducts,
-  } = useLoaderData<typeof loader>();
-
-  // TODO: skeletons vs placeholders
-  const skeletons = getHeroPlaceholder([{}, {}, {}]);
-
+  const {content} = useLoaderData<typeof loader>();
   return (
     <>
-      {primaryHero && (
-        <Hero {...primaryHero} height="full" top loading="eager" />
-      )}
-
-      {featuredProducts && (
-        <Suspense>
-          <Await resolve={featuredProducts}>
-            {({products}) => {
-              if (!products?.nodes) return <></>;
-              return (
-                <ProductSwimlane
-                  products={products}
-                  title="Featured Products"
-                  count={4}
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {secondaryHero && (
-        <Suspense fallback={<Hero {...skeletons[1]} />}>
-          <Await resolve={secondaryHero}>
-            {({hero}) => {
-              if (!hero) return <></>;
-              return <Hero {...hero} />;
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {featuredCollections && (
-        <Suspense>
-          <Await resolve={featuredCollections}>
-            {({collections}) => {
-              if (!collections?.nodes) return <></>;
-              return (
-                <FeaturedCollections
-                  collections={collections}
-                  title="Collections"
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {tertiaryHero && (
-        <Suspense fallback={<Hero {...skeletons[2]} />}>
-          <Await resolve={tertiaryHero}>
-            {({hero}) => {
-              if (!hero) return <></>;
-              return <Hero {...hero} />;
-            }}
-          </Await>
-        </Suspense>
-      )}
+      <Suspense>
+        <Await resolve={content}>
+          {(content) => {
+            if (!content) return <></>;
+            return (
+              <div>
+                <HygraphDynamicContent
+                  content={content.dynamicPageContent}
+                ></HygraphDynamicContent>
+              </div>
+            );
+          }}
+        </Await>
+      </Suspense>
     </>
   );
 }
@@ -239,3 +161,20 @@ export const FEATURED_COLLECTIONS_QUERY = `#graphql
     }
   }
 ` as const;
+
+const HYGRAPH_PAGE_QUERY = `#graphql:hygraph
+  ${HY_PAGE_SEO_FRAGMENT}
+  ${DYNAMIC_PAGE_CONTENT_FRAGMENT}
+  query GetPage($slug: String!) {
+    page(where: {slug: $slug}) {
+      seo {
+        ...SEO
+      }
+      transparentBackgroundHeaderColor {
+        hex
+      }
+      hasPaddingOffset
+      ...DynamicPageContent
+    }
+  }
+`;

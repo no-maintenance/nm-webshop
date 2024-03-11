@@ -7,12 +7,7 @@ import {
   useOutlet,
 } from '@remix-run/react';
 import {Suspense} from 'react';
-import {
-  defer,
-  redirect,
-  type LoaderFunctionArgs,
-  type AppLoadContext,
-} from '@shopify/remix-oxygen';
+import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {flattenConnection} from '@shopify/hydrogen';
 
 import type {
@@ -39,10 +34,11 @@ import {
   getFeaturedData,
   type FeaturedData,
 } from './($locale).featured-products';
+import { useTranslation } from '~/i18n';
 
 export const headers = routeHeaders;
 
-export async function loader({request, context, params}: LoaderFunctionArgs) {
+export async function loader({context}: LoaderFunctionArgs) {
   const {data, errors} = await context.customerAccount.query(
     CUSTOMER_DETAILS_QUERY,
   );
@@ -115,13 +111,14 @@ interface AccountType {
 function Account({customer, heading, featuredDataPromise}: AccountType) {
   const orders = flattenConnection(customer.orders);
   const addresses = flattenConnection(customer.addresses);
+  const {t} = useTranslation();
 
   return (
     <>
       <PageHeader heading={heading}>
         <Form method="post" action={usePrefixPathWithLocale('/account/logout')}>
           <button type="submit" className="text-primary/50">
-            Sign out
+            {t('account.home.menu.logout')}
           </button>
         </Form>
       </PageHeader>
@@ -155,10 +152,11 @@ type OrderCardsProps = {
 };
 
 function AccountOrderHistory({orders}: OrderCardsProps) {
+  const {t} = useTranslation();
   return (
     <div className="mt-6">
       <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12">
-        <h2 className="font-bold text-lead">Order History</h2>
+        <h2 className="font-bold text-lead">{t('account.home.menu.orders')}</h2>
         {orders?.length ? <Orders orders={orders} /> : <EmptyOrders />}
       </div>
     </div>
@@ -166,10 +164,11 @@ function AccountOrderHistory({orders}: OrderCardsProps) {
 }
 
 function EmptyOrders() {
+  const {t} = useTranslation();
   return (
     <div>
       <Text className="mb-1" size="fine" width="narrow" as="p">
-        You haven&apos;t placed any orders yet.
+        {t('account.home.emptyOrders')}
       </Text>
       <div className="w-48">
         <Button
@@ -177,7 +176,7 @@ function EmptyOrders() {
           variant="secondary"
           to={usePrefixPathWithLocale('/')}
         >
-          Start Shopping
+          {t('account.home.startShopping')}
         </Button>
       </div>
     </div>

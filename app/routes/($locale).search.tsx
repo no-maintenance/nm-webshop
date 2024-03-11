@@ -1,9 +1,13 @@
+// noinspection ES6MissingAwait
+
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Await, Form, useLoaderData} from '@remix-run/react';
 import {Suspense} from 'react';
 import {Pagination, getPaginationVariables} from '@shopify/hydrogen';
+import {useInView} from 'react-intersection-observer';
 
 import {
+  Button,
   FeaturedCollections,
   Grid,
   Heading,
@@ -29,7 +33,7 @@ export async function loader({
 }: LoaderFunctionArgs) {
   const searchParams = new URL(request.url).searchParams;
   const searchTerm = searchParams.get('q')!;
-  const variables = getPaginationVariables(request, {pageBy: 8});
+  const variables = getPaginationVariables(request, {pageBy: PAGINATION_SIZE});
 
   const {products} = await storefront.query(SEARCH_QUERY, {
     variables: {
@@ -73,6 +77,8 @@ export async function loader({
 export default function Search() {
   const {searchTerm, products, noResultRecommendations} =
     useLoaderData<typeof loader>();
+  const {ref, inView} = useInView();
+
   const noResults = products?.nodes?.length === 0;
 
   return (
@@ -108,6 +114,7 @@ export default function Search() {
                   key={product.id}
                   product={product}
                   loading={getImageLoadingPriority(i)}
+                  idx={i}
                 />
               ));
 
@@ -119,10 +126,12 @@ export default function Search() {
                     </PreviousLink>
                   </div>
                   <Grid data-test="product-grid">{itemsMarkup}</Grid>
-                  <div className="flex items-center justify-center mt-6">
-                    <NextLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
-                      {isLoading ? 'Loading...' : 'Next'}
-                    </NextLink>
+                  <div className="flex items-center justify-center">
+                    <Button
+                      ref={ref}
+                      as={NextLink}
+                      variant={'unstyled'}
+                    ></Button>
                   </div>
                 </>
               );

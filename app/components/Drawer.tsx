@@ -1,7 +1,8 @@
-import {Fragment, useState} from 'react';
+import {Dispatch, Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
-
-import {Heading, IconClose} from '~/components';
+import {Heading} from '~/components';
+import {X} from 'react-feather';
+import {m} from 'framer-motion';
 
 /**
  * Drawer component that opens on user click.
@@ -28,7 +29,6 @@ export function Drawer({
     right: 'translate-x-full',
     left: '-translate-x-full',
   };
-
   return (
     <Transition appear show={open} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -60,26 +60,28 @@ export function Drawer({
                 leaveFrom="translate-x-0"
                 leaveTo={offScreen[openFrom]}
               >
-                <Dialog.Panel className="w-screen max-w-lg text-left align-middle transition-all transform shadow-xl h-screen-dynamic bg-contrast">
+                <Dialog.Panel
+                  className={`w-screen sm:max-w-xl text-left align-middle transition-all shadow-xl h-screen-dynamic bg-contrast`}
+                >
                   <header
-                    className={`sticky top-0 flex items-center px-6 h-nav sm:px-8 md:px-12 ${
+                    className={`sticky top-0 flex items-center h-nav px-4 md:px-6 ${
                       heading ? 'justify-between' : 'justify-end'
                     }`}
                   >
                     {heading !== null && (
                       <Dialog.Title>
-                        <Heading as="span" size="lead" id="cart-contents">
+                        <Heading as="span" size="lead" id="cart-contents" className={'font-normal'}>
                           {heading}
                         </Heading>
                       </Dialog.Title>
                     )}
                     <button
                       type="button"
-                      className="p-4 -m-4 transition text-primary hover:text-primary/50"
+                      className="p-4 -m-4 transition text-primary hover:text-primary/50 focus:outline-0 focus-visible:outline-0"
                       onClick={onClose}
-                      data-test="close-cart"
+                      data-test="close-panel"
                     >
-                      <IconClose aria-label="Close panel" />
+                      <X strokeWidth={1} aria-label="Close panel" />
                     </button>
                   </header>
                   {children}

@@ -21,4 +21,8 @@ export {SortFilter} from './SortFilter';
 export {Grid} from './Grid';
 export {FeaturedProducts} from './FeaturedProducts';
 export {AddToCartButton} from './AddToCartButton';
+export {Accordion} from './Accordion';
+export {MobileDrawer} from './MobileDrawer';
+export {Carousel} from './Carousel';
+export {VariantSelector} from './VariantSelector';
 export * from './Icon';

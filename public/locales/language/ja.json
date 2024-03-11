@@ -1,0 +1,235 @@
+{
+  "name": "日本語",
+  "code": "ja",
+  "translation": {
+    "layout": {
+      "header": {
+        "headline": {
+          "categories": "カテゴリー",
+          "collections": "コレクション"
+        },
+        "ctas": {
+          "wishlist": "ウィッシュリスト",
+          "login": "ログイン",
+          "account": "アカウント",
+          "search": "検索",
+          "cart": "カート"
+        }
+      },
+      "footer": {
+        "ctas": {
+          "contact": "お問い合わせ",
+          "policies": "配送と返品",
+          "faq": "よくある質問",
+          "about": "私たちについて",
+          "instagram": "インスタグラム"
+        }
+      },
+      "cart": {
+        "actions": {
+          "addToCart": "カートに追加",
+          "removeItem": "アイテムを削除"
+        },
+        "checkout": "チェックアウトに進む",
+        "continueShopping": "ショッピングを続ける",
+        "shipping": "送料",
+        "shippingCountry": "配送国",
+        "calculatedAt": "チェックアウト時に計算",
+        "empty": "まだ何も追加されていません。さあ、始めましょう！",
+        "loading": "検索中...",
+        "remove": "削除",
+        "subtotal": "小計",
+        "title": "カート",
+        "total": "合計",
+        "quantity": "数量",
+        "discounts": {
+          "title": "割引",
+          "remove": "削除",
+          "form": {
+            "label": "割引コード",
+            "placeholder": "割引コードを入力",
+            "submit": "割引を適用"
+          }
+        }
+      },
+      "search": {
+        "noResults": "「{{query}}」に対する結果は見つかりませんでした",
+        "results": {
+          "articles": "記事",
+          "collections": "コレクション",
+          "products": "商品",
+          "pages": "ページ",
+          "suggestions": "提案"
+        },
+        "loading": "検索中...",
+        "title": "検索",
+        "viewAll": "「{{query}}」のすべての結果を見る",
+        "form": {
+          "placeholder": "検索語を入力",
+          "label": "検索",
+          "submit": "検索"
+        }
+      },
+      "suggested": {
+        "bestSellers": "ベストセラーを見る",
+        "related": "関連商品"
+      },
+      "pagination": {
+        "next": "もっと読み込む ↓",
+        "previous": "↑ 前へ戻る",
+        "loading": "読み込み中..."
+      }
+    },
+    "sections": {
+      "featuredProducts": {
+        "title": "ベストセラーを見る"
+      }
+    },
+    "form": {
+      "newsletter": {
+        "title": "ニュースレター",
+        "email": {
+          "label": "メールアドレス",
+          "placeholder": "メールアドレス",
+          "error": "メールアドレスが無効です"
+        },
+        "consent": {
+          "label": "ニュースレターを受け取ることに同意します。プライバシーポリシーについてはこちらをご覧ください。"
+        }
+      },
+      "contact": {
+        "name": {
+          "label": "氏名",
+          "placeholder": "氏名"
+        },
+        "email": {
+          "label": "メールアドレス",
+          "placeholder": "メールアドレス",
+          "error": "メールアドレスが無効です"
+        },
+        "orderNumber": {
+          "label": "注文番号",
+          "placeholder": "注文番号"
+        },
+        "subject": {
+          "label": "件名",
+          "placeholder": "件名"
+        },
+        "message": {
+          "label": "メッセージ",
+          "placeholder": "メッセージ"
+        }
+      },
+      "appointment": {
+        "name": {
+          "label": "氏名",
+          "placeholder": "氏名"
+        },
+        "email": {
+          "label": "メールアドレス",
+          "placeholder": "メールアドレス",
+          "error": "メールアドレスが無効です"
+        },
+        "phone": {
+          "label": "電話番号",
+          "placeholder": "電話番号"
+        },
+        "requestedTime": {
+          "label": "希望日時",
+          "placeholder": "希望日時"
+        },
+        "partySize": {
+          "label": "人数",
+          "placeholder": "人数"
+        },
+        "message": {
+          "label": "メッセージ",
+          "placeholder": "メッセージ"
+        }
+      },
+      "editAddress": {
+        "firstName": {
+          "label": "名",
+          "placeholder": "名"
+        },
+        "lastName": {
+          "label": "姓",
+          "placeholder": "姓"
+        },
+        "company": {
+          "label": "会社名",
+          "placeholder": "会社名"
+        },
+        "address1": {
+          "label": "住所1",
+          "placeholder": "住所1*"
+        },
+        "address2": {
+          "label": "住所2",
+          "placeholder": "住所2"
+        },
+        "city": {
+          "label": "市区町村",
+          "placeholder": "市区町村"
+        },
+        "zonecode": {
+          "label": "都道府県 (zoneCode)",
+          "placeholder": "都道府県 (zoneCode)"
+        },
+        "zip": {
+          "label": "郵便番号",
+          "placeholder": "郵便番号"
+        },
+        "territoryCode": {
+          "label": "国 (Territory) コード",
+          "placeholder": "国 (Territory) コード"
+        },
+        "phone": {
+          "label": "電話番号",
+          "placeholder": "電話番号"
+        },
+        "defaultAddress": {
+          "label": "既定の住所として設定"
+        }
+      }
+    },
+    "policies": {
+      "title": "ポリシー",
+      "privacy": "プライバシーポリシー",
+      "shipping": "配送ポリシー"
+    },
+    "product": {
+      "tabs": {
+        "description": "説明",
+        "details": "詳細",
+        "measurements": "寸法"
+      },
+      "addToCart": "カートに追加",
+      "soldOut": "売り切れ",
+      "card": {
+        "new": "新着",
+        "sale": "セール"
+      }
+    },
+    "notFound": {
+      "title": "ページが見つかりません",
+      "subtitle": "申し訳ありませんが、お探しのページは見つかりませんでした。",
+      "description": "アドレスバーのURLを確認して、再度お試しください。",
+      "cta": "ホームページへ"
+    },
+    "account": {
+      "home": {
+        "greeting": "アカウントへようこそ。",
+        "personalGreeting": "こんにちは、{{firstName}}さん",
+        "emptyOrders": "まだ注文はありません",
+        "startShopping": "ショッピングを始める",
+        "menu": {
+          "orders": "注文履歴",
+          "profile": "プロフィール",
+          "addresses": "住所",
+          "logout": "ログアウト"
+        }
+      }
+    }
+  }
+}

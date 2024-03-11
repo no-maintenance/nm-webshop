@@ -15,28 +15,20 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import {
-  PageHeader,
-  Section,
-  Text,
-  SortFilter,
-  Grid,
-  ProductCard,
-  Button,
-} from '~/components';
+import {Section, SortFilter, Grid, ProductCard, Button} from '~/components';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {routeHeaders} from '~/data/cache';
 import {seoPayload} from '~/lib/seo.server';
 import type {SortParam} from '~/components/SortFilter';
 import {FILTER_URL_PREFIX} from '~/components/SortFilter';
-import {getImageLoadingPriority} from '~/lib/const';
+import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
 import {parseAsCurrency} from '~/lib/utils';
 
 export const headers = routeHeaders;
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: PAGINATION_SIZE,
   });
   const {collectionHandle} = params;
   const locale = context.storefront.i18n;
@@ -149,63 +141,43 @@ export default function Collection() {
   const {ref, inView} = useInView();
 
   return (
-    <>
-      <PageHeader heading={collection.title}>
-        {collection?.description && (
-          <div className="flex items-baseline justify-between w-full">
-            <div>
-              <Text format width="narrow" as="p" className="inline-block">
-                {collection.description}
-              </Text>
-            </div>
-          </div>
-        )}
-      </PageHeader>
-      <Section>
-        <SortFilter
-          filters={collection.products.filters as Filter[]}
-          appliedFilters={appliedFilters}
-          collections={collections}
-        >
-          <Pagination connection={collection.products}>
-            {({
-              nodes,
-              isLoading,
-              PreviousLink,
-              NextLink,
-              nextPageUrl,
-              hasNextPage,
-              state,
-            }) => (
-              <>
-                <div className="flex items-center justify-center mb-6">
-                  <Button as={PreviousLink} variant="secondary" width="full">
-                    {isLoading ? 'Loading...' : 'Load previous'}
-                  </Button>
-                </div>
-                <ProductsLoadedOnScroll
-                  nodes={nodes}
-                  inView={inView}
-                  nextPageUrl={nextPageUrl}
-                  hasNextPage={hasNextPage}
-                  state={state}
-                />
-                <div className="flex items-center justify-center mt-6">
-                  <Button
-                    ref={ref}
-                    as={NextLink}
-                    variant="secondary"
-                    width="full"
-                  >
-                    {isLoading ? 'Loading...' : 'Load more products'}
-                  </Button>
-                </div>
-              </>
-            )}
-          </Pagination>
-        </SortFilter>
-      </Section>
-    </>
+    <Section>
+      <SortFilter
+        filters={collection.products.filters as Filter[]}
+        appliedFilters={appliedFilters}
+        collections={collections}
+      >
+        <Pagination connection={collection.products}>
+          {({
+            nodes,
+            isLoading,
+            PreviousLink,
+            NextLink,
+            nextPageUrl,
+            hasNextPage,
+            state,
+          }) => (
+            <>
+              <div className="flex items-center justify-center mb-6">
+                <Button as={PreviousLink} variant="secondary" width="full">
+                  {isLoading ? 'Loading...' : 'Load previous'}
+                </Button>
+              </div>
+              <ProductsLoadedOnScroll
+                nodes={nodes}
+                inView={inView}
+                nextPageUrl={nextPageUrl}
+                hasNextPage={hasNextPage}
+                state={state}
+              />
+              <div className="flex items-center justify-center">
+                <Button ref={ref} as={NextLink} variant={'unstyled'}></Button>
+              </div>
+            </>
+          )}
+        </Pagination>
+      </SortFilter>
+    </Section>
   );
 }
 
@@ -233,7 +205,6 @@ function ProductsLoadedOnScroll({
       });
     }
   }, [inView, navigate, state, nextPageUrl, hasNextPage]);
-
   return (
     <Grid layout="products" data-test="product-grid">
       {nodes.map((product: any, i: number) => (
@@ -241,6 +212,7 @@ function ProductsLoadedOnScroll({
           key={product.id}
           product={product}
           loading={getImageLoadingPriority(i)}
+          idx={i}
         />
       ))}
     </Grid>

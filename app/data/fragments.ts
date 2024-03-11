@@ -44,16 +44,16 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
     publishedAt
     handle
     vendor
-    variants(first: 1) {
+    media(first: 2) {
       nodes {
+        ...Media
+      }
+    }
+    variants(first: 10) {
+      nodes {
+        title
         id
         availableForSale
-        image {
-          url
-          altText
-          width
-          height
-        }
         price {
           amount
           currencyCode
@@ -73,6 +73,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
       }
     }
   }
+${MEDIA_FRAGMENT}
 `;
 
 export const FEATURED_COLLECTION_FRAGMENT = `#graphql
@@ -85,6 +86,44 @@ export const FEATURED_COLLECTION_FRAGMENT = `#graphql
       width
       height
       url
+    }
+  }
+`;
+
+
+export const PRODUCT_VARIANT_FRAGMENT = `#graphql
+  fragment ProductVariantFragment on ProductVariant {
+    id
+    availableForSale
+    quantityAvailable
+    selectedOptions {
+      name
+      value
+    }
+    image {
+      id
+      url
+      altText
+      width
+      height
+    }
+    price {
+      amount
+      currencyCode
+    }
+    compareAtPrice {
+      amount
+      currencyCode
+    }
+    sku
+    title
+    unitPrice {
+      amount
+      currencyCode
+    }
+    product {
+      title
+      handle
     }
   }
 `;

@@ -1,0 +1,235 @@
+{
+  "name": "한국어",
+  "code": "ko",
+  "translation": {
+    "layout": {
+      "header": {
+        "headline": {
+          "categories": "카테고리",
+          "collections": "컬렉션"
+        },
+        "ctas": {
+          "wishlist": "위시리스트",
+          "login": "로그인",
+          "account": "계정",
+          "search": "검색",
+          "cart": "장바구니"
+        }
+      },
+      "footer": {
+        "ctas": {
+          "contact": "문의하기",
+          "policies": "배송 및 반품",
+          "faq": "자주 묻는 질문",
+          "about": "소개",
+          "instagram": "인스타그램"
+        }
+      },
+      "cart": {
+        "actions": {
+          "addToCart": "장바구니에 추가",
+          "removeItem": "항목 제거"
+        },
+        "checkout": "결제 진행",
+        "continueShopping": "쇼핑 계속하기",
+        "shipping": "배송",
+        "shippingCountry": "배송 국가",
+        "calculatedAt": "결제 시 계산",
+        "empty": "장바구니에 아직 아무것도 추가하지 않았습니다. 시작해볼까요!",
+        "loading": "검색 중...",
+        "remove": "제거",
+        "subtotal": "소계",
+        "title": "장바구니",
+        "total": "총계",
+        "quantity": "수량",
+        "discounts": {
+          "title": "할인",
+          "remove": "제거",
+          "form": {
+            "label": "할인 코드",
+            "placeholder": "할인 코드 입력",
+            "submit": "할인 적용"
+          }
+        }
+      },
+      "search": {
+        "noResults": "\"{{query}}\"에 대한 결과가 없습니다",
+        "results": {
+          "articles": "기사",
+          "collections": "컬렉션",
+          "products": "제품",
+          "pages": "페이지",
+          "suggestions": "제안"
+        },
+        "loading": "검색 중...",
+        "title": "검색",
+        "viewAll": "\"{{query}}\"에 대한 모든 결과 보기",
+        "form": {
+          "placeholder": "검색어 입력",
+          "label": "검색",
+          "submit": "검색"
+        }
+      },
+      "suggested": {
+        "bestSellers": "베스트셀러 구매",
+        "related": "관련 제품"
+      },
+      "pagination": {
+        "next": "더 불러오기 ↓",
+        "previous": "↑ 이전 불러오기",
+        "loading": "로딩 중..."
+      }
+    },
+    "sections": {
+      "featuredProducts": {
+        "title": "베스트셀러 구매"
+      }
+    },
+    "form": {
+      "newsletter": {
+        "title": "뉴스레터",
+        "email": {
+          "label": "이메일 주소",
+          "placeholder": "이메일 주소",
+          "error": "잘못된 이메일 주소"
+        },
+        "consent": {
+          "label": "뉴스레터 수신에 동의합니다. 개인정보 처리방침에 대해 자세히 알아보기."
+        }
+      },
+      "contact": {
+        "name": {
+          "label": "이름",
+          "placeholder": "이름"
+        },
+        "email": {
+          "label": "이메일 주소",
+          "placeholder": "이메일 주소",
+          "error": "잘못된 이메일 주소"
+        },
+        "orderNumber": {
+          "label": "주문 번호",
+          "placeholder": "주문 번호"
+        },
+        "subject": {
+          "label": "제목",
+          "placeholder": "제목"
+        },
+        "message": {
+          "label": "메시지",
+          "placeholder": "메시지"
+        }
+      },
+      "appointment": {
+        "name": {
+          "label": "이름",
+          "placeholder": "이름"
+        },
+        "email": {
+          "label": "이메일 주소",
+          "placeholder": "이메일 주소",
+          "error": "잘못된 이메일 주소"
+        },
+        "phone": {
+          "label": "전화번호",
+          "placeholder": "전화번호"
+        },
+        "requestedTime": {
+          "label": "예약 시간",
+          "placeholder": "예약 시간"
+        },
+        "partySize": {
+          "label": "인원 수",
+          "placeholder": "인원 수"
+        },
+        "message": {
+          "label": "메시지",
+          "placeholder": "메시지"
+        }
+      },
+      "editAddress": {
+        "firstName": {
+          "label": "이름",
+          "placeholder": "이름"
+        },
+        "lastName": {
+          "label": "성",
+          "placeholder": "성"
+        },
+        "company": {
+          "label": "회사",
+          "placeholder": "회사"
+        },
+        "address1": {
+          "label": "주소 1",
+          "placeholder": "주소 1*"
+        },
+        "address2": {
+          "label": "주소 2",
+          "placeholder": "주소 2"
+        },
+        "city": {
+          "label": "도시",
+          "placeholder": "도시"
+        },
+        "zonecode": {
+          "label": "주 / 지방 (zoneCode)",
+          "placeholder": "주 / 지방 (zoneCode)"
+        },
+        "zip": {
+          "label": "우편번호",
+          "placeholder": "우편번호"
+        },
+        "territoryCode": {
+          "label": "국가 (Territory) 코드",
+          "placeholder": "국가 (Territory) 코드"
+        },
+        "phone": {
+          "label": "전화",
+          "placeholder": "전화"
+        },
+        "defaultAddress": {
+          "label": "기본 주소로 설정"
+        }
+      }
+    },
+    "policies": {
+      "title": "정책",
+      "privacy": "개인정보 처리방침",
+      "shipping": "배송 정책"
+    },
+    "product": {
+      "tabs": {
+        "description": "설명",
+        "details": "세부 사항",
+        "measurements": "치수"
+      },
+      "addToCart": "장바구니에 추가",
+      "soldOut": "품절",
+      "card": {
+        "new": "신상품",
+        "sale": "세일"
+      }
+    },
+    "notFound": {
+      "title": "페이지를 찾을 수 없습니다",
+      "subtitle": "죄송합니다. 찾으시는 페이지를 찾을 수 없습니다.",
+      "description": "주소창의 URL을 확인하고 다시 시도해주세요.",
+      "cta": "홈페이지로 이동"
+    },
+    "account": {
+      "home": {
+        "greeting": "계정에 오신 것을 환영합니다.",
+        "personalGreeting": "환영합니다, {{firstName}}님",
+        "emptyOrders": "아직 주문이 없습니다",
+        "startShopping": "쇼핑 시작하기",
+        "menu": {
+          "orders": "주문 내역",
+          "profile": "프로필",
+          "addresses": "주소",
+          "logout": "로그아웃"
+        }
+      }
+    }
+  }
+}

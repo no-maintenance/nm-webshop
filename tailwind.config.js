@@ -4,12 +4,15 @@ import typographyPlugin from '@tailwindcss/typography';
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./app/**/*.{js,ts,jsx,tsx}'],
+  darkMode: ['class', '[data-dark-mode="true"]'],
   theme: {
     extend: {
       colors: {
         primary: 'rgb(var(--color-primary) / <alpha-value>)',
         contrast: 'rgb(var(--color-contrast) / <alpha-value>)',
-        notice: 'rgb(var(--color-accent) / <alpha-value>)',
+        error: 'rgb(var(--color-error) / <alpha-value>)',
+        notice: 'rgb(var(--color-notice) / <alpha-value>)',
+        accent: 'rgb(var(--color-accent) / <alpha-value>)',
         shopPay: 'rgb(var(--color-shop-pay) / <alpha-value>)',
       },
       screens: {
@@ -39,19 +42,28 @@ export default {
         mobileGallery: 'calc(100vw - 3rem)',
       },
       fontFamily: {
-        sans: ['Helvetica Neue', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        serif: ['"IBMPlexSerif"', 'Palatino', 'ui-serif'],
+        sans: [
+          'SyndicatGrotesk',
+          'Helvetica Neue',
+          'ui-sans-serif',
+          'system-ui',
+          'sans-serif',
+        ],
+        serif: ['ui-serif'],
       },
       fontSize: {
+        oversize: ['var(--font-size-oversize)', '1.25'],
         display: ['var(--font-size-display)', '1.1'],
         heading: ['var(--font-size-heading)', '1.25'],
         lead: ['var(--font-size-lead)', '1.333'],
+        mid: ['var(--font-size-mid)', '1.5'],
         copy: ['var(--font-size-copy)', '1.5'],
         fine: ['var(--font-size-fine)', '1.333'],
       },
       maxWidth: {
         'prose-narrow': '45ch',
         'prose-wide': '80ch',
+        portrait: '370px',
       },
       boxShadow: {
         border: 'inset 0px 0px 0px 1px rgb(var(--color-primary) / 0.08)',
