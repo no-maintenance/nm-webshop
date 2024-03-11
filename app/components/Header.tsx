@@ -340,7 +340,7 @@ const FullScreenNav = ({
               </div>
             </div>
             <div className={'flex-shrink-0 w-full flex justify-end flex-col'}>
-              <div className={'flex-1 border-b'}></div>
+              <div className={'flex-1 border-b md:border-b-0'}></div>
               {root.layout?.footerMenu && (
                 <Footer menu={root.layout.footerMenu} />
               )}
