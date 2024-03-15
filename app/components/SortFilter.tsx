@@ -13,8 +13,9 @@ import type {
   Filter,
   ProductFilter,
 } from '@shopify/hydrogen/storefront-api-types';
+import {Sliders as FilterIcon} from 'react-feather';
 
-import {Heading, IconFilters, IconCaret, IconXMark, Text} from '~/components';
+import {Heading, IconCaret, IconXMark, Text} from '~/components';
 
 export type AppliedFilter = {
   label: string;
@@ -52,7 +53,7 @@ export function SortFilter({
             'relative flex items-center justify-center w-8 h-8 focus:ring-primary/5'
           }
         >
-          <IconFilters />
+          <FilterIcon />
         </button>
         <SortMenu />
       </div>
@@ -66,7 +67,7 @@ export function SortFilter({
         >
           <FiltersDrawer filters={filters} appliedFilters={appliedFilters} />
         </div>
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 z-10">{children}</div>
       </div>
     </>
   );
@@ -332,7 +333,7 @@ export default function SortMenu() {
   const activeItem = items.find((item) => item.key === params.get('sort'));
 
   return (
-    <Menu as="div" className="relative z-40">
+    <Menu as="div" className="relative z-10">
       <Menu.Button className="flex items-center">
         <span className="px-2">
           <span className="px-2 font-medium">Sort by:</span>

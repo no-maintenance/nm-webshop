@@ -9,6 +9,7 @@ import {GraphQLClient} from 'graphql-request';
 import invariant from 'tiny-invariant';
 import clone from 'lodash.clone';
 import type {Product} from '@shopify/hydrogen/storefront-api-types';
+import type {DocumentNode} from 'graphql/language';
 
 import {
   PRODUCT_CARD_FRAGMENT,
@@ -16,6 +17,7 @@ import {
 } from '~/data/fragments';
 
 import type {ProcessedShopifyHygraphResData} from '../hygraph';
+import type {PageQuery, PageQueryVariables} from '../../hygraph.generated';
 
 type AllCacheOptions = Parameters<WithCache>[1];
 
@@ -42,25 +44,28 @@ export function createHygraphClient({
   });
   const withCache = createWithCache({cache, waitUntil});
 
-  async function query(
-    query: string,
+  async function getPages(
+    query: DocumentNode,
     options: {
-      variables?: Variables;
+      variables?: PageQueryVariables;
       cache: AllCacheOptions;
     } = {variables: {}, cache: CacheLong()},
   ) {
     const cacheKey = [options.cache, query];
 
     return withCache(cacheKey, options.cache, async () => {
-      const data = await hygraphClient.request(query, options.variables);
-      const page = data?.page;
-      const processedData = page?.dynamicPageContent
-        ? await getLinkedHygraphShopifyData({
-            storefront,
-            data: page,
-          })
-        : page;
-      return processedData;
+      const data: PageQuery = await hygraphClient.request(
+        query,
+        options.variables,
+      );
+      console.log(JSON.stringify(data, null, 4));
+      return data?.values[0];
+      // const processedData = page?.dynamicPageContent
+      //   ? await getLinkedHygraphShopifyData({
+      //       storefront,
+      //       data: page,
+      //     })
+      //   : page;
     });
   }
 
@@ -122,7 +127,7 @@ export function createHygraphClient({
     return d;
   }
 
-  return {query};
+  return {query: getPages};
 }
 
 const PRODUCT_CARDS_BY_IDS_QUERY = `#graphql

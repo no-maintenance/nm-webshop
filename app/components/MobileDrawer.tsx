@@ -622,7 +622,7 @@ const CartLink = () => {
   const rootData = useRootLoaderData();
   const params = useParams();
   return (
-    <Link to={params.lang ? `${params.lang}/cart` : '/cart'}>
+    <Link to={params.locale ? `${params.locale}/cart` : '/cart'}>
       <Suspense fallback={'Shopping Bag'}>
         <Await resolve={rootData?.cart}>
           {(cart) =>

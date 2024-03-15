@@ -55,7 +55,9 @@ export function FeaturedProducts({
         .join('&'),
     [count, sortKey, query, reverse],
   );
-  const productsApiPath = `${params.lang}/api/products?${queryString}`;
+  const productsApiPath = params.locale
+    ? `${params.locale}/api/products?${queryString}`
+    : `/api/products?${queryString}`;
 
   useEffect(() => {
     load(productsApiPath);

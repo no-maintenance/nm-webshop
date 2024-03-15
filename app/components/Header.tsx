@@ -313,7 +313,7 @@ const FullScreenNav = ({
                   {menu?.items.map((item) => (
                     <m.li key={item.id} variants={itemVariants}>
                       <Link
-                        className="font-medium text-display xl:text-oversize animated-underline"
+                        className="font-medium text-display xl:text-oversize animated-underline uppercase"
                         to={item.to}
                       >
                         {item.title}
@@ -385,7 +385,7 @@ function DesktopSearch({isOpen}: {isOpen: boolean}) {
     <Form
       method="get"
       className={''}
-      action={params.lang ? `/${params.lang}/search` : '/search'}
+      action={params.locale ? `/${params.locale}/search` : '/search'}
     >
       <Input
         autoComplete={'off'}
@@ -520,7 +520,7 @@ function CartCount({
         className={
           'cursor-pointer font-normal text-inherit relative flex items-center justify-end focus:ring-primary/5 w-7 h-7'
         }
-        to={params.lang ? `/${params.lang}/cart` : '/cart'}
+        to={params.locale ? `/${params.locale}/cart` : '/cart'}
       >
         <IconCart strokeWidth={2} />
         <Suspense fallback={<Badge count={0} openCart={openCart} />}>

@@ -11,6 +11,7 @@ import {
   HY_PAGE_SEO_FRAGMENT,
 } from '~/graphql/hygraph/hygraph-fragments';
 import {HygraphDynamicContent} from '~/components/hygraph/HygraphDynamicContent';
+import {GET_ROOT_PAGES} from '~/graphql/hygraph/query';
 export const headers = routeHeaders;
 
 const seo: SeoHandleFunction<typeof loader> = ({data}) => ({
@@ -34,12 +35,14 @@ export async function loader({params, context}: LoaderFunctionArgs) {
     // the locale param must be invalid, send to the 404 page
     throw new Response(null, {status: 404});
   }
-  const data = await context.hygraph.query(HYGRAPH_PAGE_QUERY, {
+  const data = await context.hygraph.query(GET_ROOT_PAGES, {
     variables: {
       slug: 'home',
     },
     cache: CacheShort(),
   });
+  console.log(data);
+
   if (!data) throw new Response(null, {status: 404});
   const {seo, ...content} = data;
   return defer({
@@ -59,77 +62,10 @@ export default function Homepage() {
         <Await resolve={content}>
           {(content) => {
             if (!content) return <></>;
-            return (
-              <div>
-                <HygraphDynamicContent
-                  content={content.dynamicPageContent}
-                ></HygraphDynamicContent>
-              </div>
-            );
+            return <div>PAGE</div>;
           }}
         </Await>
       </Suspense>
     </>
   );
 }
-
-const HYGRAPH_PAGE_QUERY = `#graphql:hygraph
-  ${HY_PAGE_SEO_FRAGMENT}
-  ${DYNAMIC_PAGE_CONTENT_FRAGMENT}
-  query GetPage($slug: String!) {
-    page(where: {slug: $slug}) {
-      seo {
-        ...SEO
-      }
-      transparentBackgroundHeaderColor {
-        hex
-      }
-      hasPaddingOffset
-      ...DynamicPageContent
-    }
-  }
-`;
-
-const QUERY = `#graphql:hygraph
-query Page($slug: String) {
-  values: landingPages(where: {slug: $slug, path_in: none}) {
-    slug
-    path
-    socialSharingImage {
-      url(transformation: {image: {resize: {height: 630, width: 1200, fit: crop}}})
-    }
-    variants(first: 500) {
-      ... on Content {
-        backgroundColor {
-          hex
-        }
-        primaryColor {
-          hex
-        }
-        sections(first: 500) {
-          backgroundColor {
-            hex
-          }
-          containerWidth
-          primaryColor {
-            hex
-          }
-          type {
-            ... on Collection {
-              id
-              heading
-              products
-            }
-          }
-        }
-      }
-    }
-    localizations(includeCurrent: true, locales: [en, ja]) {
-      locale
-      updatedAt(variation: LOCALIZATION)
-      metaDescription
-      title
-    }
-  }
-}
-`;
