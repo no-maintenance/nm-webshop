@@ -159,7 +159,7 @@ export default function AccountDetailsEdit() {
           </Button>
         </div>
         <div className="mb-4">
-          <Button to=".." className="text-sm" variant="secondary" width="full">
+          <Button to=".." className="text-sm" variant="inverted" width="full">
             Cancel
           </Button>
         </div>

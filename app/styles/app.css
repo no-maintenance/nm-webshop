@@ -109,9 +109,9 @@ shop-pay-button {
     h4,
     h5,
     h6 {
-      @apply font-sans text-primary;
+      @apply font-sans text-primary mb-2;
     }
-    @apply prose mx-auto mb-12 grid justify-center font-serif text-primary;
+    @apply prose mx-auto grid justify-center text-primary;
     p,
     ul,
     li {
@@ -147,6 +147,15 @@ shop-pay-button {
   }
   .gutter {
     @apply px-4 md:px-6 lg:px-8 xl:px-10;
+  }
+  .gutter-lg {
+    @apply px-4 md:px-6 lg:px-10 xl:px-12;
+  }
+  .gutter-y {
+    @apply py-4 md:py-6 lg:py-8 xl:py-10;
+  }
+  .gutter-lg-y {
+    @apply py-4 md:py-6 lg:py-10 xl:py-12;
   }
   .fadeIn {
     opacity: 0;

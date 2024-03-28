@@ -17,7 +17,7 @@ export const Button = forwardRef(
       isThin?: boolean;
       as?: React.ElementType;
       className?: string;
-      variant?: 'primary' | 'secondary' | 'inline' | 'unstyled';
+      variant?: 'primary' | 'inverted' | 'unstyled';
       width?: 'auto' | 'full';
       [key: string]: any;
     },
@@ -34,7 +34,7 @@ export const Button = forwardRef(
 
     const variants = {
       primary: `${baseButtonClasses} bg-primary text-contrast`,
-      secondary: `${baseButtonClasses} border border-primary/10 bg-contrast text-primary`,
+      inverted: `${baseButtonClasses} border border-primary/10 bg-contrast text-primary`,
       inline: 'border-b border-primary/10 leading-none pb-1',
       unstyled: '',
     };

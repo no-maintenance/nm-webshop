@@ -10,3 +10,23 @@ projects:
     schema: 'node_modules/@shopify/hydrogen/customer-account.schema.json'
     documents:
       - 'app/graphql/customer-account/**/*.{ts,tsx,js,jsx}'
+  hygraph:
+    overwrite: true
+    schema: "https://us-west-2.cdn.hygraph.com/content/clu2m9jgk0cqi07lfb5f7101i/master"
+    documents: 'app/graphql/hygraph/*.{ts}'
+
+    generates:
+      ./app/generated/schema.server.ts:
+        plugins:
+          - typescript
+          - typescript-operations
+          - typescript-graphql-request
+          - fragment-matcher
+
+    config:
+      gqlImport: graphql-request#gql
+
+    hooks:
+      afterAllFileWrite:
+        - prettier --write
+

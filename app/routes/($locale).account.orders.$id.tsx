@@ -4,7 +4,7 @@ import {json, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, type MetaFunction} from '@remix-run/react';
 import {Money, Image, flattenConnection} from '@shopify/hydrogen';
 
-import type {OrderFragment} from 'customer-accountapi.generated';
+import type {OrderFragment} from '~/__generated__/customer-accountapi.generated';
 import {statusMessage} from '~/lib/utils';
 import {Link, Heading, PageHeader, Text} from '~/components';
 import {CUSTOMER_ORDER_QUERY} from '~/graphql/customer-account/CustomerOrderQuery';

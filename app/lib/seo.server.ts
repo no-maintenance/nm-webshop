@@ -20,7 +20,7 @@ import type {
   WebPage,
 } from 'schema-dts';
 
-import type {ShopFragment} from 'storefrontapi.generated';
+import type {ShopFragment} from '~/__generated__/storefrontapi.generated';
 
 function root({
   shop,
@@ -52,7 +52,7 @@ function root({
       potentialAction: {
         '@type': 'SearchAction',
         target: `${url}search?q={search_term}`,
-        query: "required name='search_term'",
+        getPage: "required name='search_term'",
       },
     },
   };

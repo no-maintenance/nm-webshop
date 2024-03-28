@@ -4,7 +4,7 @@ import {Suspense} from 'react';
 import {Grid, ProductCard, Skeleton} from '~/components';
 import {getImageLoadingPriority} from '~/lib/const';
 
-import type {ProductCardFragment} from '../../../../storefrontapi.generated';
+import type {ProductCardFragment} from '../../../__generated__/storefrontapi.generated';
 
 export const HygraphShopifyFeaturedCollection = ({
   heading,

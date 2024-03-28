@@ -19,7 +19,13 @@ const defaultFormStyles = {
   error: '',
   formBase: '',
 };
-function useForm<T extends typeof backInStockAction>() {
+export function useHackedFetcher<T>() {
+  const originalFetcher = useFetcher<T>();
+  const fakeMemoizedFetcher = useMemo(() => ({} as typeof originalFetcher), []);
+
+  return Object.assign(fakeMemoizedFetcher, originalFetcher);
+}
+export function useForm<T extends typeof backInStockAction>() {
   const formRef = useRef<HTMLFormElement>(null);
   const fetcher = useFetcher<T>();
   const isLoading = fetcher.state !== 'idle';
@@ -29,6 +35,7 @@ function useForm<T extends typeof backInStockAction>() {
   }, [fetcher?.data]);
   return {formRef, fetcher, isLoading, data};
 }
+
 type KlaviyoFormStyles = {
   input?: string;
   checkboxLabel?: string;
@@ -36,7 +43,6 @@ type KlaviyoFormStyles = {
   error?: string;
   formBase?: string;
 };
-
 export function KlaviyoNewsletter({
   styles = defaultFormStyles,
   hasSubmitBtn,
@@ -95,7 +101,7 @@ export function KlaviyoNewsletter({
                 className={clsx([
                   styles?.button
                     ? styles.button
-                    : 'absolute right-0 bottom-0 py-3 lg:py-2 transform px-2',
+                    : 'absolute right-0 bottom-0 py-3 lg:pb-[8px] transform px-2',
                 ])}
               >
                 {isLoading ? <p>Loading...</p> : 'Submit'}

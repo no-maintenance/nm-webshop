@@ -1,0 +1,39 @@
+fragment MixedContent on MixedContent {
+  id
+  mirror
+  body {
+    json
+    references {
+      __typename
+      ... on Asset {
+        id
+        ...ResponsiveAsset
+      }
+      ... on Form {
+        id
+        ...Form
+      }
+      ... on Collection {
+        id
+        ...Collection
+      }
+      ... on Button {
+        id
+        label
+        style
+
+      }
+      ... on Page {
+        id
+      }
+      ... on Countdown {
+        id
+        ...Countdown
+      }
+    }
+
+    }
+  media {
+    ...ResponsiveAsset
+  }
+}

@@ -1,0 +1,11 @@
+fragment Button on Button {
+  id
+  label
+  style
+  target {
+    __typename
+    ... on Link {
+      ...Link
+    }
+  }
+}

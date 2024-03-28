@@ -8,7 +8,7 @@ import type {
 } from '@shopify/hydrogen-react/storefront-api-types';
 import {type ReactNode, useMemo, createElement, Fragment} from 'react';
 import type {PartialDeep} from 'type-fest';
-import { Maybe } from "graphql/jsutils/Maybe";
+import type {Maybe} from 'graphql/jsutils/Maybe';
 
 export type VariantOption = {
   name: string;
@@ -172,7 +172,7 @@ function useVariantPath(handle: string, productPath: string) {
       searchParams,
       // If the current pathname matches the product page, we need to make sure
       // that we append to the current search params. Otherwise all the search
-      // params can be generated new.
+      // params can be __generated__ new.
       alreadyOnProductPage: path === pathname,
       path,
     };

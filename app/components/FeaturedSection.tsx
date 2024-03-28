@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {useFetcher} from '@remix-run/react';
+import {useFetcher, useParams} from '@remix-run/react';
 
 import {usePrefixPathWithLocale} from '~/lib/utils';
 import type {FeaturedData} from '~/routes/($locale).featured-products';
@@ -9,7 +9,10 @@ import {ProductSwimlane} from './ProductSwimlane';
 
 export function FeaturedSection() {
   const {load, data} = useFetcher<FeaturedData>();
-  const path = usePrefixPathWithLocale('/featured-products');
+  const params = useParams();
+  const path = params.locale
+    ? `${params.locale}/featured-products`
+    : '/featured-products';
 
   useEffect(() => {
     load(path);

@@ -44,7 +44,7 @@ export default function Collections() {
           {({nodes, isLoading, PreviousLink, NextLink}) => (
             <>
               <div className="flex items-center justify-center mb-6">
-                <Button as={PreviousLink} variant="secondary" width="full">
+                <Button as={PreviousLink} variant="inverted" width="full">
                   {isLoading ? 'Loading...' : 'Previous collections'}
                 </Button>
               </div>
@@ -61,7 +61,7 @@ export default function Collections() {
                 ))}
               </Grid>
               <div className="flex items-center justify-center mt-6">
-                <Button as={NextLink} variant="secondary" width="full">
+                <Button as={NextLink} variant="inverted" width="full">
                   {isLoading ? 'Loading...' : 'Next collections'}
                 </Button>
               </div>

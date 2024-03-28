@@ -4,19 +4,10 @@ import React, {useEffect, useRef, useState} from 'react';
 import {AnimatePresence, m} from 'framer-motion';
 import {clearAllBodyScrollLocks, disableBodyScroll} from 'body-scroll-lock';
 import {useNavigation} from '@remix-run/react';
-import type {
-  ExternalVideo,
-  Media,
-  MediaEdge,
-  Model3d,
-} from '@shopify/hydrogen/storefront-api-types';
-import {X} from 'react-feather';
-import type {Video} from 'playwright-core';
 
-import {ATTR_LOADING_EAGER} from '~/lib/const';
 import {notEmpty} from '~/lib/type';
 import {Carousel, IconClose} from '~/components/';
-import type {MediaFragment} from 'storefrontapi.generated';
+import type {MediaFragment} from '~/__generated__/storefrontapi.generated';
 
 /**
  * A client component that defines a media gallery for hosting images, 3D models, and videos of products
@@ -117,7 +108,7 @@ export const ProductModal = ({
   useEffect(() => {
     if (!modalRef.current) return;
     if (modalIdx) {
-      disableBodyScroll(modalRef.current);
+      disableBodyScroll(modalRef.current, {reserveScrollBarGap: true});
     } else {
       clearAllBodyScrollLocks();
     }

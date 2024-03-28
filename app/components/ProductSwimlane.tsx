@@ -1,6 +1,7 @@
-import type {HomepageFeaturedProductsQuery} from 'storefrontapi.generated';
-import {ProductCard, Section} from '~/components';
 import {flattenConnection} from '@shopify/hydrogen';
+
+import type {HomepageFeaturedProductsQuery} from '~/__generated__/storefrontapi.generated';
+import {ProductCard, Section} from '~/components';
 
 const mockProducts = {
   nodes: new Array(12).fill(''),

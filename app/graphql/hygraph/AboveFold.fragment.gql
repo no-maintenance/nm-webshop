@@ -1,0 +1,31 @@
+fragment AboveFold on Layout {
+  id
+  sections(first: 1) {
+    ...Section
+  }
+  shopifyProducts: sections {
+    content {
+      __typename
+      ... on Collection {
+        id
+        products
+        enrichedProducts {
+          product
+        }
+      }
+      ... on MixedContent {
+        id
+        body {
+          references {
+            ... on Collection {
+              products
+              enrichedProducts {
+                product
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

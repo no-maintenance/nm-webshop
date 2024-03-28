@@ -1,0 +1,47 @@
+#projects:
+#  storefront:
+#    overwrite: true
+#    schema: './node_modules/@shopify/hydrogen/storefront.schema.json'
+#    documents:
+#      - '!*.d.ts'
+#      - '*.{ts,tsx,js,jsx}'
+#      - 'app/**/*.{ts,tsx,js,jsx}'
+#      - '!app/graphql/**/*.{ts,tsx,js,jsx}'
+#  customer-account:
+#    overwrite: true
+#    schema: "http://localhost:3000/"
+#    documents:
+#      - 'app/graphql/customer-account/**/*.{ts,tsx,js,jsx}'
+#    generates:
+#      ./app/generated/customeraccount-api.server.ts:
+#        plugins:
+#          - typescript
+#          - typescript-operations
+#          - typescript-graphql-request
+#          - fragment-matcher
+#    config:
+#      gqlImport: graphql-request#gql
+#
+#    hooks:
+#      afterAllFileWrite:
+#        - prettier --write
+#
+#  hygraph:
+#    overwrite: true
+#    schema: "https://us-west-2.cdn.hygraph.com/content/clu2m9jgk0cqi07lfb5f7101i/master"
+#    documents: 'app/graphql/hygraph/*.gql'
+#    generates:
+#      ./app/generated/schema.server.ts:
+#        plugins:
+#          - typescript
+#          - typescript-operations
+#          - typescript-graphql-request
+#          - fragment-matcher
+#
+#    config:
+#      gqlImport: graphql-request#gql
+#
+#    hooks:
+#      afterAllFileWrite:
+#        - prettier --write
+#

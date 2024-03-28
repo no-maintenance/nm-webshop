@@ -117,10 +117,11 @@ export function Section({
   divider?: 'none' | 'top' | 'bottom' | 'both';
   display?: 'grid' | 'flex';
   heading?: string;
-  padding?: 'x' | 'y' | 'swimlane' | 'all';
+  padding?: 'x' | 'y' | 'swimlane' | 'all' | 'none';
   [key: string]: any;
 }) {
   const paddings = {
+    none: '',
     x: 'px-4 md:px-6 lg:px-8 xl:px-10',
     y: 'py-6 md:py-8 lg:py-12',
     swimlane: 'pt-4 md:pt-8 lg:pt-12 md:pb-4 lg:pb-8',

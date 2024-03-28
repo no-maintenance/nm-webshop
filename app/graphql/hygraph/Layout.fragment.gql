@@ -1,0 +1,6 @@
+fragment Layout on Layout {
+  id
+  sections {
+    ...Section
+  }
+}

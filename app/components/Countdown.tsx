@@ -3,13 +3,7 @@ import {useEffect, useState} from 'react';
 
 import {Heading} from '~/components/Text';
 
-export const Countdown = ({
-  launchDate,
-  setIsLive,
-}: {
-  launchDate: string;
-  setIsLive: Dispatch<boolean>;
-}) => {
+export const Countdown = ({launchDate}: {launchDate: string}) => {
   const calculateTimeLeft = () => {
     const difference = +new Date(launchDate) - +new Date();
 
@@ -41,20 +35,19 @@ export const Countdown = ({
     const timer = setTimeout(() => {
       const difference = +new Date(launchDate) - +new Date();
       setTimeLeft(calculateTimeLeft());
-      if (difference <= 0) setIsLive(true);
     }, 1000);
 
     return () => clearTimeout(timer);
   });
   return (
     <div>
-      <div className={'flex justify-around pt-2 pb-8'}>
+      <div className={'flex gap-12 pb-8'}>
         <div>
           <span className={'text-mid font-light'}>{timeLeft.days}</span>
           <Heading
             as={'h3'}
             size={'mid'}
-            className={'uppercase pt-2 font-light text-mid'}
+            className={'uppercase pt-2 font-light text-mid mt-0'}
           >
             Days
           </Heading>
@@ -64,7 +57,7 @@ export const Countdown = ({
           <Heading
             as={'h3'}
             size={'mid'}
-            className={'uppercase pt-2 font-light text-mid'}
+            className={'uppercase pt-2 font-light text-mid mt-0'}
           >
             Hours
           </Heading>
@@ -74,7 +67,7 @@ export const Countdown = ({
           <Heading
             as={'h3'}
             size={'mid'}
-            className={'uppercase pt-2 font-light text-mid'}
+            className={'uppercase pt-2 font-light text-mid mt-0'}
           >
             Minutes
           </Heading>
@@ -84,7 +77,7 @@ export const Countdown = ({
           <Heading
             as={'h3'}
             size={'mid'}
-            className={'uppercase pt-2 font-light text-mid'}
+            className={'uppercase pt-2 font-light text-mid mt-0'}
           >
             Seconds
           </Heading>

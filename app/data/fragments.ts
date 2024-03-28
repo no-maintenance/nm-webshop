@@ -90,7 +90,6 @@ export const FEATURED_COLLECTION_FRAGMENT = `#graphql
   }
 `;
 
-
 export const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariantFragment on ProductVariant {
     id
@@ -124,6 +123,22 @@ export const PRODUCT_VARIANT_FRAGMENT = `#graphql
     product {
       title
       handle
+    }
+  }
+`;
+
+export const PRODUCT_WIDGET_BY_IDS = `#graphql
+  ${PRODUCT_CARD_FRAGMENT}
+  query FeaturedProductsByIds($ids: [ID!]!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language)  {
+    nodes(ids: $ids) {
+      ... on Product {
+        ...ProductCard
+        options {
+          name
+          values
+          id
+        }
+      }
     }
   }
 `;

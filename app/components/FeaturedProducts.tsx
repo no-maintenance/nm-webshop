@@ -8,8 +8,9 @@ import type {
 
 import {Heading, ProductCard, Skeleton, Text} from '~/components';
 import {usePrefixPathWithLocale} from '~/lib/utils';
-import type {ProductCardFragment} from 'storefrontapi.generated';
+import type {ProductCardFragment} from '~/__generated__/storefrontapi.generated';
 import {useRootLoaderData} from '~/root';
+import {getImageLoadingPriority} from '~/lib/const';
 
 interface FeaturedProductsProps {
   count: number;
@@ -55,7 +56,9 @@ export function FeaturedProducts({
         .join('&'),
     [count, sortKey, query, reverse],
   );
-  const productsApiPath = `${params.lang}/api/products?${queryString}`;
+  const productsApiPath = params.locale
+    ? `${params.locale}/api/products?${queryString}`
+    : `/api/products?${queryString}`;
 
   useEffect(() => {
     load(productsApiPath);
@@ -100,7 +103,7 @@ function FeatureProductsContent({
       <>
         {[...new Array(count)].map((_, i) => (
           <div key={`${id + i}`} className="grid gap-2">
-            <Skeleton className="aspect-[3/4]" />
+            <Skeleton className="aspect-[4/5]" />
             <Skeleton className="w-32 h-4" />
           </div>
         ))}
@@ -119,8 +122,8 @@ function FeatureProductsContent({
           product={product}
           key={product.id}
           onClick={onClick}
+          loading={getImageLoadingPriority(i)}
           idx={i}
-          quickAdd
         />
       ))}
     </>

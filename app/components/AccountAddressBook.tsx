@@ -1,7 +1,7 @@
 import {Form} from '@remix-run/react';
 import type {CustomerAddress} from '@shopify/hydrogen/customer-account-api-types';
 
-import type {CustomerDetailsFragment} from 'customer-accountapi.generated';
+import type {CustomerDetailsFragment} from '~/__generated__/customer-accountapi.generated';
 import {Button, Link, Text} from '~/components';
 
 export function AccountAddressBook({
@@ -25,7 +25,7 @@ export function AccountAddressBook({
             <Button
               to="address/add"
               className="mt-2 text-sm w-full mb-6"
-              variant="secondary"
+              variant="inverted"
             >
               Add an Address
             </Button>

@@ -8,11 +8,11 @@ export function NotFound({type = 'page'}: {type?: string}) {
 
   return (
     <>
-      <PageHeader heading={heading}>
+      <PageHeader heading={heading} className={'justify-center'}>
         <Text width="narrow" as="p">
           {description}
         </Text>
-        <Button width="auto" variant="secondary" to={'/'}>
+        <Button width="auto" variant="inverted" to={'/'}>
           Take me to the home page
         </Button>
       </PageHeader>

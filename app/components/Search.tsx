@@ -2,12 +2,13 @@ import {useParams, useFetcher, Form, type FormProps} from '@remix-run/react';
 import {Image, Money, Pagination} from '@shopify/hydrogen';
 import React, {useRef, useEffect} from 'react';
 import {useFetchers} from '@remix-run/react';
+
 import type {
   PredictiveProductFragment,
   PredictiveCollectionFragment,
   PredictiveArticleFragment,
   SearchQuery,
-} from 'storefrontapi.generated';
+} from '~/__generated__/storefrontapi.generated';
 import {useTranslation, LocalizedLink} from '~/i18n';
 
 type PredicticeSearchResultItemImage =
@@ -97,8 +98,8 @@ export function SearchForm({searchTerm}: {searchTerm: string}) {
 }
 
 export function SearchResults({
-                                results,
-                              }: Pick<FetchSearchResultsReturn['searchResults'], 'results'>) {
+  results,
+}: Pick<FetchSearchResultsReturn['searchResults'], 'results'>) {
   if (!results) {
     return null;
   }
@@ -253,12 +254,12 @@ type SearchFromProps = {
  *  Search form component that posts search requests to the `/search` route
  **/
 export function PredictiveSearchForm({
-                                       action,
-                                       children,
-                                       className = 'predictive-search-form',
-                                       method = 'POST',
-                                       ...props
-                                     }: SearchFromProps) {
+  action,
+  children,
+  className = 'predictive-search-form',
+  method = 'POST',
+  ...props
+}: SearchFromProps) {
   const params = useParams();
   const fetcher = useFetcher<NormalizedPredictiveSearchResults>();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -345,8 +346,8 @@ export function PredictiveSearchResults() {
 }
 
 function NoPredictiveSearchResults({
-                                     searchTerm,
-                                   }: {
+  searchTerm,
+}: {
   searchTerm: React.MutableRefObject<string>;
 }) {
   const {t} = useTranslation();
@@ -364,11 +365,11 @@ type SearchResultTypeProps = {
 };
 
 function PredictiveSearchResult({
-                                  goToSearchResult,
-                                  items,
-                                  searchTerm,
-                                  type,
-                                }: SearchResultTypeProps) {
+  goToSearchResult,
+  items,
+  searchTerm,
+  type,
+}: SearchResultTypeProps) {
   const {t} = useTranslation();
   const isSuggestions = type === 'queries';
   const categoryUrl = `/search?q=${

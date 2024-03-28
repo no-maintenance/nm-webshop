@@ -1,21 +1,22 @@
 import clsx from 'clsx';
 import {MediaFile, flattenConnection, Money, useMoney} from '@shopify/hydrogen';
 import type {ShopifyAnalyticsProduct, Video, Image} from '@shopify/hydrogen';
-import type {
-  MoneyV2,
-  Product,
-} from '@shopify/hydrogen/storefront-api-types';
+import type {MoneyV2, Product} from '@shopify/hydrogen/storefront-api-types';
 import type {ComponentProps} from 'react';
 import type {HydrogenImageProps} from '@shopify/hydrogen-react/Image';
+import {m} from 'framer-motion';
 
-import type {MediaFragment, ProductCardFragment} from 'storefrontapi.generated';
+import type {
+  MediaFragment,
+  ProductCardFragment,
+} from '~/__generated__/storefrontapi.generated';
 import {Text, Link, AddToCartButton, Button, Skeleton} from '~/components';
 import {isDiscounted, isNewArrival} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
-import {m} from 'framer-motion';
+import {useTranslation} from '~/i18n';
 
 type ProductCardProps = {
-  product: ProductCardFragment;
+  product: ProductCardFragment | Product;
   label?: string;
   className?: string;
   loading?: HTMLImageElement['loading'];
@@ -23,8 +24,6 @@ type ProductCardProps = {
   quickAdd?: boolean;
   idx: number;
 };
-
-import { useTranslation } from '~/i18n';
 
 export function ProductCard({
   product,
@@ -69,7 +68,7 @@ export function ProductCard({
     <m.div
       initial={{opacity: 0}}
       animate={{opacity: 1}}
-      transition={{duration: 0.2, delay: idx * 0.15}}
+      transition={{duration: 0.1, delay: idx * 0.1}}
       className="flex flex-col gap-2 product-card"
     >
       <Link
@@ -145,7 +144,7 @@ export function ProductCard({
         </AddToCartButton>
       )}
       {quickAdd && !firstVariant.availableForSale && (
-        <Button variant="secondary" className="mt-2" disabled>
+        <Button variant="inverted" className="mt-2" disabled>
           <Text as="span" className="flex items-center justify-center gap-2">
             {t('product.soldOut')}
           </Text>

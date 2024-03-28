@@ -43,7 +43,6 @@ export async function loader({
   } catch (_) {
     // noop
   }
-
   const {products} = await storefront.query(API_ALL_PRODUCTS_QUERY, {
     variables: {
       count,

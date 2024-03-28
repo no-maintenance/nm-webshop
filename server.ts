@@ -16,7 +16,7 @@ import {
 import {AppSession} from '~/lib/session.server';
 import {subfolderLocaleParser} from '~/lib/utils';
 import {getI18n} from '~/i18n/server';
-import {createHygraphClient} from '~/lib/createHygraphClient.server';
+import {hygraphClient} from '~/lib/createHygraphClient.server';
 
 import defaultCountry from './public/locales/country/US.json';
 import defaultLanguage from './public/locales/language/en.json';
@@ -77,7 +77,7 @@ export default {
         storefrontHeaders: getStorefrontHeaders(request),
       });
 
-      const hygraph = createHygraphClient({
+      const hygraph = hygraphClient({
         storefront,
         env,
         cache,

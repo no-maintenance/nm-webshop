@@ -5,8 +5,8 @@
 import type {HydrogenCart} from '@shopify/hydrogen';
 import type {Storefront, CustomerClient} from '~/lib/type';
 import type {AppSession} from '~/lib/session.server';
-import { I18n } from "~/i18n";
-import { createHygraphClient } from "~/lib/createHygraphClient.server";
+import {I18n} from '~/i18n';
+import {hygraphClient} from '~/lib/createHygraphClient.server';
 
 declare global {
   /**
@@ -47,7 +47,7 @@ declare module '@shopify/remix-oxygen' {
     cart: HydrogenCart;
     env: Env;
     i18n: I18n;
-    hygraph: ReturnType<typeof createHygraphClient>
+    hygraph: ReturnType<typeof hygraphClient>;
   }
 }
 

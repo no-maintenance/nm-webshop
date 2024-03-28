@@ -141,7 +141,7 @@ export default function Collection() {
   const {ref, inView} = useInView();
 
   return (
-    <Section>
+    <Section className={'gap-2'}>
       <SortFilter
         filters={collection.products.filters as Filter[]}
         appliedFilters={appliedFilters}
@@ -158,8 +158,13 @@ export default function Collection() {
             state,
           }) => (
             <>
-              <div className="flex items-center justify-center mb-6">
-                <Button as={PreviousLink} variant="secondary" width="full">
+              <div className="flex items-center justify-center ">
+                <Button
+                  as={PreviousLink}
+                  variant="inverted"
+                  width="full"
+                  className={'mb-6'}
+                >
                   {isLoading ? 'Loading...' : 'Load previous'}
                 </Button>
               </div>

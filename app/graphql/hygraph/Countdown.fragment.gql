@@ -1,0 +1,3 @@
+fragment Countdown on Countdown {
+  launchDate
+}
