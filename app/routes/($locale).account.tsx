@@ -13,7 +13,7 @@ import {flattenConnection} from '@shopify/hydrogen';
 import type {
   CustomerDetailsFragment,
   OrderCardFragment,
-} from 'customer-accountapi.generated';
+} from '~/__generated__/customer-accountapi.generated';
 import {
   Button,
   OrderCard,
@@ -28,13 +28,13 @@ import {FeaturedCollections} from '~/components/FeaturedCollections';
 import {usePrefixPathWithLocale} from '~/lib/utils';
 import {CACHE_NONE, routeHeaders} from '~/data/cache';
 import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
+import {useTranslation} from '~/i18n';
 
 import {doLogout} from './($locale).account_.logout';
 import {
   getFeaturedData,
   type FeaturedData,
 } from './($locale).featured-products';
-import { useTranslation } from '~/i18n';
 
 export const headers = routeHeaders;
 
@@ -173,7 +173,7 @@ function EmptyOrders() {
       <div className="w-48">
         <Button
           className="w-full mt-2 text-sm"
-          variant="secondary"
+          variant="inverted"
           to={usePrefixPathWithLocale('/')}
         >
           {t('account.home.startShopping')}

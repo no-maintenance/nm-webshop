@@ -42,7 +42,11 @@ type FormProps = {
   templateID: string;
   children?: ReactNode;
 };
-
+enum FormTypes {
+  NEWSLETTER = 'newsletter',
+  CONTACT = 'contact',
+  APPOINTMENT = 'appointment',
+}
 const validateContact = (value: string) => {
   const r = /^(?:\+?\d{1,3}[ -]?)?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}$|^\S+@\S+$/;
   if (!value) {

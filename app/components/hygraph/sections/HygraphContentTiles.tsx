@@ -1,12 +1,13 @@
+import clsx from 'clsx';
+
 import {getCSS} from '~/lib/hygraph';
 import type {HygraphContentTilesProps, HygraphSingleTile} from '~/hygraph';
 import {COMPONENT_DEFAULTS} from '~/lib/const';
-import {HygraphLink} from '~/components/hygraph/partials/HygraphLink';
+import {HygraphLinkDeprecated} from '~/components/hygraph/partials/HygraphLinkDeprecated';
 import {
   extractCloudinaryAssetInfo,
   HygraphCloudinaryMedia,
 } from '~/components/hygraph/HygraphCloudinaryMedia';
-import clsx from 'clsx';
 
 export const HygraphContentTiles = ({
   aspectRatio,
@@ -65,9 +66,12 @@ const Tile = ({
   const Wrapper = ({children}) => {
     if (t.link) {
       return (
-        <HygraphLink className={'relative image-container block'} link={t.link}>
+        <HygraphLinkDeprecated
+          className={'relative image-container block'}
+          link={t.link}
+        >
           {children}
-        </HygraphLink>
+        </HygraphLinkDeprecated>
       );
     } else {
       return <div className={'relative image-container block'}>{children}</div>;

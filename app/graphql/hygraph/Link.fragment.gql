@@ -1,0 +1,15 @@
+fragment Link on Link {
+  title
+  rel
+  internalTarget {
+    ... on Page {
+      slug
+    }
+    ... on Section {
+      id
+    }
+  }
+  externalTarget
+  targetBlank
+
+}

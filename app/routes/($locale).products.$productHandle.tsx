@@ -1,4 +1,11 @@
-import {useState, useRef, Suspense, forwardRef, Fragment} from 'react';
+import {
+  useState,
+  useRef,
+  Suspense,
+  forwardRef,
+  Fragment,
+  useEffect,
+} from 'react';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, Await, useNavigate, useParams} from '@remix-run/react';
@@ -22,7 +29,7 @@ import type {
 import type {
   ProductQuery,
   ProductVariantFragmentFragment,
-} from 'storefrontapi.generated';
+} from '~/__generated__/storefrontapi.generated';
 import {
   Heading,
   IconCaret,
@@ -143,14 +150,18 @@ function redirectToFirstVariant({
 }
 
 export default function Product() {
-  const {product, shop, recommended, variants} = useLoaderData<typeof loader>();
+  const lastData = useRef({});
+  const data = useLoaderData<typeof loader>() || lastData.current;
+  const {product, shop, recommended, variants} = data || lastData.current;
   const {media, title, vendor, descriptionHtml, metafields} = product;
-  const {shippingPolicy, refundPolicy} = shop;
   const selectedVariant = product.selectedVariant!;
   const isOnSale =
     selectedVariant?.price?.amount &&
     selectedVariant?.compareAtPrice?.amount &&
     selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
+  useEffect(() => {
+    if (data) lastData.current = data;
+  }, [data]);
   return (
     <>
       <Section className="px-0 pt-0 md:px-6 lg:px-8 xl:px-10">
@@ -392,7 +403,7 @@ function SoldOutButton({
       <Button
         isThin
         width={'full'}
-        variant="secondary"
+        variant="inverted"
         as="button"
         onClick={openPopup}
         className={'text-fine font-semibold cursor-pointer'}

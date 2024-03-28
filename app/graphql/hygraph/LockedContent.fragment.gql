@@ -1,0 +1,7 @@
+fragment LockedContent on LockedContent {
+  id
+  countdown {
+    launchDate
+    id
+  }
+}

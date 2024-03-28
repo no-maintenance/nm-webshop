@@ -161,7 +161,7 @@ export default function Collection() {
               <div className="flex items-center justify-center ">
                 <Button
                   as={PreviousLink}
-                  variant="secondary"
+                  variant="inverted"
                   width="full"
                   className={'mb-6'}
                 >

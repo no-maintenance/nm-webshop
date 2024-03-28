@@ -37,7 +37,7 @@ export function GenericError({
             }}
           />
         )}
-        <Button width="auto" variant="secondary" to={'/'}>
+        <Button width="auto" variant="inverted" to={'/'}>
           Take me to the home page
         </Button>
       </PageHeader>

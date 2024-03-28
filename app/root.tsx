@@ -21,6 +21,7 @@ import {
 import {ShopifySalesChannel, Seo, useNonce} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import {LazyMotion} from 'framer-motion';
+import {useRouteLoaderData} from 'react-router';
 
 import {Layout} from '~/components';
 import {seoPayload} from '~/lib/seo.server';
@@ -36,28 +37,28 @@ import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
 import styles from './styles/app.css';
 import hygraphStyles from './styles/hygraph.css';
-import customFont from './styles/custom-font.css'
+import customFont from './styles/custom-font.css';
 import {parseMenu} from './lib/utils';
 import {useAnalytics} from './hooks/useAnalytics';
 
 // This is important to avoid re-fetching root queries on sub-navigations
-export const shouldRevalidate: ShouldRevalidateFunction = ({
-  formMethod,
-  currentUrl,
-  nextUrl,
-}) => {
-  // revalidate when a mutation is performed e.g add to cart, login...
-  if (formMethod && formMethod !== 'GET') {
-    return true;
-  }
-
-  // revalidate when manually revalidating via useRevalidator
-  if (currentUrl.toString() === nextUrl.toString()) {
-    return true;
-  }
-
-  return false;
-};
+// export const shouldRevalidate: ShouldRevalidateFunction = ({
+//   formMethod,
+//   currentUrl,
+//   nextUrl,
+// }) => {
+//   // revalidate when a mutation is performed e.g add to cart, login...
+//   if (formMethod && formMethod !== 'GET') {
+//     return true;
+//   }
+//
+//   // revalidate when manually revalidating via useRevalidator
+//   if (currentUrl.toString() === nextUrl.toString()) {
+//     return true;
+//   }
+//
+//   return false;
+// };
 
 export const links: LinksFunction = () => {
   return [
@@ -85,7 +86,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const {storefront, cart} = context;
   const layout = await getLayoutData(context);
   const isLoggedInPromise = context.customerAccount.isLoggedIn();
-
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
   return defer(
     {
@@ -151,9 +151,10 @@ export function ErrorBoundary({error}: {error: Error}) {
   const routeError = useRouteError();
   const {i18n, ...rootData} = useRootLoaderData();
   const isRouteError = isRouteErrorResponse(routeError);
+  const e = useMatches();
+  console.log(e);
   let title = 'Error';
   let pageType = 'page';
-
   if (isRouteError) {
     title = 'Not found';
     if (routeError.status === 404) pageType = routeError.data || pageType;
@@ -169,24 +170,32 @@ export function ErrorBoundary({error}: {error: Error}) {
         <Links />
       </head>
       <body>
-        <Layout
-          layout={rootData?.layout}
-          key={`${i18n.language.code}-${i18n.country.code}`}
+        <LazyMotion
+          features={async () => (await import('./lib/motion-features')).default}
+          strict
         >
-          {isRouteError ? (
-            <>
-              {routeError.status === 404 ? (
-                <NotFound type={pageType} />
-              ) : (
-                <GenericError
-                  error={{message: `${routeError.status} ${routeError.data}`}}
-                />
-              )}
-            </>
-          ) : (
-            <GenericError error={error instanceof Error ? error : undefined} />
-          )}
-        </Layout>
+          <Layout
+            layout={rootData?.layout}
+            key={`${i18n.language.code}-${i18n.country.code}`}
+          >
+            {isRouteError ? (
+              <>
+                {routeError.status === 404 ? (
+                  <NotFound type={pageType} />
+                ) : (
+                  <GenericError
+                    error={{message: `${routeError.status} ${routeError.data}`}}
+                  />
+                )}
+              </>
+            ) : (
+              <GenericError
+                error={error instanceof Error ? error : undefined}
+              />
+            )}
+          </Layout>
+        </LazyMotion>
+
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />

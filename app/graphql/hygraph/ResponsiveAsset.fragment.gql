@@ -1,0 +1,10 @@
+fragment ResponsiveAsset on Asset {
+  altText
+  mimeType
+  url
+  thumbnail: url(transformation: {image: {resize: {fit: max, width: 32}}})
+#  thumbnail: url(transformation: {image: {resize: {fit: max, width: 300}}})
+#  small: url(transformation: {image: {resize: {fit: max, width: 640}, compress: {metadata: true}}})
+#  medium: url(transformation: {image: {resize: {fit: max, width: 32}}})
+#  large: url(transformation: {image: {resize: {fit: max, width: 32}}})
+}

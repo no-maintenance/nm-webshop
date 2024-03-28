@@ -5,58 +5,48 @@ import {Await, useLoaderData} from '@remix-run/react';
 import {Suspense} from 'react';
 
 import {routeHeaders} from '~/data/cache';
+import {
+  getHygraphPageContent,
+  getHygraphShopifyProducts,
+} from '~/lib/utils.server';
+import {GET_CRITICAL_PAGE_CONTENT, GET_PAGE} from '~/graphql/hygraph/query';
+import type {
+  GetCriticalPageContentQuery,
+  GetPageQuery,
+} from '~/__generated__/hygraph.generated';
+import {HygraphLayout} from '~/components/hygraph/HygraphLayout';
 
-import {GET_ROOT_PAGES} from '~/graphql/hygraph/query';
 export const headers = routeHeaders;
 
-// const seo: SeoHandleFunction<typeof loader> = ({data}) => ({
-//   title: data?.seo?.pageTitle ?? 'No Maintenance',
-//   description:
-//     data?.seo?.metaDescription ??
-//     'No Maintenance is a Los Angeles based brand and vintage showroom.',
-//   templateTitle: data.seo?.hasTitleTemplate ? '%s | No Maintenance' : '%s',
-// });
-//
-// export const handle = {
-//   seo,
-// };
-export async function loader({params, context, request}: LoaderFunctionArgs) {
-  const {language, country} = context.storefront.i18n;
-  if (
-    params.locale &&
-    params.locale.toLowerCase() !== `${language}-${country}`.toLowerCase()
-  ) {
-    // If the locale URL param is defined, yet we still are on `EN-US`
-    // the locale param must be invalid, send to the 404 page
-    throw new Response(null, {status: 404});
-  }
-  const data = await context.hygraph.query(GET_ROOT_PAGES, {
-    variables: {
-      slug: 'home',
-    },
-    cache: CacheShort(),
-  });
-  context.session.get('id');
-  if (!data) throw new Response(null, {status: 404});
-  // const {seo, ...content} = data;
-  return defer({
-    // content,
-    analytics: {
-      pageType: AnalyticsPageType.home,
-    },
-    // seo,
-  });
-}
+const seo: SeoHandleFunction<typeof loader> = ({data}) => ({
+  title: data?.seo?.title ?? 'No Maintenance',
+  description:
+    data?.seo?.metaDescription ??
+    'No Maintenance is a Los Angeles based brand and vintage showroom.',
+  templateTitle: data.seo?.hasTitleTemplate ? '%s | No Maintenance' : '%s',
+});
 
+export const handle = {
+  seo,
+};
+export async function loader({params, context, request}: LoaderFunctionArgs) {
+  return defer(
+    await getHygraphPageContent({
+      params,
+      context,
+      request,
+      slug: `home`,
+    }),
+  );
+}
 export default function Homepage() {
-  const {content} = useLoaderData<typeof loader>();
+  const {layout} = useLoaderData<typeof loader>();
   return (
     <>
       <Suspense>
-        <Await resolve={content}>
-          {(content) => {
-            if (!content) return <></>;
-            return <div>PAGE</div>;
+        <Await resolve={layout}>
+          {(layout) => {
+            return <>{layout && <HygraphLayout layout={layout} />}</>;
           }}
         </Await>
       </Suspense>

@@ -6,7 +6,7 @@ import {Grid, PageHeader, Section, Link} from '~/components';
 import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
-import type {ArticleFragment} from 'storefrontapi.generated';
+import type {ArticleFragment} from '~/__generated__/storefrontapi.generated';
 
 const BLOG_HANDLE = 'Journal';
 

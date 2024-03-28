@@ -1,0 +1,8 @@
+fragment Setting on Setting {
+  id
+  verticalPadding
+  horizontalPadding
+  theme {
+    ...Theme
+  }
+}

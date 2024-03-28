@@ -1,8 +1,8 @@
 import {Dispatch, Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
-import {Heading} from '~/components';
 import {X} from 'react-feather';
-import {m} from 'framer-motion';
+
+import {Heading} from '~/components';
 
 /**
  * Drawer component that opens on user click.
@@ -70,7 +70,12 @@ export function Drawer({
                   >
                     {heading !== null && (
                       <Dialog.Title>
-                        <Heading as="span" size="lead" id="cart-contents" className={'font-normal'}>
+                        <Heading
+                          as="span"
+                          size="lead"
+                          id="cart-contents"
+                          className={'font-normal'}
+                        >
                           {heading}
                         </Heading>
                       </Dialog.Title>

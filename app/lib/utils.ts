@@ -1,9 +1,10 @@
-import {useLocation} from '@remix-run/react';
+import {useLocation, useMatches} from '@remix-run/react';
 import type {
   CountryCode,
   LanguageCode,
-  MoneyV2, ProductVariant
-} from "@shopify/hydrogen/storefront-api-types";
+  MoneyV2,
+  ProductVariant,
+} from '@shopify/hydrogen/storefront-api-types';
 import type {FulfillmentStatus} from '@shopify/hydrogen/customer-account-api-types';
 import typographicBase from 'typographic-base';
 
@@ -11,13 +12,13 @@ import type {
   ChildMenuItemFragment,
   MenuFragment,
   ParentMenuItemFragment,
-} from 'storefrontapi.generated';
+} from '~/__generated__/storefrontapi.generated';
 import {useRootLoaderData} from '~/root';
 import {countries} from '~/data/countries';
 import {SupportedLanguages} from '~/lib/const';
+import {createSubfolderLocaleParser} from '~/i18n';
 
 import type {I18nLocale} from './type';
-import { createSubfolderLocaleParser } from "~/i18n";
 
 type EnhancedMenuItemProps = {
   to: string;
@@ -357,7 +358,7 @@ export const subfolderLocaleParser = createSubfolderLocaleParser({
 });
 
 export const parseNumberFromShopGid = (gid?: string) => {
-  if (!gid) return
+  if (!gid) return;
   const id = gid.split('/').pop();
   return id ?? '';
 };

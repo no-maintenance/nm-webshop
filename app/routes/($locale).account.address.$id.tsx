@@ -1,8 +1,4 @@
-import {
-  json,
-  redirect,
-  type ActionFunction,
-} from '@shopify/remix-oxygen';
+import {json, redirect, type ActionFunction} from '@shopify/remix-oxygen';
 import {
   Form,
   useActionData,
@@ -395,7 +391,7 @@ export default function EditAddress() {
             >
               {state !== 'idle' ? 'Saving' : 'Save'}
             </Button>
-            <Button to=".." className="flex-1" variant="secondary">
+            <Button to=".." className="flex-1" variant="inverted">
               Cancel
             </Button>
           </div>

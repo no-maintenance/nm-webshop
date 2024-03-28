@@ -1,0 +1,32 @@
+fragment Theme on Theme {
+  base {
+    hex
+  }
+  contrast {
+    hex
+  }
+  link {
+    hex
+  }
+  primary {
+    hex
+  }
+  secondary{
+    hex
+  }
+  tertiary {
+    hex
+  }
+  neutral {
+    hex
+  }
+  error {
+    hex
+  }
+  success {
+    hex
+  }
+  info {
+    hex
+  }
+}

@@ -4,7 +4,7 @@ import invariant from 'tiny-invariant';
 import type {HygraphLinkProps, Nullable} from '~/hygraph';
 import {Link} from '~/components';
 
-export function HygraphLink({
+export function HygraphLinkDeprecated({
   children,
   link,
   className,
@@ -13,7 +13,7 @@ export function HygraphLink({
   children?: ReactNode;
   link: Nullable<HygraphLinkProps>;
 }) {
-  invariant(link, 'HygraphLink requires a link prop');
+  invariant(link, 'HygraphLinkDeprecated requires a link prop');
   const att = link?.openInNewTab
     ? {
         target: '_blank',

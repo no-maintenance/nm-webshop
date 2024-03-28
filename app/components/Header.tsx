@@ -1,8 +1,7 @@
 import {Await, Form, useLocation, useParams} from '@remix-run/react';
 import type {ReactNode, RefObject} from 'react';
-import {Fragment, Suspense, useEffect, useMemo, useRef, useState} from 'react';
+import {Suspense, useEffect, useMemo, useRef, useState} from 'react';
 import {CartForm, Image} from '@shopify/hydrogen';
-import {Menu, Search, User} from 'react-feather';
 import {AnimatePresence, m} from 'framer-motion';
 import {
   disableBodyScroll,
@@ -22,7 +21,6 @@ import {
   IconSearch,
   Input,
   Link,
-  MobileDrawer,
 } from '~/components';
 import {useRootLoaderData} from '~/root';
 import {CartLoading} from '~/components/CartLoading';
@@ -34,7 +32,6 @@ import {Footer} from '~/components/Footer';
 export function Header({
   title,
   desktopMenu,
-  mobileMenu,
 }: {
   title: string;
   desktopMenu?: EnhancedMenu | null;
@@ -61,112 +58,6 @@ export function Header({
         <DesktopHeader title={title} menu={desktopMenu} openCart={openCart} />
       )}
     </>
-  );
-}
-
-function MobileHeader({title, menu}: {title: string; menu: EnhancedMenu}) {
-  const {
-    isOpen: isMenuOpen,
-    openDrawer: openMenu,
-    closeDrawer: closeMenu,
-  } = useDrawer();
-  const isHome = useIsHomePath();
-  const location = useLocation();
-  const lastLocationKey = useRef<string>('');
-  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-  const toggleMenu = () => (isMenuOpen ? closeMenu() : openMenu());
-  useEffect(() => {
-    if (lastLocationKey.current === location.key) return;
-    lastLocationKey.current = location.key;
-    closeMenu();
-    setOpenDropdown(null);
-  }, [location]);
-  return (
-    <>
-      <MobileDrawer
-        open={isMenuOpen}
-        onClose={closeMenu}
-        openFrom="left"
-        menu={menu}
-      />
-      <header
-        role="banner"
-        className={`mobile-header flex bg-contrast md:hidden items-center h-nav sticky z-40 top-0 justify-between w-full leading-none gap-4 gutter`}
-      >
-        <div
-          className={`absolute top-0 left-0 h-full -z-10 w-full bg-contrast`}
-        ></div>
-        <div className="flex items-center justify-start w-full gap-4">
-          <button
-            onClick={toggleMenu}
-            className={`relative text-primary flex items-center justify-center relative ${
-              isMenuOpen ? 'pointer-events-none cursor-pointer' : ''
-            }`}
-          >
-            <Menu strokeWidth={2} />
-          </button>
-          <button onClick={() => setOpenDropdown((d) => (d === 1 ? null : 1))}>
-            <Search strokeWidth={2} size={24} />
-          </button>
-          <Dropdown idx={1} openDropdown={openDropdown}>
-            <DesktopSearch isOpen={openDropdown === 1} />
-          </Dropdown>
-        </div>
-
-        <Link
-          className="flex items-center self-stretch leading-[3rem] md:leading-[4rem] justify-center grow w-full h-full"
-          to="/"
-        >
-          <Heading
-            size={'mid'}
-            className="text-center uppercase text-2xl whitespace-nowrap"
-            as={isHome ? 'h1' : 'h2'}
-          >
-            {title}
-          </Heading>
-        </Link>
-
-        <div className="flex items-center justify-end w-full gap-4 ">
-          <Link
-            to="/account"
-            className="relative flex items-center justify-center w-8 h-8 md:block"
-          >
-            <User size={24} strokeWidth={2} />
-          </Link>
-          <CartCount isIcon={true} openCart={() => null} />
-        </div>
-      </header>
-    </>
-  );
-}
-
-function MenuMobileNav({
-  menu,
-  onClose,
-}: {
-  menu: EnhancedMenu;
-  onClose: () => void;
-}) {
-  return (
-    <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
-      {/* Top level menu items */}
-      {(menu?.items || []).map((item) => (
-        <span key={item.id} className="block">
-          <Link
-            to={item.to}
-            target={item.target}
-            onClick={onClose}
-            className={({isActive}) =>
-              isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
-            }
-          >
-            <Text as="span" size="copy">
-              {item.title}
-            </Text>
-          </Link>
-        </span>
-      ))}
-    </nav>
   );
 }
 
@@ -209,7 +100,7 @@ function DesktopHeader({
         <div className={'flex-1'}>
           <div className={'-ml-4'}>
             <Hamburger
-              size={25}
+              size={20}
               label={'main menu'}
               toggled={isOpen(DropdownState.HAMBURGER)}
               toggle={() => toggle(DropdownState.HAMBURGER)}
@@ -222,7 +113,7 @@ function DesktopHeader({
           to="/"
         >
           <Heading
-            className="text-center uppercase text-[20px] md:text-2xl lg:text-3xl xl:text-4xl whitespace-nowrap"
+            className="text-center uppercase text-2xl lg:text-3xl whitespace-nowrap"
             as={isHome ? 'h1' : 'h2'}
           >
             {title}
@@ -231,9 +122,9 @@ function DesktopHeader({
 
         <nav className={'flex-1'}>
           <ul className={' flex justify-end items-center uppercase gap-10'}>
-            <li className={'w-7 h-7 hidden md:block'}>
+            <li className={'w-6 h-6 hidden md:block'}>
               <button onClick={() => toggle(DropdownState.SEARCH)}>
-                <IconSearch strokeWidth={2} width={'100%'} height={'100%'} />
+                <IconSearch strokeWidth={1} width={'100%'} height={'100%'} />
               </button>
               <Dropdown
                 menuRef={menuRef}
@@ -243,7 +134,7 @@ function DesktopHeader({
                 <DesktopSearch isOpen={isOpen(DropdownState.SEARCH)} />
               </Dropdown>
             </li>
-            <li className={'w-7 h-7 hidden md:block'}>
+            <li className={'w-6 h-6 hidden md:block'}>
               <button onClick={() => toggle(DropdownState.COUNTRYSELECTOR)}>
                 <IconGlobe
                   fill={'transparent'}
@@ -253,10 +144,10 @@ function DesktopHeader({
                 />
               </button>
             </li>
-            <li className={'w-7 h-7 hidden md:block'}>
+            <li className={'w-6 h-6 hidden md:block'}>
               <AccountLink />
             </li>
-            <li className={'w-7 h-7'}>
+            <li className={'w-6 h-6'}>
               <CartCount isIcon={true} openCart={openCart} />
             </li>
           </ul>
@@ -287,7 +178,7 @@ const FullScreenNav = ({
   useEffect(() => {
     if (!scrollRef.current) return;
     if (open) {
-      disableBodyScroll(scrollRef.current);
+      disableBodyScroll(scrollRef.current, {reserveScrollBarGap: true});
     } else {
       enableBodyScroll(scrollRef.current);
     }
@@ -321,22 +212,6 @@ const FullScreenNav = ({
                     </m.li>
                   ))}
                 </m.ul>
-                <div className={'hidden md:block'}>
-                  <video
-                    className={'absolute top-0 right-0 h-full object-cover '}
-                    controls={false}
-                    muted
-                    loop
-                    playsInline
-                    autoPlay
-                  >
-                    <source
-                      src={
-                        'https://res.cloudinary.com/do8kdtxoi/video/upload/v1693522347/NM_JAE_1_ra7hrp.mp4'
-                      }
-                    ></source>
-                  </video>
-                </div>
               </div>
             </div>
             <div className={'flex-shrink-0 w-full flex justify-end flex-col'}>
@@ -365,14 +240,14 @@ function Dropdown({
 }) {
   return (
     <>
-      <div
+      <m.div
         ref={menuRef}
         className={`${
           openDropdown === idx ? 'opened' : ''
         } absolute left-0 top-0 w-full desktop-nav bg-contrast -z-10`}
       >
         {children}
-      </div>
+      </m.div>
     </>
   );
 }
@@ -393,14 +268,14 @@ function DesktopSearch({isOpen}: {isOpen: boolean}) {
         variant="search"
         placeholder={t('layout.header.ctas.search')}
         name="q"
-        className={'text-display w-full text-left border-b-0 gutter '}
+        className={'text-display w-full text-left  gutter '}
         isFocused={isOpen}
       />
       <button
         type="submit"
         className="relative items-center justify-center w-8 h-8 focus:ring-primary/5 hidden"
       >
-        <IconSearch strokeWidth={2} />
+        <IconSearch strokeWidth={1} />
       </button>
     </Form>
   );
@@ -441,7 +316,7 @@ function AccountLink({
   return (
     <Link to="/account" className={className}>
       {useIcon ? (
-        <IconAccount strokeWidth={2} />
+        <IconAccount strokeWidth={1} />
       ) : (
         <Suspense fallback={'Account'}>
           <Await resolve={isLoggedIn} errorElement={'Log In'}>
@@ -503,10 +378,10 @@ function CartCount({
       <button
         onClick={() => openCart()}
         className={
-          'cursor-pointer font-normal text-inherit relative flex items-center justify-end focus:ring-primary/5 w-7 h-7'
+          'cursor-pointer font-normal text-inherit relative flex items-center justify-end focus:ring-primary/5 w-6 h-6'
         }
       >
-        <IconCart strokeWidth={2} />
+        <IconCart strokeWidth={1} />
         <Suspense fallback={<Badge count={0} openCart={openCart} />}>
           <Await resolve={rootData?.cart}>
             {(cart) => (
@@ -518,11 +393,11 @@ function CartCount({
     ) : (
       <Link
         className={
-          'cursor-pointer font-normal text-inherit relative flex items-center justify-end focus:ring-primary/5 w-7 h-7'
+          'cursor-pointer font-normal text-inherit relative flex items-center justify-end focus:ring-primary/5 w-6 h-6'
         }
         to={params.locale ? `/${params.locale}/cart` : '/cart'}
       >
-        <IconCart strokeWidth={2} />
+        <IconCart strokeWidth={1} />
         <Suspense fallback={<Badge count={0} openCart={openCart} />}>
           <Await resolve={rootData?.cart}>
             {(cart) => (

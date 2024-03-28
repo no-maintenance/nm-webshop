@@ -15,16 +15,19 @@ export default async function handleRequest(
       "'self'",
       'https://cloudinary.nomaintenance.us',
       'https://cdn.shopify.com',
+      'https://us-west-2.graphassets.com',
     ],
     imgSrc: [
       "'self'",
       'https://cloudinary.nomaintenance.us',
       'https://cdn.shopify.com',
+      'https://us-west-2.graphassets.com',
       'http://localhost:3100',
     ],
     mediaSrc: [
       'https://cloudinary.nomaintenance.us',
       'https://res.cloudinary.com',
+      'https://us-west-2.graphassets.com',
     ],
   });
   const body = await renderToReadableStream(

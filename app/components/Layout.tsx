@@ -1,6 +1,8 @@
 import type {ReactNode} from 'react';
+import {AnimatePresence, m} from 'framer-motion';
+import {useLocation} from '@remix-run/react';
 
-import {type LayoutQuery} from 'storefrontapi.generated';
+import {type LayoutQuery} from '~/__generated__/storefrontapi.generated';
 import {type EnhancedMenu} from '~/lib/utils';
 import {Footer} from '~/components/Footer';
 import {Header} from '~/components/Header';
@@ -31,9 +33,19 @@ export function Layout({children, layout}: LayoutProps) {
             mobileMenu={mobileHeaderMenu}
           />
         )}
-        <main role="main" id="mainContent" className="flex-grow">
-          {children}
-        </main>
+        <AnimatePresence mode={'wait'}>
+          <m.main
+            key={useLocation().pathname}
+            initial={{opacity: 0}}
+            transition={{duration: 1}}
+            animate={{opacity: 1}}
+            role="main"
+            id="mainContent"
+            className="flex-grow"
+          >
+            {children}
+          </m.main>
+        </AnimatePresence>
       </div>
       {footerMenu && <Footer menu={footerMenu} />}
     </>

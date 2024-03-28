@@ -1,0 +1,9 @@
+fragment Seo on Seo {
+    id
+    title
+    metaDescription
+    hasTitleTemplate
+    image {
+      url
+    }
+}

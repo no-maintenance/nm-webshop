@@ -1,0 +1,11 @@
+query GetCriticalPageContent($slug: String) {
+  criticalPageContent:page(where: {slug: $slug}) {
+    id
+    seo {
+      ...Seo
+    }
+    layout {
+      ...AboveFold
+    }
+  }
+}

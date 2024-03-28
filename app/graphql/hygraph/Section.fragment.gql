@@ -1,0 +1,21 @@
+fragment Section on Section {
+  id
+  settings {
+    ...Setting
+  }
+  content {
+    __typename
+    ... on Collection {
+      ...Collection
+    }
+    ... on LockedContent {
+      ...LockedContent
+    }
+    ... on MixedContent {
+      ...MixedContent
+    }
+    ... on Form {
+      ...Form
+    }
+  }
+}
