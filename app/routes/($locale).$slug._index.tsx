@@ -13,17 +13,17 @@ import {HygraphLayout} from '~/components/hygraph/HygraphLayout';
 
 export const headers = routeHeaders;
 
-const seo: SeoHandleFunction<typeof loader> = ({data}) => ({
-  title: data?.seo?.title ?? 'No Maintenance',
-  description:
-    data?.seo?.metaDescription ??
-    'No Maintenance is a Los Angeles based brand and vintage showroom.',
-  templateTitle: data.seo?.hasTitleTemplate ? '%s | No Maintenance' : '%s',
-});
-
-export const handle = {
-  seo,
-};
+// const seo: SeoHandleFunction<typeof loader> = ({data}) => ({
+//   title: data?.seo?.title ?? 'No Maintenance',
+//   description:
+//     data?.seo?.metaDescription ??
+//     'No Maintenance is a Los Angeles based brand and vintage showroom.',
+//   templateTitle: data.seo?.hasTitleTemplate ? '%s | No Maintenance' : '%s',
+// });
+//
+// export const handle = {
+//   seo,
+// };
 export async function loader({params, context, request}: LoaderFunctionArgs) {
   const {slug} = params;
   return defer(
